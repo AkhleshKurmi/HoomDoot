@@ -6,17 +6,36 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 
 
 class HomeDootFragment : Fragment() {
-  lateinit var list: ArrayList<Int>
+  private lateinit var list: ArrayList<Int>
     var sliderHandler: Handler = Handler()
 
     lateinit var tableLayout: DotsIndicator
     lateinit var viewPager: ViewPager2
     lateinit var sliderAdapter: SliderAdapter
+    lateinit var rvCategery: RecyclerView
+    lateinit var rvServices : RecyclerView
+    lateinit var rvSofa: RecyclerView
+    lateinit var rvPest : RecyclerView
+    lateinit var rvAC: RecyclerView
+
+    lateinit var serviceList :List<Category>
+    lateinit var  categoryList : List<Category>
+    lateinit var sofaList :List<Category>
+    lateinit var  pestList : List<Category>
+    lateinit var acList :List<Category>
+    lateinit var layoutManager : GridLayoutManager
+    lateinit var categoryAdapter: CategoryAdapter
+    lateinit var serviceAdapter: CategoryAdapter
+    lateinit var acAdapter: CategoryAdapter
+    lateinit var pestAdapter: CategoryAdapter
+    lateinit var sofaAdapter: CategoryAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +52,37 @@ class HomeDootFragment : Fragment() {
         list.add(R.drawable.house_keeping)
         list.add(R.drawable.kitchen)
         list.add(R.drawable.pest_control)
+
+        categoryList = listOf(Category("Cleaning Services",R.drawable.pest_control_vector),
+            Category("Pest Control Services",R.drawable.pest_control_vector),
+            Category("Cleaning Services",R.drawable.pest_control_vector),
+            Category("Cleaning Services",R.drawable.pest_control_vector),
+            Category("Cleaning Services",R.drawable.pest_control_vector),
+            Category("Cleaning Services",R.drawable.pest_control_vector))
+
+        sofaList = listOf(Category("Cleaning Services",R.drawable.house_keeping),
+            Category("Pest Control Services",R.drawable.house_keeping),
+            Category("Cleaning Services",R.drawable.house_keeping),
+            Category("Cleaning Services",R.drawable.house_keeping))
+
+        pestList = listOf(Category("Cleaning Services",R.drawable.pest_control),
+            Category("Pest Control Services",R.drawable.pest_control),
+            Category("Cleaning Services",R.drawable.pest_control),
+            Category("Cleaning Services",R.drawable.pest_control))
+
+        acList = listOf(Category("Cleaning Services",R.drawable.acrepairing),
+            Category("Pest Control Services",R.drawable.acrepairing),
+            Category("Cleaning Services",R.drawable.acrepairing),
+            Category("Cleaning Services",R.drawable.acrepairing))
+
+        serviceList = listOf(Category("Cleaning Services",R.drawable.pest_control),
+        Category("Pest Control Services",R.drawable.pest_control),
+        Category("Cleaning Services",R.drawable.pest_control),
+        Category("Cleaning Services",R.drawable.pest_control),
+        Category("Cleaning Services",R.drawable.pest_control),
+        Category("Cleaning Services",R.drawable.pest_control),
+            Category("Cleaning Services",R.drawable.pest_control),
+        Category("Pest Control Services",R.drawable.pest_control))
         return view
     }
 
@@ -40,7 +90,32 @@ class HomeDootFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
        viewPager = view.findViewById(R.id.viewPager)
         tableLayout = view.findViewById(R.id.tabLayout)
+        rvCategery = view.findViewById(R.id.rv_category)
+        rvServices = view.findViewById(R.id.rv_services)
+        rvSofa = view.findViewById(R.id.rv_sofa_cleaning)
+        rvPest = view.findViewById(R.id.rv_pest_control)
+        rvAC = view.findViewById(R.id.rv_ac_service)
 
+        categoryAdapter = CategoryAdapter(requireContext(), categoryList)
+        serviceAdapter = CategoryAdapter(requireContext(),serviceList)
+        pestAdapter = CategoryAdapter(requireContext(), pestList)
+        sofaAdapter = CategoryAdapter(requireContext(),sofaList)
+        acAdapter = CategoryAdapter(requireContext(), acList)
+
+        rvCategery.layoutManager = GridLayoutManager(requireContext(),3)
+        rvCategery.adapter = categoryAdapter
+
+        rvServices.layoutManager = GridLayoutManager(requireContext(),3)
+        rvServices.adapter = serviceAdapter
+
+        rvSofa.layoutManager = GridLayoutManager(requireContext(),3)
+        rvSofa.adapter = sofaAdapter
+
+        rvPest.layoutManager = GridLayoutManager(requireContext(),3)
+        rvPest.adapter = pestAdapter
+
+        rvAC.layoutManager = GridLayoutManager(requireContext(),3)
+        rvAC.adapter = acAdapter
 
         sliderAdapter = SliderAdapter( list)
         viewPager.setAdapter(sliderAdapter)
