@@ -5,6 +5,9 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".HomeDootFragment">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,22 +20,24 @@
        <TextView
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:text="  20%  "
+           android:text="20%  "
+           android:paddingLeft="10dp"
            android:textColor="@color/white"
            android:textStyle="bold"
+           android:drawableLeft="@drawable/baseline_search_24"
            android:layout_gravity="center_vertical"
-           android:textSize="22sp"/>
+           android:textSize="20sp"/>
        <TextView
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:text="C U P O N - C O D E"
            android:textStyle="bold"
            android:layout_gravity="center_vertical"
-           android:textSize="18sp"/>
+           android:textSize="16sp"/>
        <TextView
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:text="     valid till "
+           android:text="   valid till "
            android:layout_gravity="center_vertical"/>
        <TextView
            android:layout_width="wrap_content"
@@ -52,45 +57,21 @@
          android:layout_height="wrap_content"
          android:text="HOME"
          android:textStyle="bold"
-         android:textSize="18sp"/>
+         android:textSize="16sp"/>
 
      <TextView
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
          android:text="A306, Sahyadri Complex, Main Road"/>
-     <androidx.cardview.widget.CardView
-         android:layout_width="match_parent"
-         android:layout_marginTop="5dp"
-         android:layout_height="30dp"
-         android:layout_marginLeft="20dp"
-         android:elevation="10dp"
-
-         android:layout_marginRight="20dp"
-
-         android:id="@+id/cardSearch">
-         <LinearLayout
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:gravity="start"
-
-             android:layout_marginTop="10dp"
-             android:orientation="horizontal">
-
-             <ImageView
-                 android:layout_width="20dp"
-                 android:layout_height="20dp"
-                 android:src="@drawable/baseline_search_24"/>
-
-             <TextView
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:text="Search For Product"/>
-
-
-         </LinearLayout>
-
-
-     </androidx.cardview.widget.CardView>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Search for - 'AC Serv'"
+            android:textSize="14dp"
+            android:padding="10dp"
+            android:layout_margin="5dp"
+            android:drawableLeft="@drawable/baseline_search_24"
+            android:background="@drawable/et_background"/>
      <RelativeLayout
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
@@ -119,35 +100,74 @@
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:text="CATEGORIES"
-       android:textSize="18sp"
+       android:textSize="16sp"
+       android:layout_marginTop="10dp"
        android:textStyle="bold"/>
      <androidx.recyclerview.widget.RecyclerView
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
+         android:layout_marginTop="10dp"
+         android:nestedScrollingEnabled="false"
          android:id="@+id/rv_category"/>
      <TextView
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:text="SERVICES"
          android:textSize="18sp"
+         android:layout_marginTop="10dp"
          android:textStyle="bold"/>
-     <androidx.recyclerview.widget.RecyclerView
+     <TextView
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
+         android:text="Kitchen And Bathroom"
+         android:layout_marginTop="10dp"
+         android:textStyle="bold"/>
+     <androidx.recyclerview.widget.RecyclerView
+         android:layout_width="match_parent"
+         android:layout_height="400dp"
+         android:layout_marginTop="10dp"
+         android:nestedScrollingEnabled="false"
          android:id="@+id/rv_services"/>
 
      <TextView
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:text="Kitchen And Bathroom"
-         android:textSize="18sp"
+         android:text="Sofa, Chair &amp; Carpet Cleaning"
+         android:layout_marginTop="10dp"
          android:textStyle="bold"/>
+
      <androidx.recyclerview.widget.RecyclerView
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:id="@+id/rv_kitchen_bathroom"/>
+         android:nestedScrollingEnabled="false"
+         android:id="@+id/rv_sofa_cleaning"/>
+     <TextView
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="Pest Control Services"
+         android:layout_marginTop="10dp"
+         android:textStyle="bold"/>
+
+     <androidx.recyclerview.widget.RecyclerView
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:nestedScrollingEnabled="false"
+         android:id="@+id/rv_pest_control"/>
+     <TextView
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="AC Service &amp; Repair"
+         android:layout_marginTop="10dp"
+         android:textStyle="bold"/>
+
+     <androidx.recyclerview.widget.RecyclerView
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:nestedScrollingEnabled="false"
+         android:id="@+id/rv_ac_service"/>
+
  </LinearLayout>
 
 </LinearLayout>
-
+    </ScrollView>
 </FrameLayout>
