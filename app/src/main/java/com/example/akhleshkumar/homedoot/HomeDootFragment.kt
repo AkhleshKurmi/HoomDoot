@@ -5,10 +5,12 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import retrofit2.Call
 import retrofit2.Callback
@@ -123,7 +125,7 @@ class HomeDootFragment : Fragment() {
             super.onPause()
             sliderHandler.removeCallbacksAndMessages(null)
         }
-    fun fetchCategories() {
+    private fun fetchCategories() {
         RetrofitClient.instance.fetchCategories()
             .enqueue(object : Callback<ApiResponseCategory> {
                 override fun onResponse(
@@ -131,18 +133,55 @@ class HomeDootFragment : Fragment() {
                     response: Response<ApiResponseCategory>
                 ) {
                     if (response.isSuccessful) {
-                        val categories = response.body()?.data?.categories
-                        categoryAdapter = CategoryAdapter(requireContext(), categories!!)
-                        rvCategery.layoutManager = GridLayoutManager(requireContext(), 3)
-                        rvCategery.adapter = categoryAdapter
+                        if (response.body()!!.success) {
+                            val categories = response.body()?.data?.category
+                            categoryAdapter = CategoryAdapter(requireContext(), categories!!, response.body()!!.data.path, object : OnCategoryClickListener{
+                                override fun onCategoryClick(id: Int) {
+                                    showBottomView(id)
+                                }
+
+                            })
+                            rvCategery.layoutManager = GridLayoutManager(requireContext(), 3)
+                            rvCategery.adapter = categoryAdapter
+                        }else{
+                            Toast.makeText(requireContext(), "No Data", Toast.LENGTH_SHORT).show()
+                        }
                     } else {
-                        // Handle the error
+                        Toast.makeText(requireContext(), "No Response", Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 override fun onFailure(call: Call<ApiResponseCategory>, t: Throwable) {
-
+                    Toast.makeText(requireContext(), t.localizedMessage, Toast.LENGTH_SHORT).show()
                 }
             })
+    }
+
+    fun showBottomView( id: Int){
+        val bottomSheetDialog = BottomSheetDialog(requireContext())
+        val bottomSheetView = layoutInflater.inflate(R.layout.bottom_menu_view,null)
+        bottomSheetDialog.setContentView(bottomSheetView)
+        val rvSubCat = bottomSheetView.findViewById<RecyclerView>(R.id.rv_sub_cat)
+        rvSubCat.layoutManager = GridLayoutManager(requireContext(),3)
+        RetrofitClient.instance.fetchSubCategory(id).enqueue(object : Callback<SubCategoryResponse>{
+            override fun onResponse(
+                call: Call<SubCategoryResponse>,
+                response: Response<SubCategoryResponse>
+            ) {
+                if (response.isSuccessful){
+                    if (response.body()!!.success){
+                        val bottomMenuViewAdapter = BottomMenuViewAdapter(requireContext(),response.body()!!.data.sub_category, response.body()!!.data.path)
+                        rvSubCat.adapter = bottomMenuViewAdapter
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<SubCategoryResponse>, t: Throwable) {
+
+            }
+
+        })
+
+        bottomSheetDialog.show()
     }
     }

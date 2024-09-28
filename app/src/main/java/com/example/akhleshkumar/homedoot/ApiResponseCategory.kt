@@ -8,5 +8,5 @@ data class ApiResponseCategory(
 
 data class Data(
     val path: String,
-    val categories: List<Category> )
+    val category: List<Category> )
 
