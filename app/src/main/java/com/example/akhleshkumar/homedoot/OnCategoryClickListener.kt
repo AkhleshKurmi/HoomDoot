@@ -1,5 +1,5 @@
 package com.example.akhleshkumar.homedoot
 
 interface OnCategoryClickListener {
-    fun onCategoryClick(id:Int)
+    fun onCategoryClick(id:Int,serviceName:String)
 }

@@ -1,6 +1,7 @@
 package com.example.akhleshkumar.homedoot
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +22,10 @@ class BottomMenuViewAdapter (private val context: Context, private val categoryL
         val category = categoryList[position]
         holder.categoryName.text = category.sub_category_name
         Picasso.get().load(path + "/" + category.sub_category_image).into(holder.categoryIcon)
-
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, ChildCategoryActivity::class.java)
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int {

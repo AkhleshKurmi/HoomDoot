@@ -5,6 +5,9 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -136,8 +139,8 @@ class HomeDootFragment : Fragment() {
                         if (response.body()!!.success) {
                             val categories = response.body()?.data?.category
                             categoryAdapter = CategoryAdapter(requireContext(), categories!!, response.body()!!.data.path, object : OnCategoryClickListener{
-                                override fun onCategoryClick(id: Int) {
-                                    showBottomView(id)
+                                override fun onCategoryClick(id: Int,serviceName:String) {
+                                    showBottomView(id,serviceName)
                                 }
 
                             })
@@ -157,12 +160,19 @@ class HomeDootFragment : Fragment() {
             })
     }
 
-    fun showBottomView( id: Int){
+    fun showBottomView( id: Int, serviceName : String){
         val bottomSheetDialog = BottomSheetDialog(requireContext())
         val bottomSheetView = layoutInflater.inflate(R.layout.bottom_menu_view,null)
-        bottomSheetDialog.setContentView(bottomSheetView)
+//        bottomSheetView.layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT
+//        bottomSheetView.layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
         val rvSubCat = bottomSheetView.findViewById<RecyclerView>(R.id.rv_sub_cat)
+        val tvServiceName = bottomSheetView.findViewById<TextView>(R.id.tv_service_name)
+        tvServiceName.text = serviceName
+        bottomSheetDialog.setContentView(bottomSheetView)
+
+
         rvSubCat.layoutManager = GridLayoutManager(requireContext(),3)
+
         RetrofitClient.instance.fetchSubCategory(id).enqueue(object : Callback<SubCategoryResponse>{
             override fun onResponse(
                 call: Call<SubCategoryResponse>,
@@ -172,16 +182,17 @@ class HomeDootFragment : Fragment() {
                     if (response.body()!!.success){
                         val bottomMenuViewAdapter = BottomMenuViewAdapter(requireContext(),response.body()!!.data.sub_category, response.body()!!.data.path)
                         rvSubCat.adapter = bottomMenuViewAdapter
+
                     }
                 }
             }
 
             override fun onFailure(call: Call<SubCategoryResponse>, t: Throwable) {
-
+                Toast.makeText(requireContext(), t.localizedMessage, Toast.LENGTH_SHORT).show()
             }
 
         })
 
-        bottomSheetDialog.show()
+     bottomSheetDialog.show()
     }
     }

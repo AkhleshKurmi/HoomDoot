@@ -26,7 +26,7 @@ RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
         holder.categoryName.text = category.category_name
         Picasso.get().load(path+"/"+category.category_image).into(holder.categoryIcon)
         holder.itemView.setOnClickListener {
-            onCategoryClickListener.onCategoryClick(category.id)
+            onCategoryClickListener.onCategoryClick(category.id, category.category_name)
         }
     }
 
