@@ -1,4 +1,4 @@
-package com.example.akhleshkumar.homedoot
+package com.example.akhleshkumar.homedoot.models
 
 data class SubCategoryResponse(
     val success: Boolean,

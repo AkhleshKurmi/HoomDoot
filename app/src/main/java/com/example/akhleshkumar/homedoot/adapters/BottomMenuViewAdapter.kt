@@ -1,4 +1,4 @@
-package com.example.akhleshkumar.homedoot
+package com.example.akhleshkumar.homedoot.adapters
 
 import android.content.Context
 import android.content.Intent
@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.akhleshkumar.homedoot.activities.ChildCategoryActivity
+import com.example.akhleshkumar.homedoot.R
+import com.example.akhleshkumar.homedoot.models.SubCategory
 import com.squareup.picasso.Picasso
 
 class BottomMenuViewAdapter (private val context: Context, private val categoryList: List<SubCategory>, private val path : String) :
@@ -24,6 +27,8 @@ class BottomMenuViewAdapter (private val context: Context, private val categoryL
         Picasso.get().load(path + "/" + category.sub_category_image).into(holder.categoryIcon)
         holder.itemView.setOnClickListener {
             val intent = Intent(context, ChildCategoryActivity::class.java)
+            intent.putExtra("id",category.id)
+            intent.putExtra("catName", category.sub_category_name)
             context.startActivity(intent)
         }
     }

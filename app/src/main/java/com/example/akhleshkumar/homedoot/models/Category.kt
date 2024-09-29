@@ -1,4 +1,4 @@
-package com.example.akhleshkumar.homedoot
+package com.example.akhleshkumar.homedoot.models
 
 data class Category (val id: Int,
                      val category_token: String,
