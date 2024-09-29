@@ -1,4 +1,4 @@
-package com.example.akhleshkumar.homedoot
+package com.example.akhleshkumar.homedoot.models
 
 import com.google.gson.annotations.SerializedName
 

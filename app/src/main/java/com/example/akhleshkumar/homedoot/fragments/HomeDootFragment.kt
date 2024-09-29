@@ -1,18 +1,26 @@
-package com.example.akhleshkumar.homedoot
+package com.example.akhleshkumar.homedoot.fragments
 
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.example.akhleshkumar.homedoot.interfaces.OnCategoryClickListener
+import com.example.akhleshkumar.homedoot.R
+import com.example.akhleshkumar.homedoot.adapters.BottomMenuViewAdapter
+import com.example.akhleshkumar.homedoot.adapters.CategoryAdapter
+import com.example.akhleshkumar.homedoot.adapters.HomeSliderAdapter
+import com.example.akhleshkumar.homedoot.adapters.SliderAdapter
+import com.example.akhleshkumar.homedoot.api.RetrofitClient
+import com.example.akhleshkumar.homedoot.models.ApiResponseCategory
+import com.example.akhleshkumar.homedoot.models.Category
+import com.example.akhleshkumar.homedoot.models.SubCategoryResponse
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import retrofit2.Call
@@ -26,7 +34,7 @@ class HomeDootFragment : Fragment() {
 
     lateinit var tableLayout: DotsIndicator
     lateinit var viewPager: ViewPager2
-    lateinit var sliderAdapter: SliderAdapter
+    lateinit var sliderAdapter: HomeSliderAdapter
     lateinit var rvCategery: RecyclerView
     lateinit var rvServices : RecyclerView
     lateinit var rvSofa: RecyclerView
@@ -96,7 +104,7 @@ class HomeDootFragment : Fragment() {
 //            rvAC.layoutManager = GridLayoutManager(requireContext(), 3)
 //            rvAC.adapter = acAdapter
 
-            sliderAdapter = SliderAdapter(list)
+            sliderAdapter = HomeSliderAdapter(list)
             viewPager.setAdapter(sliderAdapter)
             tableLayout.attachTo(viewPager)
 
@@ -138,7 +146,8 @@ class HomeDootFragment : Fragment() {
                     if (response.isSuccessful) {
                         if (response.body()!!.success) {
                             val categories = response.body()?.data?.category
-                            categoryAdapter = CategoryAdapter(requireContext(), categories!!, response.body()!!.data.path, object : OnCategoryClickListener{
+                            categoryAdapter = CategoryAdapter(requireContext(), categories!!, response.body()!!.data.path, object :
+                                OnCategoryClickListener {
                                 override fun onCategoryClick(id: Int,serviceName:String) {
                                     showBottomView(id,serviceName)
                                 }

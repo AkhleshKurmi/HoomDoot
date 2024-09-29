@@ -1,4 +1,4 @@
-package com.example.akhleshkumar.homedoot
+package com.example.akhleshkumar.homedoot.api
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

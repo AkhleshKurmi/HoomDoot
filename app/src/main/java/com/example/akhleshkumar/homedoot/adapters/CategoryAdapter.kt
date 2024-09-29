@@ -1,4 +1,4 @@
-package com.example.akhleshkumar.homedoot
+package com.example.akhleshkumar.homedoot.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,11 +7,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.example.akhleshkumar.homedoot.models.Category
+import com.example.akhleshkumar.homedoot.interfaces.OnCategoryClickListener
+import com.example.akhleshkumar.homedoot.R
 import com.squareup.picasso.Picasso
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class CategoryAdapter(private val context: Context, private val categoryList: List<Category>, private val path : String, val onCategoryClickListener: OnCategoryClickListener) :
 RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {

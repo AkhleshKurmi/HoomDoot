@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/layout/item_cleaning_service.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    android:padding="16dp"
+    android:layout_marginTop="8dp"
+    android:elevation="4dp">
+
+    <!-- Warranty Text -->
+    <TextView
+        android:id="@+id/tvWarranty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="30 days warranty"
+        android:textColor="#009688"
+        android:textSize="14sp" />
+
+    <!-- Title and Thumbnail Container -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="8dp">
+
+        <!-- Text Container -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Premium Full Home Cleaning"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black" />
+
+            <!-- Rating and Reviews Container -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp">
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/baseline_star_rate_24" />
+
+                <TextView
+                    android:id="@+id/tvRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4.5"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="14sp"
+                    android:layout_marginStart="4dp" />
+
+                <TextView
+                    android:id="@+id/tvReviews"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(0k reviews)"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="14sp"
+                    android:layout_marginStart="8dp" />
+            </LinearLayout>
+
+            <!-- Price and Time Container -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp">
+
+                <TextView
+                    android:id="@+id/tvPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="₹90.0"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/tvTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="• 45 Mins"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/darker_gray"
+                    android:layout_marginStart="16dp" />
+            </LinearLayout>
+
+            <!-- Offer Text -->
+            <TextView
+                android:id="@+id/tvOffer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="20% off on 2nd item onwards"
+                android:textColor="#4CAF50"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp" />
+
+            <!-- Description Text -->
+            <TextView
+                android:id="@+id/tvDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Get 2x deeper dust removal with Foam + PowerJet Technology"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+
+        <!-- Thumbnail Image -->
+        <ImageView
+            android:id="@+id/ivThumbnail"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="8dp"
+            android:scaleType="centerCrop" />
+
+    </LinearLayout>
+
+    <!-- Add Button -->
+    <Button
+        android:id="@+id/btnAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_gravity="end"
+        android:textSize="10sp"
+        android:background="@drawable/rounded_button_bg"
+        android:text="Add"
+        android:textColor="@android:color/white" />
+
+</LinearLayout>

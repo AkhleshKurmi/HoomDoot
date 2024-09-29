@@ -1,15 +1,16 @@
-package com.example.akhleshkumar.homedoot
+package com.example.akhleshkumar.homedoot.models
 import com.google.gson.annotations.SerializedName
 data class ProductDetailsResponse(
     val success: Boolean,
     val message: String,
-    val data: ProductData
+    val data: ProductDataDescriptionList
 )
 
-data class ProductData(
+data class ProductDataDescriptionList(
     val product: Product,
     @SerializedName("product_items") val productItems: List<ProductItem>,
-    @SerializedName("other_products") val otherProducts: List<OtherProduct>
+    @SerializedName("other_products") val otherProducts: List<OtherProduct>,
+    @SerializedName("product_path") val path: String
 )
 
 data class Product(

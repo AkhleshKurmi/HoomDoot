@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.ProductDescriptionActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#D5D3D3">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/baseline_arrow_back_24"
+            android:id="@+id/iv_back"/>
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Full Home Cleaning"
+            android:textSize="20sp"
+            android:padding="10dp"
+            android:textStyle="bold"
+            />
+    </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <androidx.viewpager2.widget.ViewPager2
+            android:layout_width="match_parent"
+            android:layout_height="225dp"
+            android:layout_marginTop="20dp"
+            android:id="@+id/viewPager"/>
+
+        <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+            android:id="@+id/tabLayout"
+            android:layout_width="wrap_content"
+            android:padding="5dp"
+            app:selectedDotColor="@color/white"
+            app:dotsColor="@color/black"
+            app:dotsSize="10dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="165dp"
+            android:layout_centerHorizontal="true"
+            />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="4dp">
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="16dp"
+            android:src="@drawable/baseline_star_rate_24" />
+
+        <TextView
+            android:id="@+id/tvRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4.5"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="14sp"
+            android:layout_marginStart="4dp" />
+
+        <TextView
+            android:id="@+id/tvReviews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(0 k reviews)"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="14sp"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/black"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="   Items available"
+        android:layout_marginTop="25dp"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:drawableLeft="@drawable/baseline_arrow_drop_down_circle_24"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:id="@+id/rv_items_toAdd"/>
+
+    <com.google.android.material.tabs.TabLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:id="@+id/tabLayoutBottom"/>
+
+       <androidx.viewpager2.widget.ViewPager2
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:id="@+id/view_pager_include"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
