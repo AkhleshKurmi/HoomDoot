@@ -2,7 +2,6 @@ package com.example.akhleshkumar.homedoot.activities
 
 import android.os.Bundle
 import android.os.Handler
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -16,13 +15,9 @@ import com.example.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.adapters.AddItemAdapter
 import com.example.akhleshkumar.homedoot.adapters.ProductListAdapter
 import com.example.akhleshkumar.homedoot.adapters.SliderAdapter
-import com.example.akhleshkumar.homedoot.adapters.ViewPagerAdapter
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
-import com.example.akhleshkumar.homedoot.models.ImageItem
 import com.example.akhleshkumar.homedoot.models.ProductDetailsResponse
 import com.example.akhleshkumar.homedoot.models.ProductListResponse
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import retrofit2.Call
 import retrofit2.Callback
@@ -34,11 +29,8 @@ class ProductDescriptionActivity : AppCompatActivity() {
     lateinit var title:TextView
     lateinit var sliderAdapter :SliderAdapter
     lateinit var viewPager :ViewPager2
-    lateinit var bottomContainer :ViewPager2
     lateinit var tableLayout :DotsIndicator
-    lateinit var tabLayoutBottom : TabLayout
     val sliderHandler : Handler = Handler()
-    lateinit var viewPagerAdapter: ViewPagerAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product_description)
@@ -46,16 +38,10 @@ class ProductDescriptionActivity : AppCompatActivity() {
         rvAddItem = findViewById(R.id.rv_items_toAdd)
         viewPager = findViewById(R.id.viewPager)
         tableLayout = findViewById(R.id.tabLayout)
-        bottomContainer = findViewById(R.id.view_pager_include)
-        tabLayoutBottom = findViewById(R.id.tabLayoutBottom)
         val id = intent.getIntExtra("id",1)
         val subChildCatName = intent.getStringExtra("catName")
         title.text = subChildCatName.toString()
         rvAddItem.layoutManager = LinearLayoutManager(this@ProductDescriptionActivity)
-        val backButton = findViewById<ImageView>(R.id.iv_back)
-        backButton.setOnClickListener {
-            finish()
-        }
         getProductDetail(id)
         val list = ArrayList<Int>()
         list.add(R.drawable.acrepairing)
@@ -89,25 +75,8 @@ class ProductDescriptionActivity : AppCompatActivity() {
             ) {
                 if (response.isSuccessful){
                     if (response.body()!!.success){
-                        val moreImages = response.body()!!.data.product.moreImages.split(",").map { it.trim() }
-                        val imageItems = moreImages.map { ImageItem(it) }
-                        sliderAdapter = SliderAdapter(imageItems, response.body()!!.data.path,response.body()!!.data.product.id)
-                        viewPager.setAdapter(sliderAdapter)
-                        tableLayout.attachTo(viewPager)
-                        startAutoSlider()
                         addItemAdapter = AddItemAdapter(this@ProductDescriptionActivity,response.body()!!.data.productItems,response.body()!!.data.product.home)
                         rvAddItem.adapter = addItemAdapter
-                        viewPagerAdapter = ViewPagerAdapter(this@ProductDescriptionActivity,response.body()!!.data.product.included, response.body()!!.data.product.excluded,response.body()!!.data.product.otherDetails1+"\n"+response.body()!!.data.product.otherDetails2)
-                        bottomContainer.adapter = viewPagerAdapter
-                            TabLayoutMediator(tabLayoutBottom, bottomContainer) { tab, position ->
-                                tab.text = when (position) {
-                                    0 -> "Include"
-                                    1 -> "Exclude"
-                                    2 -> "Other"
-                                    else -> null
-                                }
-                            }.attach()
-
                     }else{
                         Toast.makeText(this@ProductDescriptionActivity, "No data", Toast.LENGTH_SHORT).show()
                     }

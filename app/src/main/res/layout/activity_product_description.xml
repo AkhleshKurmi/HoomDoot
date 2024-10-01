@@ -113,15 +113,11 @@
         android:id="@+id/rv_items_toAdd"/>
 
     <com.google.android.material.tabs.TabLayout
-        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:id="@+id/tabLayoutBottom"/>
 
-       <androidx.viewpager2.widget.ViewPager2
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
-           android:id="@+id/view_pager_include"/>
 
         </LinearLayout>
 

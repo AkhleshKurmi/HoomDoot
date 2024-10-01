@@ -3,12 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@android:color/white"
-    android:padding="5dp"
-    android:layout_marginTop="8dp"
-    android:elevation="4dp">
-
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="65dp"
@@ -27,4 +21,3 @@
         android:textSize="16sp"
         android:textColor="@android:color/black" />
     </LinearLayout>
-

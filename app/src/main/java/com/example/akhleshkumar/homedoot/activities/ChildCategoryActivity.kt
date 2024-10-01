@@ -1,7 +1,6 @@
 package com.example.akhleshkumar.homedoot.activities
 
 import android.os.Bundle
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -20,7 +19,6 @@ class ChildCategoryActivity : AppCompatActivity() {
    lateinit var rvChildSubCat :RecyclerView
    lateinit var tvChiledSubName : TextView
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_child_category)
@@ -30,10 +28,6 @@ class ChildCategoryActivity : AppCompatActivity() {
         val id = intent.getIntExtra("id",1)
         val subChildCatName = intent.getStringExtra("catName")
         tvChiledSubName.text = subChildCatName.toString()
-        val backButton = findViewById<ImageView>(R.id.iv_back)
-        backButton.setOnClickListener {
-            finish()
-        }
         getChildSubCatList(id)
 
 

@@ -1,12 +1,9 @@
-package com.example.akhleshkumar.homedoot.activities
+package com.example.akhleshkumar.homedoot
 
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.akhleshkumar.homedoot.R
-import com.example.akhleshkumar.homedoot.fragments.CartFragment
-import com.example.akhleshkumar.homedoot.fragments.HomeDootFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 
@@ -29,10 +26,6 @@ class MainActivity : AppCompatActivity() {
             } else if (itemId == R.id.navigation_home) {
                 fragment = homeDootFragment
             } else if (itemId == R.id.navigation_Account) {
-
-            }
-            else if (itemId == R.id.navigation_cart) {
-                fragment = CartFragment()
             }
             loadFragment(fragment)
         })

@@ -45,7 +45,6 @@ class ProductListAdapter (val context: Context, private val items: List<ProductD
         holder.tvPrice.text = "₹ "+item.price.toFloat().toString()
 
         holder.tvDescription.text = item.description
-        Picasso.get().load(path+"/"+item.id+"/"+item.main_image).into(holder.ivThumbnail)
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, ProductDescriptionActivity::class.java)

@@ -1,7 +1,6 @@
 package com.example.akhleshkumar.homedoot.activities
 
 import android.os.Bundle
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -34,10 +33,6 @@ class ProductListActivity : AppCompatActivity() {
         val id = intent.getIntExtra("id",1)
         val subChildCatName = intent.getStringExtra("catName")
         tvChiledSubName.text = subChildCatName.toString()
-        val backButton = findViewById<ImageView>(R.id.iv_back)
-        backButton.setOnClickListener {
-            finish()
-        }
 
         getChildSubCatList(id)
 
