@@ -6,6 +6,7 @@ import com.example.akhleshkumar.homedoot.models.ApiResponseCategory
 import com.example.akhleshkumar.homedoot.models.CartListResponse
 import com.example.akhleshkumar.homedoot.models.ChildSubCategoryResponse
 import com.example.akhleshkumar.homedoot.models.ProductDetailsResponse
+import com.example.akhleshkumar.homedoot.models.RemoveCartItemRes
 import com.example.akhleshkumar.homedoot.models.SubCategoryResponse
 import retrofit2.Call
 import retrofit2.http.GET
@@ -29,7 +30,7 @@ interface ApiService {
     fun fetchProductDetails(@Query("p_id") productId : Int): Call<ProductDetailsResponse>
 
 
-    @GET("add_to_cart")
+    @POST("add_to_cart")
     fun addToCart(
         @Query("product_id") productId: Int,
         @Query("item_id") itemId: Int,
@@ -38,10 +39,15 @@ interface ApiService {
         @Query("price") price: Int
     ): Call<AddCartResponse>
 
-    @GET("cart_list")
+    @POST("cart_list")
     fun getCartList(
         @Query("user_id") userId: Int
     ): Call<CartListResponse>
 
+    @POST("remove_cart")
+    fun removeAnItem(@Query("item_id") itemId:Int, @Query("user_id") userId:Int) : Call<RemoveCartItemRes>
+
+    @POST("update_cart")
+    fun updateCart(@Query("item_id") itemId:Int, @Query("user_id") userId:Int, @Query("quantity") quantity: Int) : Call<RemoveCartItemRes>
 
 }

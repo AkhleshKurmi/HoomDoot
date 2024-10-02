@@ -13,6 +13,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.example.akhleshkumar.homedoot.adapters.BottomMenuViewAdapter
+import com.example.akhleshkumar.homedoot.adapters.CategoryAdapter
+import com.example.akhleshkumar.homedoot.api.RetrofitClient
+import com.example.akhleshkumar.homedoot.interfaces.OnCategoryClickListener
+import com.example.akhleshkumar.homedoot.models.ApiResponseCategory
+import com.example.akhleshkumar.homedoot.models.Category
+import com.example.akhleshkumar.homedoot.models.SubCategoryResponse
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import retrofit2.Call
@@ -138,7 +145,8 @@ class HomeDootFragment : Fragment() {
                     if (response.isSuccessful) {
                         if (response.body()!!.success) {
                             val categories = response.body()?.data?.category
-                            categoryAdapter = CategoryAdapter(requireContext(), categories!!, response.body()!!.data.path, object : OnCategoryClickListener{
+                            categoryAdapter = CategoryAdapter(requireContext(), categories!!, response.body()!!.data.path, object :
+                                OnCategoryClickListener {
                                 override fun onCategoryClick(id: Int,serviceName:String) {
                                     showBottomView(id,serviceName)
                                 }

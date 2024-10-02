@@ -22,8 +22,8 @@ data class Cart(
     val total_amount: Long,
     val created_at: String,
     val updated_at: String,
-    val p_detail: ProductDetail,
-    val item_detail: ItemDetail
+    val p_detail: ProductDetail
+//    val item_detail: ItemDetail
 )
 
 data class ProductDetail(
