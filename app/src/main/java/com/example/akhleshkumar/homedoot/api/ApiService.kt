@@ -1,7 +1,9 @@
 package com.example.akhleshkumar.homedoot.api
 
+import com.example.akhleshkumar.homedoot.models.AddCartResponse
 import com.example.akhleshkumar.homedoot.models.ProductListResponse
 import com.example.akhleshkumar.homedoot.models.ApiResponseCategory
+import com.example.akhleshkumar.homedoot.models.CartListResponse
 import com.example.akhleshkumar.homedoot.models.ChildSubCategoryResponse
 import com.example.akhleshkumar.homedoot.models.ProductDetailsResponse
 import com.example.akhleshkumar.homedoot.models.SubCategoryResponse
@@ -25,6 +27,21 @@ interface ApiService {
 
     @POST("product_details")
     fun fetchProductDetails(@Query("p_id") productId : Int): Call<ProductDetailsResponse>
+
+
+    @GET("add_to_cart")
+    fun addToCart(
+        @Query("product_id") productId: Int,
+        @Query("item_id") itemId: Int,
+        @Query("user_id") userId: Int,
+        @Query("quantity") quantity: Int,
+        @Query("price") price: Int
+    ): Call<AddCartResponse>
+
+    @GET("cart_list")
+    fun getCartList(
+        @Query("user_id") userId: Int
+    ): Call<CartListResponse>
 
 
 }
