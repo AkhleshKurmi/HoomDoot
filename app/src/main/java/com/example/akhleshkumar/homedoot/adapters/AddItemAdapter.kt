@@ -56,7 +56,7 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
         val productName = itemView.findViewById<TextView>(R.id.tvProductName)
         val priceOrignal = itemView.findViewById<TextView>(R.id.tvOriginalPrice)
         val priceDiscount = itemView.findViewById<TextView>(R.id.tvDiscountedPrice)
-        val totalPrice = itemView.findViewById<TextView>(R.id.tvTotalPrice)
+        val totalPrice = itemView.findViewById<TextView>(R.id.)
         val totalItem = itemView.findViewById<TextView>(R.id.tvQuantity)
 
     }
