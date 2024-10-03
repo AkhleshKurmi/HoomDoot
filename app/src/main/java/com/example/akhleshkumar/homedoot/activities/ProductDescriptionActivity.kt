@@ -4,20 +4,15 @@ import android.os.Bundle
 import android.os.Handler
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.akhleshkumar.homedoot.R
+import com.example.akhleshkumar.homedoot.SliderAdapter
 import com.example.akhleshkumar.homedoot.adapters.AddItemAdapter
-import com.example.akhleshkumar.homedoot.adapters.ProductListAdapter
-import com.example.akhleshkumar.homedoot.adapters.SliderAdapter
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
 import com.example.akhleshkumar.homedoot.models.ProductDetailsResponse
-import com.example.akhleshkumar.homedoot.models.ProductListResponse
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,7 +22,7 @@ class ProductDescriptionActivity : AppCompatActivity() {
     lateinit var rvAddItem : RecyclerView
     lateinit var addItemAdapter: AddItemAdapter
     lateinit var title:TextView
-    lateinit var sliderAdapter :SliderAdapter
+    lateinit var sliderAdapter : SliderAdapter
     lateinit var viewPager :ViewPager2
     lateinit var tableLayout :DotsIndicator
     val sliderHandler : Handler = Handler()
@@ -75,7 +70,7 @@ class ProductDescriptionActivity : AppCompatActivity() {
             ) {
                 if (response.isSuccessful){
                     if (response.body()!!.success){
-                        addItemAdapter = AddItemAdapter(this@ProductDescriptionActivity,response.body()!!.data.productItems,response.body()!!.data.product.home)
+                        val addItemAdapter = AddItemAdapter(this@ProductDescriptionActivity,response.body()!!.data.productItems,response.body()!!.data.product.home,1)
                         rvAddItem.adapter = addItemAdapter
                     }else{
                         Toast.makeText(this@ProductDescriptionActivity, "No data", Toast.LENGTH_SHORT).show()

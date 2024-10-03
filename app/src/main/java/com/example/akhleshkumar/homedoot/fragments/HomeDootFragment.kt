@@ -13,6 +13,15 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.example.akhleshkumar.homedoot.adapters.BottomMenuViewAdapter
+import com.example.akhleshkumar.homedoot.adapters.CategoryAdapter
+import com.example.akhleshkumar.homedoot.adapters.ServiceAdapter
+import com.example.akhleshkumar.homedoot.api.RetrofitClient
+import com.example.akhleshkumar.homedoot.interfaces.OnCategoryClickListener
+import com.example.akhleshkumar.homedoot.models.ApiResponseCategory
+import com.example.akhleshkumar.homedoot.models.Category
+import com.example.akhleshkumar.homedoot.models.SubCategoryResponse
+import com.example.akhleshkumar.homedoot.models.homeresponse.HomePageResponse
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import retrofit2.Call
@@ -32,18 +41,8 @@ class HomeDootFragment : Fragment() {
     lateinit var rvSofa: RecyclerView
     lateinit var rvPest : RecyclerView
     lateinit var rvAC: RecyclerView
-
-    lateinit var serviceList :List<Category>
-    lateinit var  categoryList : List<Category>
-    lateinit var sofaList :List<Category>
-    lateinit var  pestList : List<Category>
-    lateinit var acList :List<Category>
-    lateinit var layoutManager : GridLayoutManager
     lateinit var categoryAdapter: CategoryAdapter
-    lateinit var serviceAdapter: CategoryAdapter
-    lateinit var acAdapter: CategoryAdapter
-    lateinit var pestAdapter: CategoryAdapter
-    lateinit var sofaAdapter: CategoryAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,30 +74,20 @@ class HomeDootFragment : Fragment() {
         rvAC = view.findViewById(R.id.rv_ac_service)
 
 
-//        serviceAdapter = CategoryAdapter(requireContext(), serviceList)
-//        pestAdapter = CategoryAdapter(requireContext(), pestList)
-//        sofaAdapter = CategoryAdapter(requireContext(), sofaList)
-//        acAdapter = CategoryAdapter(requireContext(), acList)
+
+        fetchHomeData()
+
+        fetchCategories()
+
+            rvServices.layoutManager = GridLayoutManager(requireContext(), 3)
+
+            rvSofa.layoutManager = GridLayoutManager(requireContext(), 3)
+
+            rvPest.layoutManager = GridLayoutManager(requireContext(), 3)
+
+            rvAC.layoutManager = GridLayoutManager(requireContext(), 3)
 
 
-
-   fetchCategories()
-
-//            rvServices.layoutManager = GridLayoutManager(requireContext(), 3)
-//            rvServices.adapter = serviceAdapter
-//
-//            rvSofa.layoutManager = GridLayoutManager(requireContext(), 3)
-//            rvSofa.adapter = sofaAdapter
-//
-//            rvPest.layoutManager = GridLayoutManager(requireContext(), 3)
-//            rvPest.adapter = pestAdapter
-//
-//            rvAC.layoutManager = GridLayoutManager(requireContext(), 3)
-//            rvAC.adapter = acAdapter
-
-            sliderAdapter = SliderAdapter(list)
-            viewPager.setAdapter(sliderAdapter)
-            tableLayout.attachTo(viewPager)
 
         }
 
@@ -121,6 +110,7 @@ class HomeDootFragment : Fragment() {
 
         override fun onResume() {
             super.onResume()
+            
             startAutoSlider()
         }
 
@@ -138,7 +128,8 @@ class HomeDootFragment : Fragment() {
                     if (response.isSuccessful) {
                         if (response.body()!!.success) {
                             val categories = response.body()?.data?.category
-                            categoryAdapter = CategoryAdapter(requireContext(), categories!!, response.body()!!.data.path, object : OnCategoryClickListener{
+                            categoryAdapter = CategoryAdapter(requireContext().applicationContext, categories!!, response.body()!!.data.path, object :
+                                OnCategoryClickListener {
                                 override fun onCategoryClick(id: Int,serviceName:String) {
                                     showBottomView(id,serviceName)
                                 }
@@ -159,12 +150,35 @@ class HomeDootFragment : Fragment() {
                 }
             })
     }
+  fun fetchHomeData(){
+      RetrofitClient.instance.fetchHomePage().enqueue(object : Callback<HomePageResponse>{
+          override fun onResponse(
+              call: Call<HomePageResponse>,
+              response: Response<HomePageResponse>
+          ) {
+              if (response.isSuccessful){
+                  if (response.body()!!.success){
+                      val homeResponse = response.body()!!.data
+                      sliderAdapter= SliderAdapter(homeResponse.sliders, homeResponse.slider_path)
+                      viewPager.setAdapter(sliderAdapter)
+                      tableLayout.attachTo(viewPager)
+                       rvServices.adapter = ServiceAdapter(requireContext().applicationContext,homeResponse.product_list.`3`,homeResponse.product_path)
+                       rvSofa.adapter = ServiceAdapter(requireContext().applicationContext,homeResponse.product_list.`4`,homeResponse.product_path)
+                      rvPest.adapter = ServiceAdapter(requireContext().applicationContext, homeResponse.product_list.`7`,homeResponse.product_path)
+                      rvAC.adapter = ServiceAdapter(requireContext().applicationContext,homeResponse.product_list.`9`,homeResponse.product_path)
 
+                  }
+              }
+          }
+
+          override fun onFailure(call: Call<HomePageResponse>, t: Throwable) {
+              Toast.makeText(requireContext(), t.localizedMessage, Toast.LENGTH_SHORT).show()
+          }
+      })
+  }
     fun showBottomView( id: Int, serviceName : String){
         val bottomSheetDialog = BottomSheetDialog(requireContext())
         val bottomSheetView = layoutInflater.inflate(R.layout.bottom_menu_view,null)
-//        bottomSheetView.layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT
-//        bottomSheetView.layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
         val rvSubCat = bottomSheetView.findViewById<RecyclerView>(R.id.rv_sub_cat)
         val tvServiceName = bottomSheetView.findViewById<TextView>(R.id.tv_service_name)
         tvServiceName.text = serviceName

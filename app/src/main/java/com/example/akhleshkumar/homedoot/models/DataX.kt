@@ -1,0 +1,31 @@
+package com.example.akhleshkumar.homedoot.models
+
+data class DataX(
+    val address: String,
+    val alloted_times: AllotedTimes,
+    val assigned_order: Any,
+    val cash_accepted: Int,
+    val coupan_code: String,
+    val created_at: String,
+    val discount_total: Int,
+    val grand_total: Int,
+    val id: Int,
+    val items: List<Item>,
+    val job_started: Int,
+    val old_service_date: Any,
+    val old_service_time: Any,
+    val order_current_status: Any,
+    val order_no: String,
+    val order_status: String,
+    val payment_method: String,
+    val payment_status: String,
+    val plan_id: Int,
+    val razor_order_id: String,
+    val razor_order_status: String,
+    val service_date: String,
+    val service_time: String,
+    val status_from_vendor: String,
+    val sub_total: Int,
+    val updated_at: String,
+    val user_id: Int
+)

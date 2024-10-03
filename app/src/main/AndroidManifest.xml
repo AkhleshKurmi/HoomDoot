@@ -15,7 +15,7 @@
         android:theme="@style/Theme.HomeDoot"
         tools:targetApi="31">
         <activity
-            android:name=".ChildCategoryActivity"
+            android:name=".activities.ChildCategoryActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
@@ -26,6 +26,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.ProductListActivity"
+            android:exported="false"/>
+        <activity android:name=".activities.ProductDescriptionActivity"
+            android:exported="false"/>
+        <activity android:name=".activities.CartActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>
