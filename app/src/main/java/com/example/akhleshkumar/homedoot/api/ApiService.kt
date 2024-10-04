@@ -13,6 +13,11 @@ import com.example.akhleshkumar.homedoot.models.RemoveCartItemRes
 import com.example.akhleshkumar.homedoot.models.SubCategoryResponse
 import com.example.akhleshkumar.homedoot.models.UserOrderResponse
 import com.example.akhleshkumar.homedoot.models.homeresponse.HomePageResponse
+import com.example.akhleshkumar.homedoot.models.user.LoginUserResponse
+import com.example.akhleshkumar.homedoot.models.user.OtpResponse
+import com.example.akhleshkumar.homedoot.models.user.RegistrationRequest
+import com.example.akhleshkumar.homedoot.models.user.RegistrationResponse
+import com.example.akhleshkumar.homedoot.models.user.SendOtpRequest
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -67,4 +72,12 @@ interface ApiService {
 
     @POST("customer-orders")
     fun customerOrders(@Query("user_id")userId:Int) : Call<UserOrderResponse>
+    @POST("login")
+    fun userLogin(@Query("username") userName:String, @Query("guard") userType:Int, @Query("login_password") password:String) :Call<LoginUserResponse>
+
+    @POST("user-register")
+    fun sendOtp(@Body request: SendOtpRequest): Call<OtpResponse>
+
+    @POST("user-register")
+    fun userRegister(@Body request: RegistrationRequest): Call<RegistrationResponse>
 }

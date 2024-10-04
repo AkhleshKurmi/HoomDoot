@@ -5,8 +5,6 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -19,7 +17,6 @@ import com.example.akhleshkumar.homedoot.adapters.ServiceAdapter
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
 import com.example.akhleshkumar.homedoot.interfaces.OnCategoryClickListener
 import com.example.akhleshkumar.homedoot.models.ApiResponseCategory
-import com.example.akhleshkumar.homedoot.models.Category
 import com.example.akhleshkumar.homedoot.models.SubCategoryResponse
 import com.example.akhleshkumar.homedoot.models.homeresponse.HomePageResponse
 import com.google.android.material.bottomsheet.BottomSheetDialog
