@@ -1,18 +1,35 @@
 package com.example.akhleshkumar.homedoot.api
 
+import com.example.akhleshkumar.homedoot.models.AddCartResponse
 import com.example.akhleshkumar.homedoot.models.ProductListResponse
 import com.example.akhleshkumar.homedoot.models.ApiResponseCategory
+import com.example.akhleshkumar.homedoot.models.CartListResponse
+import com.example.akhleshkumar.homedoot.models.CheckSlotsResponse
 import com.example.akhleshkumar.homedoot.models.ChildSubCategoryResponse
+import com.example.akhleshkumar.homedoot.models.OrderCheckoutRequest
+import com.example.akhleshkumar.homedoot.models.OrderCheckoutRes
 import com.example.akhleshkumar.homedoot.models.ProductDetailsResponse
+import com.example.akhleshkumar.homedoot.models.RemoveCartItemRes
 import com.example.akhleshkumar.homedoot.models.SubCategoryResponse
+import com.example.akhleshkumar.homedoot.models.UserOrderResponse
+import com.example.akhleshkumar.homedoot.models.homeresponse.HomePageResponse
+import com.example.akhleshkumar.homedoot.models.user.LoginUserResponse
+import com.example.akhleshkumar.homedoot.models.user.OtpResponse
+import com.example.akhleshkumar.homedoot.models.user.RegistrationRequest
+import com.example.akhleshkumar.homedoot.models.user.RegistrationResponse
+import com.example.akhleshkumar.homedoot.models.user.SendOtpRequest
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface ApiService {
-    @GET("category") // Replace with your actual endpoint
+    @GET("category")
     fun fetchCategories(): Call<ApiResponseCategory>
+
+    @GET("home")
+    fun fetchHomePage(): Call<HomePageResponse>
 
     @POST("sub_categories")
     fun fetchSubCategory(@Query("category_id") categoryId : Int): Call<SubCategoryResponse>
@@ -27,4 +44,40 @@ interface ApiService {
     fun fetchProductDetails(@Query("p_id") productId : Int): Call<ProductDetailsResponse>
 
 
+    @POST("add_to_cart")
+    fun addToCart(
+        @Query("product_id") productId: Int,
+        @Query("item_id") itemId: Int,
+        @Query("user_id") userId: Int,
+        @Query("quantity") quantity: Int,
+        @Query("price") price: Int
+    ): Call<AddCartResponse>
+
+    @POST("cart_list")
+    fun getCartList(
+        @Query("user_id") userId: Int
+    ): Call<CartListResponse>
+
+    @POST("remove_cart")
+    fun removeAnItem(@Query("item_id") itemId:Int, @Query("user_id") userId:Int) : Call<RemoveCartItemRes>
+
+    @POST("update_cart")
+    fun updateCart(@Query("item_id") itemId:Int, @Query("user_id") userId:Int, @Query("quantity") quantity: Int) : Call<RemoveCartItemRes>
+
+    @POST("order-checkout")
+    fun placeOrder(@Body orderRequest: OrderCheckoutRequest): Call<OrderCheckoutRes>
+
+    @POST("check-slots")
+    fun checkSlots(@Query("category_id") categoryId:Int): Call<CheckSlotsResponse>
+
+    @POST("customer-orders")
+    fun customerOrders(@Query("user_id")userId:Int) : Call<UserOrderResponse>
+    @POST("login")
+    fun userLogin(@Query("username") userName:String, @Query("guard") userType:Int, @Query("login_password") password:String) :Call<LoginUserResponse>
+
+    @POST("user-register")
+    fun sendOtp(@Body request: SendOtpRequest): Call<OtpResponse>
+
+    @POST("user-register")
+    fun userRegister(@Body request: RegistrationRequest): Call<RegistrationResponse>
 }

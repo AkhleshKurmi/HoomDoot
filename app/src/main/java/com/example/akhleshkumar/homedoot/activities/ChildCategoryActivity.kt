@@ -28,7 +28,6 @@ class ChildCategoryActivity : AppCompatActivity() {
         val id = intent.getIntExtra("id",1)
         val subChildCatName = intent.getStringExtra("catName")
         tvChiledSubName.text = subChildCatName.toString()
-
         getChildSubCatList(id)
 
 

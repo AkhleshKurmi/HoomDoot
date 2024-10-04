@@ -11,9 +11,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.activities.ProductDescriptionActivity
-import com.example.akhleshkumar.homedoot.activities.ProductListActivity
 import com.example.akhleshkumar.homedoot.models.ProductData
-import com.squareup.picasso.Picasso
 
 class ProductListAdapter (val context: Context, private val items: List<ProductData>, val path:String) :
     RecyclerView.Adapter<ProductListAdapter.ServiceViewHolder>() {
@@ -45,7 +43,6 @@ class ProductListAdapter (val context: Context, private val items: List<ProductD
         holder.tvPrice.text = "₹ "+item.price.toFloat().toString()
 
         holder.tvDescription.text = item.description
-        Picasso.get().load(path+"/"+item.child_sub_category_id+"/"+item.main_image)
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, ProductDescriptionActivity::class.java)
