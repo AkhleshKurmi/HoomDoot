@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
             } else if (itemId == R.id.navigation_home) {
                 fragment = homeDootFragment
             } else if (itemId == R.id.navigation_Account) {
-            }else if(itemId == R.id.navigation_cart){
+            }else if(itemId == R.id.navigation_home){
                 startActivity(Intent(this@MainActivity, CartActivity::class.java))
             }
             loadFragment(fragment)

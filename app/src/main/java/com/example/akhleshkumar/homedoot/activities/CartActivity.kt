@@ -35,7 +35,7 @@ class CartActivity : AppCompatActivity() {
             val bottomSheetDialog = BottomSheetDialog(this@CartActivity)
             val bottomSheetView = layoutInflater.inflate(R.layout.bottom_sheet_slot_layout,null)
             bottomSheetDialog.setContentView(bottomSheetView)
-            val rvDate = bottomSheetView.findViewById<RecyclerView>(R.id.rv_date)
+            val rvDate = bottomSheetView.findViewById<RecyclerView>(R.id.rvDay)
             val rvTime = bottomSheetView.findViewById<RecyclerView>(R.id.rv_time_slots)
             rvTime.adapter = TimeSlotAdapter(listOf("9:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00"))
 

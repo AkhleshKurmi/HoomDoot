@@ -37,23 +37,53 @@
            android:text="01-01-1990"
            android:layout_gravity="center_vertical"/>
 
+
+
+
    </LinearLayout>
  <LinearLayout
      android:layout_width="match_parent"
      android:layout_height="wrap_content"
      android:padding="10dp"
      android:orientation="vertical">
-     <TextView
+     <LinearLayout
          android:layout_width="match_parent"
+         android:orientation="horizontal"
+         android:layout_height="wrap_content">
+
+         <LinearLayout
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:orientation="vertical">
+
+     <TextView
+         android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:text="HOME"
          android:textStyle="bold"
          android:textSize="16sp"/>
 
      <TextView
-         android:layout_width="match_parent"
+         android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:text="A306, Sahyadri Complex, Main Road"/>
+
+         </LinearLayout>
+
+         <ImageView
+             android:layout_width="24dp"
+             android:layout_height="24dp"
+             android:layout_marginLeft="100dp"
+             android:id="@+id/ccard"
+             android:layout_gravity="center"
+             android:src="@drawable/card" />
+
+     </LinearLayout>
+
+
+
+
+
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
