@@ -14,7 +14,7 @@
         android:icon="@drawable/ic_home"
         android:title="Home" />
     <item
-        android:id="@+id/navigation_reward"
+        android:id="@+id/navigation_cart"
         android:icon="@drawable/ic_home"
         android:title="Rewards" />
     <item
