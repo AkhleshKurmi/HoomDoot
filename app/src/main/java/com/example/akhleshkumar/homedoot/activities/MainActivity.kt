@@ -11,11 +11,12 @@ import com.google.android.material.navigation.NavigationBarView
 
 class MainActivity : AppCompatActivity() {
     lateinit var bottomNavigationView : BottomNavigationView
+    var id = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         bottomNavigationView = findViewById(R.id.bottom_navigation)
-
+        id = intent.getIntExtra("id",0)
         val homeDootFragment = HomeDootFragment()
         loadFragment(homeDootFragment)
 

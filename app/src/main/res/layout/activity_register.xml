@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -8,9 +8,17 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context=".activities.RegisterActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 <TextView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:textSize="30sp"
+    android:textAlignment="center"
+    android:textStyle="bold"
+    android:textColor="@color/design_default_color_primary"
     android:text="Sign Up"/>
     
     <EditText
@@ -84,7 +92,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter City"
-        android:inputType="textPassword"
+        android:inputType="text"
         android:layout_marginTop="16dp"
         android:background="@drawable/rounded_edit_text"
         android:padding="12dp"
@@ -96,10 +104,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter Pincode"
-        android:inputType="textPostalAddress"
+        android:inputType="number"
         android:layout_marginTop="16dp"
         android:background="@drawable/rounded_edit_text"
         android:padding="12dp"
+        android:maxLength="6"
         android:textColorHint="#757575"
         android:textColor="#000000"
         android:textSize="16sp" />
@@ -123,7 +132,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter Confirm Password"
-        android:inputType="textPassword"
+        android:inputType="text"
         android:layout_marginTop="16dp"
         android:background="@drawable/rounded_edit_text"
         android:padding="12dp"
@@ -131,6 +140,13 @@
         android:textColor="#000000"
         android:textSize="16sp" />
 
+    <Spinner
+        android:id="@+id/user_type_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:padding="10dp"
+        />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -139,6 +155,6 @@
         android:id="@+id/btn_register"
         android:text="Register"/>
 
+    </LinearLayout>
 
-
-</LinearLayout>
+</ScrollView>
