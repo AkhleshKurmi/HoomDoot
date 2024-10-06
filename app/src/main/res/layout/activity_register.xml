@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter Email"
-        android:inputType="textPassword"
+        android:inputType="textEmailAddress"
         android:layout_marginTop="16dp"
         android:background="@drawable/rounded_edit_text"
         android:padding="12dp"
@@ -58,7 +58,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter Address"
-        android:inputType="textPassword"
+        android:inputType="text"
         android:layout_marginTop="16dp"
         android:background="@drawable/rounded_edit_text"
         android:padding="12dp"
@@ -96,7 +96,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter Pincode"
-        android:inputType="textPersonName"
+        android:inputType="textPostalAddress"
         android:layout_marginTop="16dp"
         android:background="@drawable/rounded_edit_text"
         android:padding="12dp"
@@ -135,7 +135,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Send Otp"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp"
+        android:id="@+id/btn_register"
+        android:text="Register"/>
+
+
 
 </LinearLayout>

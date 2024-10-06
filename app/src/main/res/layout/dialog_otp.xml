@@ -32,11 +32,13 @@
             android:gravity="center"
             android:textColor="@color/black"
             android:textSize="18sp"
+            android:maxLength="1"
             android:inputType="number"/>
 
         <EditText
             android:id="@+id/otp2"
             android:layout_width="50dp"
+            android:maxLength="1"
             android:layout_height="50dp"
             android:layout_marginStart="8dp"
             android:background="@drawable/et_background"
@@ -50,6 +52,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="8dp"
+            android:maxLength="1"
             android:background="@drawable/et_background"
             android:gravity="center"
             android:textColor="@color/black"
@@ -61,6 +64,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="8dp"
+            android:maxLength="1"
             android:background="@drawable/et_background"
             android:gravity="center"
             android:textColor="@color/black"
