@@ -9,19 +9,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.activities.CartActivity
-import com.example.akhleshkumar.homedoot.api.RetrofitClient
-import com.example.akhleshkumar.homedoot.models.AddCartResponse
 import com.example.akhleshkumar.homedoot.models.ProductItem
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-class AddItemAdapter ( val context: Context,private val acList: List<ProductItem>, val path:String, val userId:Int) :
+class AddItemAdapter ( val context: Context,private val acList: List<ProductItem>, val path:String) :
     RecyclerView.Adapter<AddItemAdapter.ACViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ACViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -39,7 +33,7 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
         var quantity = 0
         var totalPrice = 0.0f
         holder.btnPlus.setOnClickListener {
-            if (quantity>=0) {
+            if (quantity >= 0) {
                 quantity += 1
                 totalPrice = (quantity * acItem.offerPrice).toFloat()
 
@@ -48,7 +42,7 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
             }
         }
         holder.btnMinus.setOnClickListener {
-            if (quantity !=0 &&  quantity >=0) {
+            if (quantity != 0 && quantity >= 0) {
                 quantity -= 1
                 totalPrice = (quantity * acItem.offerPrice).toFloat()
 
@@ -56,55 +50,41 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
                 holder.totalPrice.text = totalPrice.toString()
             }
         }
-
+        val bottomSheetDialog = BottomSheetDialog(context)
         holder.btnAdd.setOnClickListener {
-            if (quantity > 0) {
-                RetrofitClient.instance.addToCart(
-                    acItem.productId,
-                    acItem.id,
-                    userId,
-                    quantity,
-                    acItem.offerPrice
+            val bottomSheetView =
+                LayoutInflater.from(context).inflate(R.layout.bottom_view_cart, null)
+            val tvCartPrice = bottomSheetView.findViewById<TextView>(R.id.tv_cart_price)
+            val btnViewCart = bottomSheetView.findViewById<Button>(R.id.btn_view_cart)
+            bottomSheetDialog.setContentView(bottomSheetView)
+            tvCartPrice.text = totalPrice.toString()
+            btnViewCart.setOnClickListener {
+                context.startActivity(
+                    Intent(
+                        context,
+                        CartActivity::class.java
+                    )
                 )
-                    .enqueue(object : Callback<AddCartResponse> {
-                        override fun onResponse(
-                            call: Call<AddCartResponse>,
-                            response: Response<AddCartResponse>
-                        ) {
-                            if (response.isSuccessful){
-                                Toast.makeText(context, response.body()!!.message, Toast.LENGTH_SHORT).show()
-                                val bottomSheetDialog = BottomSheetDialog(context)
-                                val bottomSheetView = LayoutInflater.from(context).inflate(R.layout.bottom_view_cart,null)
-                                bottomSheetView.findViewById<Button>(R.id.btn_view_cart).setOnClickListener {
-                                    context.startActivity(Intent(context, CartActivity::class.java))
-                                }
-                                bottomSheetView.findViewById<TextView>(R.id.tv_cart_price).text = response.body()!!.data.price
-                                bottomSheetDialog.setContentView(bottomSheetView)
-                                bottomSheetDialog.show()
-                            }
-                        }
-
-                        override fun onFailure(call: Call<AddCartResponse>, t: Throwable) {
-                           
-                        }
-                    })
-            }else{
-                Toast.makeText(context, "Select Atleast one product", Toast.LENGTH_SHORT).show()
             }
+            bottomSheetDialog.show()
         }
+        if (totalPrice <= 0) {
+            bottomSheetDialog.dismiss()
+        }
+
     }
 
     override fun getItemCount(): Int = acList.size
 
     class ACViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-     val btnAdd = itemView.findViewById<Button>(R.id.btnAdd)
+        val btnAdd = itemView.findViewById<Button>(R.id.btnAdd)
+        val btnPlus = itemView.findViewById<ImageView>(R.id.btnPlus)
+        val btnMinus = itemView.findViewById<ImageView>(R.id.btnMinus)
         val productName = itemView.findViewById<TextView>(R.id.tvProductName)
         val priceOrignal = itemView.findViewById<TextView>(R.id.tvOriginalPrice)
         val priceDiscount = itemView.findViewById<TextView>(R.id.tvDiscountedPrice)
         val totalPrice = itemView.findViewById<TextView>(R.id.tvTotalPrice)
         val totalItem = itemView.findViewById<TextView>(R.id.tvQuantity)
-        val btnMinus = itemView.findViewById<ImageView>(R.id.btnMinus)
-        val btnPlus = itemView.findViewById<ImageView>(R.id.btnPlus)
 
     }
 }

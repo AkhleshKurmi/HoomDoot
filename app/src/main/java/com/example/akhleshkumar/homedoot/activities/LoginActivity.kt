@@ -25,21 +25,19 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LoginActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
+class LoginActivity : AppCompatActivity() {
     lateinit var btnLogin : Button
     lateinit var tvNewUser : TextView
     lateinit var etUserName:EditText
     lateinit var etPassword:EditText
-    lateinit var userType: Spinner
+
     lateinit var forgotPassword:TextView
-    val userTypeList = listOf("User", "Vendor")
-    var userTypeValue = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         etUserName = findViewById(R.id.username_input)
         etPassword = findViewById(R.id.password_input)
-        userType = findViewById(R.id.user_type_spinner)
         tvNewUser = findViewById(R.id.not_registered_signup)
         btnLogin = findViewById(R.id.login_button)
         forgotPassword = findViewById(R.id.forgot_password)
@@ -48,9 +46,6 @@ class LoginActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
          startActivity(Intent(this@LoginActivity, ForgotPasswordActivity::class.java))
         }
 
-        userType.adapter = ArrayAdapter<String>(this, com.google.android.material.R.layout.support_simple_spinner_dropdown_item,userTypeList)
-
-        userType.onItemSelectedListener = this
         tvNewUser.setOnClickListener{
             startActivity(Intent(this@LoginActivity,RegisterActivity::class.java))
         }
@@ -58,8 +53,8 @@ class LoginActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         btnLogin.setOnClickListener {
 
             if (checkValidation()) {
-                Log.d("TAG", "onCreate: $userTypeValue")
-                RetrofitClient.instance.userLogin(etUserName.text.toString(),userTypeValue, etPassword.text.toString()).enqueue(
+
+                RetrofitClient.instance.userLogin(etUserName.text.toString(),"user", etPassword.text.toString()).enqueue(
                     object : Callback<LoginUserResponse>{
                         override fun onResponse(
                             call: Call<LoginUserResponse>,
@@ -89,18 +84,7 @@ class LoginActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     }
 
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        if (parent?.getItemAtPosition(position) == "User"){
-            userTypeValue = "user"
-        }
-        else {
-            userTypeValue = "vendor"
-        }
-    }
 
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-
-    }
 
     fun checkValidation(): Boolean{
         if (etUserName.text.toString().isEmpty()){
@@ -111,9 +95,7 @@ class LoginActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             etPassword.error = "Enter password"
             return false
         }
-        if (userTypeValue != "user" && userTypeValue != "vendor"){
-            return false
-        }
+
         return true
     }
 

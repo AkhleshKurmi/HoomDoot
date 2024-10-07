@@ -2,6 +2,7 @@ package com.example.akhleshkumar.homedoot.activities
 
 import android.os.Bundle
 import android.os.Handler
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -11,21 +12,28 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.SliderAdapter
 import com.example.akhleshkumar.homedoot.adapters.AddItemAdapter
+import com.example.akhleshkumar.homedoot.adapters.ViewPagerAdapter
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
+import com.example.akhleshkumar.homedoot.models.ImageItem
 import com.example.akhleshkumar.homedoot.models.ProductDetailsResponse
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class ProductDescriptionActivity : AppCompatActivity() {
-    lateinit var rvAddItem : RecyclerView
+    lateinit var rvAddItem: RecyclerView
     lateinit var addItemAdapter: AddItemAdapter
-    lateinit var title:TextView
-    lateinit var sliderAdapter : SliderAdapter
-    lateinit var viewPager :ViewPager2
-    lateinit var tableLayout :DotsIndicator
-    val sliderHandler : Handler = Handler()
+    lateinit var title: TextView
+    lateinit var sliderAdapter: SliderAdapter
+    lateinit var viewPager: ViewPager2
+    lateinit var bottomContainer: ViewPager2
+    lateinit var tableLayout: DotsIndicator
+    lateinit var tabLayoutBottom: TabLayout
+    val sliderHandler: Handler = Handler()
+    lateinit var viewPagerAdapter: ViewPagerAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product_description)
@@ -33,16 +41,18 @@ class ProductDescriptionActivity : AppCompatActivity() {
         rvAddItem = findViewById(R.id.rv_items_toAdd)
         viewPager = findViewById(R.id.viewPager)
         tableLayout = findViewById(R.id.tabLayout)
-        val id = intent.getIntExtra("id",1)
+        bottomContainer = findViewById(R.id.view_pager_include)
+        tabLayoutBottom = findViewById(R.id.tabLayoutBottom)
+        val id = intent.getIntExtra("id", 1)
         val subChildCatName = intent.getStringExtra("catName")
         title.text = subChildCatName.toString()
         rvAddItem.layoutManager = LinearLayoutManager(this@ProductDescriptionActivity)
+        val backButton = findViewById<ImageView>(R.id.iv_back)
+        backButton.setOnClickListener {
+            finish()
+        }
         getProductDetail(id)
-        val list = ArrayList<Int>()
-        list.add(R.drawable.acrepairing)
-        list.add(R.drawable.house_keeping)
-        list.add(R.drawable.kitchen)
-        list.add(R.drawable.pest_control)
+
     }
 
     private fun startAutoSlider() {
@@ -61,31 +71,78 @@ class ProductDescriptionActivity : AppCompatActivity() {
             }
         }, 3000)
     }
-    private fun getProductDetail(id:Int){
+
+    private fun getProductDetail(id: Int) {
         RetrofitClient.instance.fetchProductDetails(id).enqueue(object :
             Callback<ProductDetailsResponse> {
             override fun onResponse(
                 call: Call<ProductDetailsResponse>,
                 response: Response<ProductDetailsResponse>
             ) {
-                if (response.isSuccessful){
-                    if (response.body()!!.success){
-                        val addItemAdapter = AddItemAdapter(this@ProductDescriptionActivity,response.body()!!.data.productItems,response.body()!!.data.product.home,1)
+                if (response.isSuccessful) {
+                    if (response.body()!!.success) {
+                        val moreImages =
+                            response.body()!!.data.product.moreImages.split(",").map { it.trim() }
+                        val imageItems = moreImages.map { ImageItem(it) }
+                        sliderAdapter = SliderAdapter(
+                            imageItems,
+                            response.body()!!.data.path,
+                            response.body()!!.data.product.id
+                        )
+                        viewPager.setAdapter(sliderAdapter)
+                        tableLayout.attachTo(viewPager)
+
+                        addItemAdapter = AddItemAdapter(
+                            this@ProductDescriptionActivity,
+                            response.body()!!.data.productItems,
+                            response.body()!!.data.product.home)
                         rvAddItem.adapter = addItemAdapter
-                    }else{
-                        Toast.makeText(this@ProductDescriptionActivity, "No data", Toast.LENGTH_SHORT).show()
+                        viewPagerAdapter = ViewPagerAdapter(
+                            this@ProductDescriptionActivity,
+                            response.body()!!.data.product.included,
+                            response.body()!!.data.product.excluded,
+                            response.body()!!.data.product.otherDetails1 + "\n" + response.body()!!.data.product.otherDetails2
+                        )
+                        bottomContainer.adapter = viewPagerAdapter
+                        TabLayoutMediator(tabLayoutBottom, bottomContainer) { tab, position ->
+                            tab.text = when (position) {
+                                0 -> "Include"
+                                1 -> "Exclude"
+                                2 -> "Other"
+                                else -> null
+                            }
+                        }.attach()
+                    } else {
+                        Toast.makeText(
+                            this@ProductDescriptionActivity,
+                            "No data",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
-                }else{
-                    Toast.makeText(this@ProductDescriptionActivity, "Something went wrong ", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(
+                        this@ProductDescriptionActivity,
+                        "Something went wrong ",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
 
             override fun onFailure(call: Call<ProductDetailsResponse>, t: Throwable) {
-                Toast.makeText(this@ProductDescriptionActivity, t.localizedMessage, Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@ProductDescriptionActivity,
+                    t.localizedMessage,
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
         })
 
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startAutoSlider()
     }
 }

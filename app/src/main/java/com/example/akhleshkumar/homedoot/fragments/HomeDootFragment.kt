@@ -1,22 +1,27 @@
 package com.example.akhleshkumar.homedoot
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.example.akhleshkumar.homedoot.activities.CartActivity
 import com.example.akhleshkumar.homedoot.adapters.BottomMenuViewAdapter
 import com.example.akhleshkumar.homedoot.adapters.CategoryAdapter
+import com.example.akhleshkumar.homedoot.adapters.HomeSliderAdapter
 import com.example.akhleshkumar.homedoot.adapters.ServiceAdapter
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
 import com.example.akhleshkumar.homedoot.interfaces.OnCategoryClickListener
 import com.example.akhleshkumar.homedoot.models.ApiResponseCategory
+import com.example.akhleshkumar.homedoot.models.CartListResponse
 import com.example.akhleshkumar.homedoot.models.SubCategoryResponse
 import com.example.akhleshkumar.homedoot.models.homeresponse.HomePageResponse
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -27,23 +32,24 @@ import retrofit2.Response
 
 
 class HomeDootFragment : Fragment() {
-  private lateinit var list: ArrayList<Int>
     var sliderHandler: Handler = Handler()
-
     lateinit var tableLayout: DotsIndicator
     lateinit var viewPager: ViewPager2
-    lateinit var sliderAdapter: SliderAdapter
+    lateinit var sliderAdapter: HomeSliderAdapter
     lateinit var rvCategery: RecyclerView
     lateinit var rvServices : RecyclerView
     lateinit var rvSofa: RecyclerView
     lateinit var rvPest : RecyclerView
     lateinit var rvAC: RecyclerView
     lateinit var categoryAdapter: CategoryAdapter
+    lateinit var ivCart :ImageView
+    lateinit var tvCartTotal :TextView
+    var id = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        id = requireArguments().getInt("id",0).toString()
     }
 
     override fun onCreateView(
@@ -51,11 +57,7 @@ class HomeDootFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
        val view = inflater.inflate(R.layout.fragment_homedoot, container, false)
-        list = ArrayList<Int>()
-        list.add(R.drawable.acrepairing)
-        list.add(R.drawable.house_keeping)
-        list.add(R.drawable.kitchen)
-        list.add(R.drawable.pest_control)
+
 
         return view
     }
@@ -69,12 +71,18 @@ class HomeDootFragment : Fragment() {
         rvSofa = view.findViewById(R.id.rv_sofa_cleaning)
         rvPest = view.findViewById(R.id.rv_pest_control)
         rvAC = view.findViewById(R.id.rv_ac_service)
+        ivCart = view.findViewById(R.id.ccard)
+        tvCartTotal = view.findViewById(R.id.tv_total_cart)
 
+       ivCart.setOnClickListener {
+           startActivity(Intent(requireContext(),CartActivity::class.java).putExtra("id",id))
+       }
 
 
         fetchHomeData()
 
         fetchCategories()
+        getCart(id)
 
             rvServices.layoutManager = GridLayoutManager(requireContext(), 3)
 
@@ -107,7 +115,7 @@ class HomeDootFragment : Fragment() {
 
         override fun onResume() {
             super.onResume()
-            
+            getCart(id)
             startAutoSlider()
         }
 
@@ -156,7 +164,7 @@ class HomeDootFragment : Fragment() {
               if (response.isSuccessful){
                   if (response.body()!!.success){
                       val homeResponse = response.body()!!.data
-                      sliderAdapter= SliderAdapter(homeResponse.sliders, homeResponse.slider_path)
+                      sliderAdapter= HomeSliderAdapter(homeResponse.sliders, homeResponse.slider_path)
                       viewPager.setAdapter(sliderAdapter)
                       tableLayout.attachTo(viewPager)
                        rvServices.adapter = ServiceAdapter(requireContext().applicationContext,homeResponse.product_list.`3`,homeResponse.product_path)
@@ -205,5 +213,30 @@ class HomeDootFragment : Fragment() {
         })
 
      bottomSheetDialog.show()
+    }
+
+    fun getCart(id: String){
+        RetrofitClient.instance.getCartList(id.toInt()).enqueue(object : Callback<CartListResponse> {
+            override fun onResponse(
+                call: Call<CartListResponse>,
+                response: Response<CartListResponse>
+            ) {
+                if (response.isSuccessful)
+                {
+                    if (response.body()!!.success){
+                        if (response.body()!!.data.cart.isNotEmpty()){
+                            tvCartTotal.visibility = View.VISIBLE
+                            tvCartTotal.text = response.body()!!.data.cart.size.toString()
+                        }else{
+                            tvCartTotal.visibility = View.INVISIBLE
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<CartListResponse>, t: Throwable) {
+            }
+
+        })
     }
     }

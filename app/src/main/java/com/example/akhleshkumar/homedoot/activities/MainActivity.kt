@@ -1,5 +1,6 @@
 package com.example.akhleshkumar.homedoot
 
+import android.R.attr.data
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
@@ -9,6 +10,7 @@ import com.example.akhleshkumar.homedoot.activities.CartActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 
+
 class MainActivity : AppCompatActivity() {
     lateinit var bottomNavigationView : BottomNavigationView
     var id = 0
@@ -17,7 +19,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         bottomNavigationView = findViewById(R.id.bottom_navigation)
         id = intent.getIntExtra("id",0)
+
         val homeDootFragment = HomeDootFragment()
+        val args = Bundle()
+        args.putInt("id", id)
+        homeDootFragment.setArguments(args)
+
         loadFragment(homeDootFragment)
 
         bottomNavigationView.setOnItemSelectedListener(NavigationBarView.OnItemSelectedListener { item: MenuItem ->

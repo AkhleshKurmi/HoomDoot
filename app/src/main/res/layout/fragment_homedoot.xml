@@ -69,7 +69,9 @@
          android:text="A306, Sahyadri Complex, Main Road"/>
 
          </LinearLayout>
-
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
          <ImageView
              android:layout_width="24dp"
              android:layout_height="24dp"
@@ -77,6 +79,18 @@
              android:id="@+id/ccard"
              android:layout_gravity="center"
              android:src="@drawable/card" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2"
+        android:padding="1dp"
+        android:background="#FF0202"
+        android:textColor="@color/white"
+        android:textSize="6dp"
+        android:id="@+id/tv_total_cart"
+        android:visibility="invisible"
+        android:layout_alignEnd="@id/ccard"/>
+</RelativeLayout>
 
      </LinearLayout>
 

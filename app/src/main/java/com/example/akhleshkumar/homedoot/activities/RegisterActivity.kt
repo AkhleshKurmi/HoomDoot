@@ -21,21 +21,18 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
+class RegisterActivity : AppCompatActivity() {
     lateinit var binding: ActivityRegisterBinding
-    var userType = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.userTypeSpinner.adapter = ArrayAdapter<String>(this@RegisterActivity,
-            androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, arrayOf("User","Vendor")
-        )
-        binding.userTypeSpinner.onItemSelectedListener = this
+
         binding.btnRegister.setOnClickListener {
             if (isValidation()){
-                RetrofitClient.instance.sendOtp(SendOtpRequest(userType,binding.nameInput.text.toString(),binding.emailInput.text.toString(),
+                RetrofitClient.instance.sendOtp(SendOtpRequest(2,binding.nameInput.text.toString(),binding.emailInput.text.toString(),
                     binding.mobileInput.text.toString(),binding.addressInput.text.toString(),binding.stateInput.text.toString(),binding.cityInput.text.toString(),binding.pincodeInput.text.toString(),
                     binding.passwordInput.text.toString(),binding.CpasswordInput.text.toString()
                     )).enqueue(object : Callback<OtpResponse>{
@@ -100,10 +97,6 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
             binding.CpasswordInput.error= "Enter Confirm Password"
             return false
         }
-        if (userType != 2 && userType !=3){
-            Toast.makeText(this@RegisterActivity, "Select User", Toast.LENGTH_SHORT).show()
-            return false
-        }
 
         return true
     }
@@ -128,7 +121,7 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
                 || etOtp4.text.toString().isEmpty()){
                 Toast.makeText(this@RegisterActivity, "Enter full otp", Toast.LENGTH_SHORT).show()
             }else{
-                RetrofitClient.instance.userRegister(RegistrationRequest(userType,binding.nameInput.text.toString(),binding.emailInput.text.toString(),
+                RetrofitClient.instance.userRegister(RegistrationRequest(2,binding.nameInput.text.toString(),binding.emailInput.text.toString(),
                     binding.mobileInput.text.toString(),binding.addressInput.text.toString(),binding.stateInput.text.toString(),binding.cityInput.text.toString(),binding.pincodeInput.text.toString(),
                     binding.passwordInput.text.toString(),binding.CpasswordInput.text.toString(),register_otp = etOtp1.text.toString() +
                     etOtp2.text.toString() + etOtp3.text.toString() + etOtp4.text.toString(), VerificationCode = verificationCode))
@@ -159,18 +152,6 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
 
     }
 
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
-            if (parent?.getItemAtPosition(position) == "User"){
-                userType = 2
-            }else{
-                userType = 3
-            }
-
-    }
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-
-    }
 
 }

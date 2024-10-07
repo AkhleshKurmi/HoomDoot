@@ -1,16 +1,16 @@
 package com.example.akhleshkumar.homedoot
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.akhleshkumar.homedoot.models.homeresponse.Slider
+import com.example.akhleshkumar.homedoot.R
+import com.example.akhleshkumar.homedoot.models.ImageItem
 import com.squareup.picasso.Picasso
 
 class SliderAdapter (
-    private val images: List<Slider>, val path:String
+    private val images: List<ImageItem>, private val path:String, val id:Int
 ) : RecyclerView.Adapter<SliderAdapter.SliderViewHolder>() {
 
 
@@ -20,7 +20,7 @@ class SliderAdapter (
     }
 
     override fun onBindViewHolder(holder: SliderViewHolder, position: Int) {
-        Picasso.get().load(path+"/"+images[position].image).into(holder.imageView)
+        Picasso.get().load(path+"/${id}/"+images[position].image).into(holder.imageView)
     }
 
     override fun getItemCount(): Int {

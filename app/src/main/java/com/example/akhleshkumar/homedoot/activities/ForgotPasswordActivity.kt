@@ -26,21 +26,17 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ForgotPasswordActivity : AppCompatActivity(),OnItemSelectedListener {
+class ForgotPasswordActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityForgotPasswordBinding
-    var userType = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityForgotPasswordBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.userTypeSpinner.adapter = ArrayAdapter(this@ForgotPasswordActivity,
-            androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, listOf("User","Vendor")
-        )
-        binding.userTypeSpinner.onItemSelectedListener = this
         binding.btnSendOtp.setOnClickListener {
             if (validation()){
-                RetrofitClient.instance.forgotPassword(binding.usernameInput.text.toString(), userType).enqueue(object : Callback<ForgotPasswordResponse>{
+                RetrofitClient.instance.forgotPassword(binding.usernameInput.text.toString(), "user").enqueue(object : Callback<ForgotPasswordResponse>{
                     override fun onResponse(
                         call: Call<ForgotPasswordResponse>,
                         response: Response<ForgotPasswordResponse>
@@ -70,24 +66,9 @@ class ForgotPasswordActivity : AppCompatActivity(),OnItemSelectedListener {
             binding.usernameInput.error= "Enter Confirm Password"
             return false
         }
-        if (userType != "user" && userType !="vendor"){
-            Toast.makeText(this@ForgotPasswordActivity, "Select User Type", Toast.LENGTH_SHORT).show()
-            return false
-        }
         return true
     }
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        if (parent?.getItemAtPosition(position) == "User"){
-            userType = "user"
-        }
-        else {
-            userType = "vendor"
-        }
-    }
 
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-
-    }
 
     fun validateOtp(verificationCode:String){
         val dialog = Dialog(this@ForgotPasswordActivity)
@@ -140,7 +121,7 @@ class ForgotPasswordActivity : AppCompatActivity(),OnItemSelectedListener {
             } else {
                 RetrofitClient.instance.updatePassword(
                     binding.usernameInput.text.toString(),
-                    userType,
+                    "user",
                     password.text.toString(),
                     cnfPassword.text.toString()
                 )

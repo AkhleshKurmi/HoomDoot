@@ -44,13 +44,7 @@
         android:textSize="16sp" />
 
     <!-- User/Vendor Dropdown -->
-    <Spinner
-        android:id="@+id/user_type_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:padding="10dp"
-         />
+
 
     <!-- Login Button -->
     <Button
