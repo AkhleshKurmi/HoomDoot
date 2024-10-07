@@ -15,6 +15,8 @@ import com.example.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.adapters.CartAdapter
 import com.example.akhleshkumar.homedoot.adapters.TimeSlotAdapter
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
+import com.example.akhleshkumar.homedoot.interfaces.OnItemDelete
+import com.example.akhleshkumar.homedoot.interfaces.OnItenUpdateCart
 import com.example.akhleshkumar.homedoot.models.CartListResponse
 import com.example.akhleshkumar.homedoot.models.RemoveCartItemRes
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -63,8 +65,9 @@ class CartActivity : AppCompatActivity() {
                 )
             )
 
-
+     bottomSheetDialog.show()
         }
+
     }
 
     fun updateCart(userId: Int, itemId: Int, quantity: Int) {
@@ -92,7 +95,7 @@ class CartActivity : AppCompatActivity() {
     }
 
     fun itemList() {
-        RetrofitClient.instance.getCartList(1).enqueue(object : Callback<CartListResponse> {
+        RetrofitClient.instance.getCartList(id.toInt()).enqueue(object : Callback<CartListResponse> {
             override fun onResponse(
                 call: Call<CartListResponse>,
                 response: Response<CartListResponse>
@@ -102,7 +105,20 @@ class CartActivity : AppCompatActivity() {
                         this@CartActivity,
                         response.body()!!.data.cart,
                         1,
-                        response.body()!!.data.main_image_path
+                        response.body()!!.data.main_image_path,object : OnItemDelete{
+                            override fun itemDelete(itemId: Int, userId: Int) {
+                                this@CartActivity.itemDelete(itemId, userId)
+
+
+
+                            }
+                        },object : OnItenUpdateCart{
+                            override fun onItemUpdate(itemId: Int, userId: Int, quantity: Int) {
+                                itemUpdate(itemId, userId, quantity )
+
+                            }
+
+                        }
                     )
                     rvCart.adapter = cartAdapter
                 }
@@ -128,6 +144,44 @@ class CartActivity : AppCompatActivity() {
         }
 
         return dateList
+
+    }
+    fun itemDelete(itemId: Int, userId: Int){
+        RetrofitClient.instance.removeAnItem(itemId,userId).enqueue(object :Callback<RemoveCartItemRes>{
+            override fun onResponse(
+                call: Call<RemoveCartItemRes>,
+                response: Response<RemoveCartItemRes>
+            ) {
+                if (response.isSuccessful){
+                    itemList()
+                    Toast.makeText(this@CartActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<RemoveCartItemRes>, t: Throwable) {
+                Toast.makeText(this@CartActivity, t.localizedMessage, Toast.LENGTH_SHORT).show()
+            }
+
+        })
+    }
+
+    fun itemUpdate(itemId: Int, userId: Int, quantity: Int){
+        RetrofitClient.instance.updateCart(itemId,userId, quantity + 1 ).enqueue(object :Callback<RemoveCartItemRes>{
+            override fun onResponse(
+                call: Call<RemoveCartItemRes>,
+                response: Response<RemoveCartItemRes>
+            ) {
+                if (response.isSuccessful){
+                    itemList()
+                    Toast.makeText(this@CartActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<RemoveCartItemRes>, t: Throwable) {
+                Toast.makeText(this@CartActivity, t.localizedMessage, Toast.LENGTH_SHORT).show()
+            }
+
+        })
 
     }
 }

@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
+import com.example.akhleshkumar.homedoot.interfaces.OnItemDelete
+import com.example.akhleshkumar.homedoot.interfaces.OnItenUpdateCart
 import com.example.akhleshkumar.homedoot.models.Cart
 import com.example.akhleshkumar.homedoot.models.RemoveCartItemRes
 import com.squareup.picasso.Picasso
@@ -21,7 +23,9 @@ class CartAdapter(
     private val context: Context,
     private val cartList: List<Cart>,
     val userId:Int,
-    val path :String
+    val path :String,
+    val onItemDelete:OnItemDelete ,
+    val onItemUpdateCart: OnItenUpdateCart
 ) : RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
 
     // ViewHolder class to hold references to the UI components
@@ -51,6 +55,7 @@ class CartAdapter(
         Picasso.get().load(path+"/${cartItem.id}/"+productDetail.main_image).into(holder.productImage)
 
         // Bind the product details
+
         holder.productTitle.text = productDetail.service_name
         holder.productDescription.text = productDetail.description
         holder.originalPrice.text = "₹${productDetail.price}"
@@ -59,26 +64,16 @@ class CartAdapter(
         holder.quantity.text = cartItem.quantity.toString()
 
         // Handle delete button click
+
         holder.deleteButton.setOnClickListener {
-         RetrofitClient.instance.removeAnItem(cartItem.item_id,userId).enqueue(object :Callback<RemoveCartItemRes>{
-             override fun onResponse(
-                 call: Call<RemoveCartItemRes>,
-                 response: Response<RemoveCartItemRes>
-             ) {
-                 if (response.isSuccessful){
-                     Toast.makeText(context, response.body()!!.message, Toast.LENGTH_SHORT).show()
-                 }
-             }
-
-             override fun onFailure(call: Call<RemoveCartItemRes>, t: Throwable) {
-                 Toast.makeText(context, t.localizedMessage, Toast.LENGTH_SHORT).show()
-             }
-
-         })
+         onItemDelete.itemDelete(cartItem.item_id, userId)
         }
 
         // Handle update button click
         holder.updateButton.setOnClickListener {
+            onItemUpdateCart.onItemUpdate(cartItem.item_id, userId, cartItem.quantity.toInt())
+
+
 
         }
     }

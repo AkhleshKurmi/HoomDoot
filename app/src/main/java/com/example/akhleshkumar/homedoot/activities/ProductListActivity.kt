@@ -52,7 +52,7 @@ class ProductListActivity : AppCompatActivity() {
             ) {
                 if (response.isSuccessful){
                     if (response.body()!!.success){
-                        val childItemAdapter = ProductListAdapter(this@ProductListActivity,response.body()!!.data.product_list,response.body()!!.data.product_path)
+                        val childItemAdapter = ProductListAdapter(this@ProductListActivity,response.body()!!.data.product_list,response.body()!!.data.product_path,id)
                         rvChildSubCat.adapter = childItemAdapter
                     }else{
                         Toast.makeText(this@ProductListActivity, "No data", Toast.LENGTH_SHORT).show()

@@ -9,13 +9,19 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.activities.CartActivity
+import com.example.akhleshkumar.homedoot.api.RetrofitClient
+import com.example.akhleshkumar.homedoot.models.AddCartResponse
 import com.example.akhleshkumar.homedoot.models.ProductItem
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class AddItemAdapter ( val context: Context,private val acList: List<ProductItem>, val path:String) :
+class AddItemAdapter ( val context: Context,private val acList: List<ProductItem>, val path:String, val userId:Int) :
     RecyclerView.Adapter<AddItemAdapter.ACViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ACViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -52,6 +58,8 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
         }
         val bottomSheetDialog = BottomSheetDialog(context)
         holder.btnAdd.setOnClickListener {
+            addItemToList(acItem.productId,acItem.id,quantity, acItem.offerPrice)
+
             val bottomSheetView =
                 LayoutInflater.from(context).inflate(R.layout.bottom_view_cart, null)
             val tvCartPrice = bottomSheetView.findViewById<TextView>(R.id.tv_cart_price)
@@ -73,6 +81,26 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
         }
 
     }
+    fun addItemToList(productId:Int, itemId:Int, quantity:Int, price: Int){
+        RetrofitClient.instance.addToCart(productId, itemId,userId, quantity, price).enqueue(object : Callback<AddCartResponse>{
+            override fun onResponse(
+                call: Call<AddCartResponse>,
+                response: Response<AddCartResponse>
+            ) {
+                if (response.isSuccessful){
+                    if (response.body()!!.success){
+                        Toast.makeText(context, response.body()!!.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<AddCartResponse>, t: Throwable) {
+            }
+
+        })
+
+    }
+
 
     override fun getItemCount(): Int = acList.size
 
