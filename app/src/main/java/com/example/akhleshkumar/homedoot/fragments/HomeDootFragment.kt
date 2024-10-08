@@ -135,7 +135,7 @@ class HomeDootFragment : Fragment() {
                     if (response.isSuccessful) {
                         if (response.body()!!.success) {
                             val categories = response.body()?.data?.category
-                            categoryAdapter = CategoryAdapter(requireContext().applicationContext, categories!!, response.body()!!.data.path, object :
+                            categoryAdapter = CategoryAdapter(requireContext(), categories!!, response.body()!!.data.path, object :
                                 OnCategoryClickListener {
                                 override fun onCategoryClick(id: Int,serviceName:String) {
                                     showBottomView(id,serviceName,userId)

@@ -13,12 +13,14 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Orientation
 import com.example.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.adapters.CartAdapter
+import com.example.akhleshkumar.homedoot.adapters.DateSlotAdapter
 import com.example.akhleshkumar.homedoot.adapters.TimeSlotAdapter
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
 import com.example.akhleshkumar.homedoot.interfaces.OnItemDelete
 import com.example.akhleshkumar.homedoot.interfaces.OnItenUpdateCart
 import com.example.akhleshkumar.homedoot.models.CartListResponse
 import com.example.akhleshkumar.homedoot.models.RemoveCartItemRes
+import com.example.akhleshkumar.homedoot.models.TimeDataModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,8 +31,11 @@ import java.util.Locale
 
 class CartActivity : AppCompatActivity() {
     var id = ""
+    var time= ""
+    var date = ""
     lateinit var rvCart: RecyclerView
     private lateinit var checkOutBtn: Button
+    val listTime : ArrayList<TimeDataModel> =  ArrayList()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -40,30 +45,38 @@ class CartActivity : AppCompatActivity() {
         rvCart.layoutManager = LinearLayoutManager(this)
         id = intent.getStringExtra("userId")!!
         itemList()
+        listTime.add(TimeDataModel("9:00"))
+        listTime.add(TimeDataModel("10:00"))
+        listTime.add(TimeDataModel("11:00"))
+        listTime.add(TimeDataModel("12:00"))
+        listTime.add(TimeDataModel("13:00"))
+        listTime.add(TimeDataModel("14:00"))
+        listTime.add(TimeDataModel("15:00"))
+        listTime.add(TimeDataModel("16:00"))
+        listTime.add(TimeDataModel("17:00"))
+        listTime.add(TimeDataModel("18:00"))
+        listTime.add(TimeDataModel("19:00"))
+        listTime.add(TimeDataModel("20:00"))
+
         checkOutBtn.setOnClickListener {
             val bottomSheetDialog = BottomSheetDialog(this@CartActivity)
             val bottomSheetView = layoutInflater.inflate(R.layout.bottom_sheet_slot_layout, null)
             bottomSheetDialog.setContentView(bottomSheetView)
             val rvDate = bottomSheetView.findViewById<RecyclerView>(R.id.rvDay)
             val rvTime = bottomSheetView.findViewById<RecyclerView>(R.id.rv_time_slots)
+            val btnCheckOut = bottomSheetView.findViewById<Button>(R.id.btn_proceed)
             rvDate.layoutManager = LinearLayoutManager(this@CartActivity,RecyclerView.HORIZONTAL,false)
-//            rvDate.adapter = TimeSlotAdapter(getNext30Days())
+            rvDate.adapter= DateSlotAdapter(getNext30Days())
             rvTime.layoutManager = GridLayoutManager(this@CartActivity,3)
-            rvTime.adapter = TimeSlotAdapter(
-                listOf(
-                    "9:00",
-                    "10:00",
-                    "11:00",
-                    "12:00",
-                    "13:00",
-                    "14:00",
-                    "15:00",
-                    "16:00",
-                    "17:00",
-                    "18:00",
-                    "19:00"
-                )
-            )
+            val timeSlotAdapter = TimeSlotAdapter(listTime)
+            rvTime.adapter = timeSlotAdapter
+            btnCheckOut.setOnClickListener {
+                if (time.isEmpty() && date.isEmpty()) {
+                    Toast.makeText(this@CartActivity, "plese Select Date And Time", Toast.LENGTH_SHORT).show()
+                } else {
+                    proceedTOCheckOut()
+                }
+            }
 
      bottomSheetDialog.show()
         }
@@ -159,5 +172,9 @@ class CartActivity : AppCompatActivity() {
 
         })
 
+    }
+    
+    fun proceedTOCheckOut(){
+        Toast.makeText(this, "Preceeding to checkOut", Toast.LENGTH_SHORT).show()
     }
 }

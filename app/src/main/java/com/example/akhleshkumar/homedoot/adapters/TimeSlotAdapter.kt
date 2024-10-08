@@ -7,12 +7,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.example.akhleshkumar.homedoot.R
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.example.akhleshkumar.homedoot.models.TimeDataModel
 
 
-class TimeSlotAdapter(val list:List<String>) : Adapter<TimeSlotAdapter.TimeViewHolder>() {
+class TimeSlotAdapter(val list:List<TimeDataModel>) : Adapter<TimeSlotAdapter.TimeViewHolder>() {
 
     inner class TimeViewHolder(view : View):ViewHolder(view){
-        val tvTime = view.findViewById<TextView>(R.id.tvTime)
+        val tvTime = view.findViewById<TextView>(R.id.btn_time_slot)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimeViewHolder {
@@ -25,6 +26,6 @@ class TimeSlotAdapter(val list:List<String>) : Adapter<TimeSlotAdapter.TimeViewH
     }
 
     override fun onBindViewHolder(holder: TimeViewHolder, position: Int) {
-       holder.tvTime.text = list[position]
+       holder.tvTime.text = list[position].time
     }
 }
