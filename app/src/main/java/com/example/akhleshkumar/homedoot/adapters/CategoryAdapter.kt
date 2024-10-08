@@ -12,7 +12,7 @@ import com.example.akhleshkumar.homedoot.interfaces.OnCategoryClickListener
 import com.example.akhleshkumar.homedoot.R
 import com.squareup.picasso.Picasso
 
-class CategoryAdapter(private val context: Context, private val categoryList: List<Category>, private val path : String, val onCategoryClickListener: OnCategoryClickListener) :
+class CategoryAdapter(private val context: Context, private val categoryList: List<Category>, private val path : String, val onCategoryClickListener: OnCategoryClickListener, val userId:String) :
 RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {

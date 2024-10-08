@@ -19,7 +19,7 @@ class ChildCategoryActivity : AppCompatActivity() {
 
    lateinit var rvChildSubCat :RecyclerView
    lateinit var tvChiledSubName : TextView
-
+   var userId = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_child_category)
@@ -27,6 +27,7 @@ class ChildCategoryActivity : AppCompatActivity() {
         rvChildSubCat = findViewById(R.id.recyclerViewChiled)
         rvChildSubCat.layoutManager = LinearLayoutManager(this@ChildCategoryActivity)
         val id = intent.getIntExtra("id",1)
+        userId = intent.getStringExtra("userId")!!
         val subChildCatName = intent.getStringExtra("catName")
         tvChiledSubName.text = subChildCatName.toString()
         getChildSubCatList(id)
@@ -45,7 +46,7 @@ class ChildCategoryActivity : AppCompatActivity() {
             ) {
                 if (response.isSuccessful){
                     if (response.body()!!.success){
-                        val childItemAdapter = ChildItemAdapter(this@ChildCategoryActivity,response.body()!!.data.childSubCategories,response.body()!!.data.path)
+                        val childItemAdapter = ChildItemAdapter(this@ChildCategoryActivity,response.body()!!.data.childSubCategories,response.body()!!.data.path,userId)
                         rvChildSubCat.adapter = childItemAdapter
                     }else{
                         Toast.makeText(this@ChildCategoryActivity, "No data", Toast.LENGTH_SHORT).show()

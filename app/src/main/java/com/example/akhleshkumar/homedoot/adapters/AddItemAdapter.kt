@@ -56,30 +56,12 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
                 holder.totalPrice.text = totalPrice.toString()
             }
         }
-        val bottomSheetDialog = BottomSheetDialog(context)
+
         holder.btnAdd.setOnClickListener {
-            addItemToList(acItem.productId,acItem.id,quantity, acItem.offerPrice)
+            addItemToList(acItem.productId, acItem.id, quantity, acItem.offerPrice)
 
-            val bottomSheetView =
-                LayoutInflater.from(context).inflate(R.layout.bottom_view_cart, null)
-            val tvCartPrice = bottomSheetView.findViewById<TextView>(R.id.tv_cart_price)
-            val btnViewCart = bottomSheetView.findViewById<Button>(R.id.btn_view_cart)
-            bottomSheetDialog.setContentView(bottomSheetView)
-            tvCartPrice.text = totalPrice.toString()
-            btnViewCart.setOnClickListener {
-                context.startActivity(
-                    Intent(
-                        context,
-                        CartActivity::class.java
-                    )
-                )
-            }
-            bottomSheetDialog.show()
-        }
-        if (totalPrice <= 0) {
-            bottomSheetDialog.dismiss()
-        }
 
+        }
     }
     fun addItemToList(productId:Int, itemId:Int, quantity:Int, price: Int){
         RetrofitClient.instance.addToCart(productId, itemId,userId, quantity, price).enqueue(object : Callback<AddCartResponse>{
@@ -90,11 +72,13 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
                 if (response.isSuccessful){
                     if (response.body()!!.success){
                         Toast.makeText(context, response.body()!!.message, Toast.LENGTH_SHORT).show()
+                        showBottomSheetToCart()
                     }
                 }
             }
 
             override fun onFailure(call: Call<AddCartResponse>, t: Throwable) {
+                Toast.makeText(context, t.localizedMessage, Toast.LENGTH_SHORT).show()
             }
 
         })
@@ -115,4 +99,24 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
         val totalItem = itemView.findViewById<TextView>(R.id.tvQuantity)
 
     }
+
+    fun showBottomSheetToCart(){
+        val bottomSheetDialog = BottomSheetDialog(context)
+        val bottomSheetView =
+            LayoutInflater.from(context).inflate(R.layout.bottom_view_cart, null)
+        val tvCartPrice = bottomSheetView.findViewById<TextView>(R.id.tv_cart_price)
+        val btnViewCart = bottomSheetView.findViewById<Button>(R.id.btn_view_cart)
+        bottomSheetDialog.setContentView(bottomSheetView)
+
+        btnViewCart.setOnClickListener {
+            context.startActivity(
+                Intent(
+                    context,
+                    CartActivity::class.java
+                ).putExtra("userId",userId.toString())
+            )
+        }
+        bottomSheetDialog.show()
+    }
+
 }

@@ -24,6 +24,7 @@ class ProductListActivity : AppCompatActivity() {
 
     lateinit var rvChildSubCat : RecyclerView
     lateinit var tvChiledSubName : TextView
+    var userId = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +33,7 @@ class ProductListActivity : AppCompatActivity() {
         rvChildSubCat = findViewById(R.id.recyclerViewProduct)
         rvChildSubCat.layoutManager = LinearLayoutManager(this@ProductListActivity)
         val id = intent.getIntExtra("id",1)
+        userId = intent.getStringExtra("userId")!!
         val subChildCatName = intent.getStringExtra("catName")
         tvChiledSubName.text = subChildCatName.toString()
         val backButton = findViewById<ImageView>(R.id.iv_back)
@@ -52,7 +54,7 @@ class ProductListActivity : AppCompatActivity() {
             ) {
                 if (response.isSuccessful){
                     if (response.body()!!.success){
-                        val childItemAdapter = ProductListAdapter(this@ProductListActivity,response.body()!!.data.product_list,response.body()!!.data.product_path,id)
+                        val childItemAdapter = ProductListAdapter(this@ProductListActivity,response.body()!!.data.product_list,response.body()!!.data.product_path,id,userId)
                         rvChildSubCat.adapter = childItemAdapter
                     }else{
                         Toast.makeText(this@ProductListActivity, "No data", Toast.LENGTH_SHORT).show()

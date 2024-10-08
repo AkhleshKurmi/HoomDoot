@@ -86,7 +86,7 @@
         android:padding="1dp"
         android:background="#FF0202"
         android:textColor="@color/white"
-        android:textSize="6dp"
+        android:textSize="8dp"
         android:id="@+id/tv_total_cart"
         android:visibility="invisible"
         android:layout_alignEnd="@id/ccard"/>

@@ -14,7 +14,7 @@ import com.example.akhleshkumar.homedoot.activities.ProductDescriptionActivity
 import com.example.akhleshkumar.homedoot.models.ProductData
 import com.squareup.picasso.Picasso
 
-class ProductListAdapter (val context: Context, private val items: List<ProductData>, val path:String,val id: Int) :
+class ProductListAdapter (val context: Context, private val items: List<ProductData>, val path:String,val id: Int,val userId:String) :
     RecyclerView.Adapter<ProductListAdapter.ServiceViewHolder>() {
 
     class ServiceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -47,7 +47,8 @@ class ProductListAdapter (val context: Context, private val items: List<ProductD
         Picasso.get().load(path+"/${item.id}/"+item.main_image).into(holder.ivThumbnail)
         holder.itemView.setOnClickListener {
             val intent = Intent(context, ProductDescriptionActivity::class.java)
-            intent.putExtra("id",id)
+            intent.putExtra("id",item.id)
+            intent.putExtra("userId",userId)
             intent.putExtra("catName", item.service_name)
             context.startActivity(intent)
         }

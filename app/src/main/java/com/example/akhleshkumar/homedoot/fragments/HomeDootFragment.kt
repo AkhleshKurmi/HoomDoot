@@ -44,14 +44,16 @@ class HomeDootFragment : Fragment() {
     lateinit var categoryAdapter: CategoryAdapter
     lateinit var ivCart :ImageView
     lateinit var tvCartTotal :TextView
-    var id = ""
+    var userId = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        id = requireArguments().getInt("id",0).toString()
+        userId = requireArguments().getInt("id",0).toString()
     }
 
+
+    
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -75,14 +77,14 @@ class HomeDootFragment : Fragment() {
         tvCartTotal = view.findViewById(R.id.tv_total_cart)
 
        ivCart.setOnClickListener {
-           startActivity(Intent(requireContext(),CartActivity::class.java).putExtra("id",id))
+           startActivity(Intent(requireContext(),CartActivity::class.java).putExtra("userId",userId))
        }
 
 
         fetchHomeData()
 
         fetchCategories()
-        getCart(id)
+        getCart(userId)
 
             rvServices.layoutManager = GridLayoutManager(requireContext(), 3)
 
@@ -115,7 +117,7 @@ class HomeDootFragment : Fragment() {
 
         override fun onResume() {
             super.onResume()
-            getCart(id)
+            getCart(userId)
             startAutoSlider()
         }
 
@@ -136,10 +138,10 @@ class HomeDootFragment : Fragment() {
                             categoryAdapter = CategoryAdapter(requireContext().applicationContext, categories!!, response.body()!!.data.path, object :
                                 OnCategoryClickListener {
                                 override fun onCategoryClick(id: Int,serviceName:String) {
-                                    showBottomView(id,serviceName)
+                                    showBottomView(id,serviceName,userId)
                                 }
 
-                            })
+                            }, userId)
                             rvCategery.layoutManager = GridLayoutManager(requireContext(), 3)
                             rvCategery.adapter = categoryAdapter
                         }else{
@@ -181,7 +183,7 @@ class HomeDootFragment : Fragment() {
           }
       })
   }
-    fun showBottomView( id: Int, serviceName : String){
+    fun showBottomView( id: Int, serviceName : String,userId:String){
         val bottomSheetDialog = BottomSheetDialog(requireContext())
         val bottomSheetView = layoutInflater.inflate(R.layout.bottom_menu_view,null)
         val rvSubCat = bottomSheetView.findViewById<RecyclerView>(R.id.rv_sub_cat)
@@ -199,7 +201,7 @@ class HomeDootFragment : Fragment() {
             ) {
                 if (response.isSuccessful){
                     if (response.body()!!.success){
-                        val bottomMenuViewAdapter = BottomMenuViewAdapter(requireContext(),response.body()!!.data.sub_category, response.body()!!.data.path)
+                        val bottomMenuViewAdapter = BottomMenuViewAdapter(requireContext(),response.body()!!.data.sub_category, response.body()!!.data.path, userId)
                         rvSubCat.adapter = bottomMenuViewAdapter
 
                     }

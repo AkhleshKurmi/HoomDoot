@@ -38,7 +38,7 @@ class CartActivity : AppCompatActivity() {
         rvCart = findViewById<RecyclerView?>(R.id.recycler_view_products)
         checkOutBtn = findViewById(R.id.button_proceed_to_checkout)
         rvCart.layoutManager = LinearLayoutManager(this)
-        id = intent.getStringExtra("id")!!
+        id = intent.getStringExtra("userId")!!
         itemList()
         checkOutBtn.setOnClickListener {
             val bottomSheetDialog = BottomSheetDialog(this@CartActivity)
@@ -47,7 +47,7 @@ class CartActivity : AppCompatActivity() {
             val rvDate = bottomSheetView.findViewById<RecyclerView>(R.id.rvDay)
             val rvTime = bottomSheetView.findViewById<RecyclerView>(R.id.rv_time_slots)
             rvDate.layoutManager = LinearLayoutManager(this@CartActivity,RecyclerView.HORIZONTAL,false)
-            rvDate.adapter = TimeSlotAdapter(getNext30Days())
+//            rvDate.adapter = TimeSlotAdapter(getNext30Days())
             rvTime.layoutManager = GridLayoutManager(this@CartActivity,3)
             rvTime.adapter = TimeSlotAdapter(
                 listOf(
@@ -67,31 +67,6 @@ class CartActivity : AppCompatActivity() {
 
      bottomSheetDialog.show()
         }
-
-    }
-
-    fun updateCart(userId: Int, itemId: Int, quantity: Int) {
-        RetrofitClient.instance.updateCart(itemId, userId, quantity + 1)
-            .enqueue(object : Callback<RemoveCartItemRes> {
-                override fun onResponse(
-                    call: Call<RemoveCartItemRes>,
-                    response: Response<RemoveCartItemRes>
-                ) {
-                    if (response.isSuccessful) {
-                        itemList()
-                        Toast.makeText(
-                            this@CartActivity,
-                            response.body()!!.message,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-
-                override fun onFailure(call: Call<RemoveCartItemRes>, t: Throwable) {
-                    Toast.makeText(this@CartActivity, t.localizedMessage, Toast.LENGTH_SHORT).show()
-                }
-
-            })
     }
 
     fun itemList() {
@@ -121,6 +96,7 @@ class CartActivity : AppCompatActivity() {
                         }
                     )
                     rvCart.adapter = cartAdapter
+                    cartAdapter.notifyDataSetChanged()
                 }
             }
 

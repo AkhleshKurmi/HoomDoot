@@ -33,6 +33,7 @@ class ProductDescriptionActivity : AppCompatActivity() {
     lateinit var tableLayout: DotsIndicator
     lateinit var tabLayoutBottom: TabLayout
     var id = ""
+    var userId = ""
     val sliderHandler: Handler = Handler()
     lateinit var viewPagerAdapter: ViewPagerAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +46,7 @@ class ProductDescriptionActivity : AppCompatActivity() {
         bottomContainer = findViewById(R.id.view_pager_include)
         tabLayoutBottom = findViewById(R.id.tabLayoutBottom)
          id = intent.getIntExtra("id", 1).toString()
+        userId = intent.getStringExtra("userId")!!
         val subChildCatName = intent.getStringExtra("catName")
         title.text = subChildCatName.toString()
         rvAddItem.layoutManager = LinearLayoutManager(this@ProductDescriptionActivity)
@@ -90,13 +92,14 @@ class ProductDescriptionActivity : AppCompatActivity() {
                             response.body()!!.data.path,
                             response.body()!!.data.product.id
                         )
+                        startAutoSlider()
                         viewPager.setAdapter(sliderAdapter)
                         tableLayout.attachTo(viewPager)
 
                         addItemAdapter = AddItemAdapter(
                             this@ProductDescriptionActivity,
                             response.body()!!.data.productItems,
-                            response.body()!!.data.product.home,id.toInt())
+                            response.body()!!.data.product.home,userId.toInt())
                         rvAddItem.adapter = addItemAdapter
                         viewPagerAdapter = ViewPagerAdapter(
                             this@ProductDescriptionActivity,
@@ -142,8 +145,5 @@ class ProductDescriptionActivity : AppCompatActivity() {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        startAutoSlider()
-    }
+
 }

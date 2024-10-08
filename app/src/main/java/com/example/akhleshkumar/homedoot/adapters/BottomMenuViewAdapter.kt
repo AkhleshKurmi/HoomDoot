@@ -13,7 +13,7 @@ import com.example.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.models.SubCategory
 import com.squareup.picasso.Picasso
 
-class BottomMenuViewAdapter (private val context: Context, private val categoryList: List<SubCategory>, private val path : String) :
+class BottomMenuViewAdapter (private val context: Context, private val categoryList: List<SubCategory>, private val path : String, val userId:String) :
     RecyclerView.Adapter<BottomMenuViewAdapter.BottomOptionViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BottomOptionViewHolder {
@@ -28,6 +28,7 @@ class BottomMenuViewAdapter (private val context: Context, private val categoryL
         holder.itemView.setOnClickListener {
             val intent = Intent(context, ChildCategoryActivity::class.java)
             intent.putExtra("id",category.id)
+            intent.putExtra("userId",userId)
             intent.putExtra("catName", category.sub_category_name)
             context.startActivity(intent)
         }
