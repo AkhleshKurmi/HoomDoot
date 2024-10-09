@@ -72,7 +72,7 @@ class CartActivity : AppCompatActivity() {
             rvTime.adapter = timeSlotAdapter
             btnCheckOut.setOnClickListener {
                 if (time.isEmpty() && date.isEmpty()) {
-                    Toast.makeText(this@CartActivity, "plese Select Date And Time", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@CartActivity, "please Select Date And Time", Toast.LENGTH_SHORT).show()
                 } else {
                     proceedTOCheckOut()
                 }
