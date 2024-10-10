@@ -13,12 +13,12 @@ data class DataCart(
 
 data class Cart(
     val id: Int,
-    val item_id: Int,
-    val product_id: Int,
-    val category_id: Int,
+    var item_id: Int,
+    var product_id: Int,
+    var category_id: Int,
     val user_id: Int,
-    val quantity: Long,
-    val price: Int,
+    var quantity: Long,
+    var price: Int,
     val total_amount: Long,
     val created_at: String,
     val updated_at: String,

@@ -12,6 +12,8 @@ import com.example.akhleshkumar.homedoot.models.ProductDetailsResponse
 import com.example.akhleshkumar.homedoot.models.RemoveCartItemRes
 import com.example.akhleshkumar.homedoot.models.SubCategoryResponse
 import com.example.akhleshkumar.homedoot.models.UserOrderResponse
+import com.example.akhleshkumar.homedoot.models.VendorAvailabilityRequest
+import com.example.akhleshkumar.homedoot.models.VendorAvailabilityResponse
 import com.example.akhleshkumar.homedoot.models.homeresponse.HomePageResponse
 import com.example.akhleshkumar.homedoot.models.user.ForgotPasswordResponse
 import com.example.akhleshkumar.homedoot.models.user.LoginUserResponse
@@ -45,7 +47,8 @@ interface ApiService {
     @POST("product_details")
     fun fetchProductDetails(@Query("p_id") productId : Int): Call<ProductDetailsResponse>
 
-
+    @POST("check-availability")
+    fun checkVendorAvailability(@Body vendorAvailabilityRequest: VendorAvailabilityRequest) :Call<VendorAvailabilityResponse>
     @POST("add_to_cart")
     fun addToCart(
         @Query("product_id") productId: Int,

@@ -16,11 +16,17 @@ import com.example.akhleshkumar.homedoot.adapters.CartAdapter
 import com.example.akhleshkumar.homedoot.adapters.DateSlotAdapter
 import com.example.akhleshkumar.homedoot.adapters.TimeSlotAdapter
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
+import com.example.akhleshkumar.homedoot.interfaces.OnDateSelectListener
 import com.example.akhleshkumar.homedoot.interfaces.OnItemDelete
 import com.example.akhleshkumar.homedoot.interfaces.OnItenUpdateCart
+import com.example.akhleshkumar.homedoot.interfaces.OnTimeSelectListener
+import com.example.akhleshkumar.homedoot.models.Cart
+import com.example.akhleshkumar.homedoot.models.CartItems
 import com.example.akhleshkumar.homedoot.models.CartListResponse
 import com.example.akhleshkumar.homedoot.models.RemoveCartItemRes
 import com.example.akhleshkumar.homedoot.models.TimeDataModel
+import com.example.akhleshkumar.homedoot.models.VendorAvailabilityRequest
+import com.example.akhleshkumar.homedoot.models.VendorAvailabilityResponse
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import retrofit2.Call
 import retrofit2.Callback
@@ -33,6 +39,7 @@ class CartActivity : AppCompatActivity() {
     var id = ""
     var time= ""
     var date = ""
+    var vendorList = mutableListOf<CartItems>()
     lateinit var rvCart: RecyclerView
     private lateinit var checkOutBtn: Button
     val listTime : ArrayList<TimeDataModel> =  ArrayList()
@@ -45,18 +52,18 @@ class CartActivity : AppCompatActivity() {
         rvCart.layoutManager = LinearLayoutManager(this)
         id = intent.getStringExtra("userId")!!
         itemList()
-        listTime.add(TimeDataModel("9:00"))
-        listTime.add(TimeDataModel("10:00"))
-        listTime.add(TimeDataModel("11:00"))
-        listTime.add(TimeDataModel("12:00"))
-        listTime.add(TimeDataModel("13:00"))
-        listTime.add(TimeDataModel("14:00"))
-        listTime.add(TimeDataModel("15:00"))
-        listTime.add(TimeDataModel("16:00"))
-        listTime.add(TimeDataModel("17:00"))
-        listTime.add(TimeDataModel("18:00"))
-        listTime.add(TimeDataModel("19:00"))
-        listTime.add(TimeDataModel("20:00"))
+        listTime.add(TimeDataModel("09:00 am"))
+        listTime.add(TimeDataModel("10:00 am"))
+        listTime.add(TimeDataModel("11:00 am"))
+        listTime.add(TimeDataModel("12:00 pm"))
+        listTime.add(TimeDataModel("01:00 pm"))
+        listTime.add(TimeDataModel("02:00 pm"))
+        listTime.add(TimeDataModel("03:00 pm"))
+        listTime.add(TimeDataModel("04:00 pm"))
+        listTime.add(TimeDataModel("05:00 pm"))
+        listTime.add(TimeDataModel("06:00 pm"))
+        listTime.add(TimeDataModel("07:00 pm"))
+        listTime.add(TimeDataModel("08:00 pm"))
 
         checkOutBtn.setOnClickListener {
             val bottomSheetDialog = BottomSheetDialog(this@CartActivity)
@@ -66,9 +73,19 @@ class CartActivity : AppCompatActivity() {
             val rvTime = bottomSheetView.findViewById<RecyclerView>(R.id.rv_time_slots)
             val btnCheckOut = bottomSheetView.findViewById<Button>(R.id.btn_proceed)
             rvDate.layoutManager = LinearLayoutManager(this@CartActivity,RecyclerView.HORIZONTAL,false)
-            rvDate.adapter= DateSlotAdapter(getNext30Days())
+            rvDate.adapter= DateSlotAdapter(getNext30Days(), object : OnDateSelectListener {
+                override fun onDateSelected(date: String) {
+                    this@CartActivity.date = date
+                }
+
+            })
             rvTime.layoutManager = GridLayoutManager(this@CartActivity,3)
-            val timeSlotAdapter = TimeSlotAdapter(listTime)
+            val timeSlotAdapter = TimeSlotAdapter(listTime, object : OnTimeSelectListener{
+                override fun onTimeSelected(time: String) {
+                    this@CartActivity.time = time
+                }
+
+            })
             rvTime.adapter = timeSlotAdapter
             btnCheckOut.setOnClickListener {
                 if (time.isEmpty() && date.isEmpty()) {
@@ -89,6 +106,7 @@ class CartActivity : AppCompatActivity() {
                 response: Response<CartListResponse>
             ) {
                 if (response.isSuccessful) {
+                    addItemsInVendorList(response.body()!!.data.cart)
                     val cartAdapter = CartAdapter(
                         this@CartActivity,
                         response.body()!!.data.cart,
@@ -122,10 +140,27 @@ class CartActivity : AppCompatActivity() {
 
 
     }
+    fun addItemsInVendorList(list :List<Cart>) {
 
-   private fun getNext30Days(): List<String> {
+        for (item in list) {
+            // Create a new instance of Cart (or whatever type vendorList is)
+            val vendorItem = CartItems(
+                item_id = item.item_id,
+                quantity = item.quantity.toInt(),
+                price = item.price,
+                category_id = item.category_id,
+                product_id = item.product_id
+            )
+            vendorList.add(vendorItem)
+        }
+    }
+
+
+
+
+    private fun getNext30Days(): List<String> {
         val dateList = mutableListOf<String>()
-        val formatter = DateTimeFormatter.ofPattern("EEEE, MMM dd", Locale.getDefault())
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
 
         for (i in 0 until 30) {
             val date = LocalDate.now().plusDays(i.toLong())
@@ -175,6 +210,28 @@ class CartActivity : AppCompatActivity() {
     }
     
     fun proceedTOCheckOut(){
-        Toast.makeText(this, "Preceeding to checkOut", Toast.LENGTH_SHORT).show()
+
+
+        RetrofitClient.instance.checkVendorAvailability(VendorAvailabilityRequest(date,time,vendorList)).enqueue(
+            object : Callback<VendorAvailabilityResponse> {
+                override fun onResponse(
+                    call: Call<VendorAvailabilityResponse>,
+                    response: Response<VendorAvailabilityResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        if (response.body()!!.status){
+//                            Toast.makeText(this@CartActivity, response.body()!!.data.get(0)!!.message, Toast.LENGTH_SHORT).show()
+                        }
+
+                    }
+                }
+
+                override fun onFailure(call: Call<VendorAvailabilityResponse>, t: Throwable) {
+
+                }
+
+            })
+
+        Toast.makeText(this, "Proceeding to checkOut", Toast.LENGTH_SHORT).show()
     }
 }

@@ -9,10 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.example.akhleshkumar.homedoot.R
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.example.akhleshkumar.homedoot.interfaces.OnTimeSelectListener
 import com.example.akhleshkumar.homedoot.models.TimeDataModel
 
 
-class TimeSlotAdapter(val list:List<TimeDataModel>) : Adapter<TimeSlotAdapter.TimeViewHolder>() {
+class TimeSlotAdapter(val list:List<TimeDataModel>, private val onTimeSelectListener: OnTimeSelectListener) : Adapter<TimeSlotAdapter.TimeViewHolder>() {
     private var selectedPosition: Int = RecyclerView.NO_POSITION
     inner class TimeViewHolder(view : View):ViewHolder(view){
         val tvTime = view.findViewById<TextView>(R.id.btn_time_slot)
@@ -36,12 +37,16 @@ class TimeSlotAdapter(val list:List<TimeDataModel>) : Adapter<TimeSlotAdapter.Ti
     }
 
     override fun onBindViewHolder(holder: TimeViewHolder, position: Int) {
-       holder.tvTime.text = list[position].time
+        holder.tvTime.text = list[position].time
         holder.tvTime.setTextColor(
             if (position == selectedPosition)
                 Color.RED // Selected color
             else
                 Color.BLACK // Default color
         )
+        holder.tvTime.setOnClickListener {
+         onTimeSelectListener.onTimeSelected(list[position].time)
+        }
+
     }
 }
