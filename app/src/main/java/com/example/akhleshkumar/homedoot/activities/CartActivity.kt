@@ -4,13 +4,11 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Orientation
 import com.example.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.adapters.CartAdapter
 import com.example.akhleshkumar.homedoot.adapters.DateSlotAdapter
@@ -21,8 +19,10 @@ import com.example.akhleshkumar.homedoot.interfaces.OnItemDelete
 import com.example.akhleshkumar.homedoot.interfaces.OnItenUpdateCart
 import com.example.akhleshkumar.homedoot.interfaces.OnTimeSelectListener
 import com.example.akhleshkumar.homedoot.models.Cart
+import com.example.akhleshkumar.homedoot.models.CartItem
 import com.example.akhleshkumar.homedoot.models.CartItems
 import com.example.akhleshkumar.homedoot.models.CartListResponse
+import com.example.akhleshkumar.homedoot.models.OrderCheckoutRequest
 import com.example.akhleshkumar.homedoot.models.RemoveCartItemRes
 import com.example.akhleshkumar.homedoot.models.TimeDataModel
 import com.example.akhleshkumar.homedoot.models.VendorAvailabilityRequest
@@ -39,10 +39,13 @@ class CartActivity : AppCompatActivity() {
     var id = ""
     var time= ""
     var date = ""
-    var vendorList = mutableListOf<CartItems>()
+    var email  = ""
+    var mobile  = ""
+    private var vendorList = mutableListOf<CartItems>()
     lateinit var rvCart: RecyclerView
     private lateinit var checkOutBtn: Button
-    val listTime : ArrayList<TimeDataModel> =  ArrayList()
+    private val listTime : ArrayList<TimeDataModel> =  ArrayList()
+    @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -101,6 +104,7 @@ class CartActivity : AppCompatActivity() {
 
     fun itemList() {
         RetrofitClient.instance.getCartList(id.toInt()).enqueue(object : Callback<CartListResponse> {
+            @SuppressLint("NotifyDataSetChanged")
             override fun onResponse(
                 call: Call<CartListResponse>,
                 response: Response<CartListResponse>
@@ -212,7 +216,7 @@ class CartActivity : AppCompatActivity() {
     fun proceedTOCheckOut(){
 
 
-        RetrofitClient.instance.checkVendorAvailability(VendorAvailabilityRequest(date,time,vendorList)).enqueue(
+        RetrofitClient.instance.checkVendorAvailability(VendorAvailabilityRequest("2024-10-05","",vendorList)).enqueue(
             object : Callback<VendorAvailabilityResponse> {
                 override fun onResponse(
                     call: Call<VendorAvailabilityResponse>,
@@ -220,7 +224,7 @@ class CartActivity : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful) {
                         if (response.body()!!.status){
-//                            Toast.makeText(this@CartActivity, response.body()!!.data.get(0)!!.message, Toast.LENGTH_SHORT).show()
+
                         }
 
                     }
@@ -234,4 +238,6 @@ class CartActivity : AppCompatActivity() {
 
         Toast.makeText(this, "Proceeding to checkOut", Toast.LENGTH_SHORT).show()
     }
+
+
 }
