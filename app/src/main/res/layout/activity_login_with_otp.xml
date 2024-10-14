@@ -1,10 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.LoginWithOtpActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/backimg"
+    tools:context=".activities.LoginActivity"
+    android:padding="16dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_marginTop="37dp"
+            android:layout_height="50dp"
+            android:src="@drawable/hdicon"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="5sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_height="wrap_content"
+            android:text="HomeDoot"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="  is here"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Home"
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Doot"
+                android:textSize="22sp"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/black"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#868484"
+                android:layout_marginLeft="5dp"
+                android:textSize="26sp"
+
+                android:text="Home Services "/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="HOMEDOOT Service Expert"
+        android:textColor="#393535"
+        android:textStyle="bold"
+        android:textSize="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fast. Reasonable. Satisfaction"
+        android:textSize="16dp"/>
+
+    <!-- Username Input with improved style -->
+    <EditText
+        android:id="@+id/username_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+
+        android:layout_marginRight="25dp"
+        android:background="@drawable/rounded_edit_text"
+
+        android:hint="Enter Mobile No."
+        android:textStyle="bold"
+        android:textColorHint="@color/black"
+
+        android:inputType="textPersonName"
+        android:layout_marginTop="85dp"
+        android:padding="12dp"
+        android:textSize="18sp" />
+
+    <!-- Password Input with improved style -->
+
+
+    <!-- User/Vendor Dropdown -->
+
+
+    <!-- Login Button -->
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Get Varification code"
+        android:layout_marginTop="24dp"
+        android:backgroundTintMode="add"
+        android:layout_marginRight="50dp"
+        android:backgroundTint="#CDCBCB"
+        android:layout_marginLeft="50dp"
+        android:textColor="#625F5F" />
+
+    <TextView
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+
+        android:layout_gravity="end"
+        android:layout_margin="20dp"
+        android:text="skip"
+
+        android:textColor="@color/black" />
+
+
+</LinearLayout>

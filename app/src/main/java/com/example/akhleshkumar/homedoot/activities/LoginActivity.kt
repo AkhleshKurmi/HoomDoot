@@ -28,6 +28,7 @@ import retrofit2.Response
 class LoginActivity : AppCompatActivity() {
     lateinit var btnLogin : Button
     lateinit var tvNewUser : TextView
+    lateinit var tvLoginWithOtp : TextView
     lateinit var etUserName:EditText
     lateinit var etPassword:EditText
 
@@ -41,6 +42,12 @@ class LoginActivity : AppCompatActivity() {
         tvNewUser = findViewById(R.id.not_registered_signup)
         btnLogin = findViewById(R.id.login_button)
         forgotPassword = findViewById(R.id.forgot_password)
+
+        tvLoginWithOtp= findViewById(R.id.loginOtp)
+
+        tvLoginWithOtp.setOnClickListener {
+            startActivity(Intent(this@LoginActivity, LoginWithOtpActivity::class.java))
+        }
 
         forgotPassword.setOnClickListener {
          startActivity(Intent(this@LoginActivity, ForgotPasswordActivity::class.java))

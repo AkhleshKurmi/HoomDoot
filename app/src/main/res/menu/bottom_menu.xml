@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/navigation_hd"
-        android:icon="@drawable/ic_home"
+        android:icon="@drawable/baseline_hd_24"
         android:title="HD" />
     <item
         android:id="@+id/navigation_personal"
@@ -11,15 +11,15 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home"
+        android:icon="@drawable/baseline_account_circle_24"
         android:title="Home" />
     <item
         android:id="@+id/navigation_cart"
-        android:icon="@drawable/ic_home"
+        android:icon="@drawable/baseline_wine_bar_24"
         android:title="Rewards" />
     <item
         android:id="@+id/navigation_Account"
-        android:icon="@drawable/ic_home"
+        android:icon="@drawable/baseline_shopping_cart_24"
 
         android:title="Account" />
 
