@@ -3,6 +3,7 @@ package com.example.akhleshkumar.homedoot
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,7 +60,10 @@ class HomeDootFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
        val view = inflater.inflate(R.layout.fragment_homedoot, container, false)
+        fetchHomeData()
 
+        fetchCategories()
+        getCart(userId)
 
         return view
     }
@@ -237,6 +241,7 @@ class HomeDootFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<CartListResponse>, t: Throwable) {
+                Log.d("TAG", "onFailure: ${t.localizedMessage}")
             }
 
         })

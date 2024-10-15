@@ -23,7 +23,7 @@ data class Cart(
     val created_at: String,
     val updated_at: String,
     val p_detail: ProductDetail,
-    val item_detail: ItemDetail
+    val item_detail:Any
 )
 
 data class ProductDetail(

@@ -216,7 +216,7 @@ class CartActivity : AppCompatActivity() {
     fun proceedTOCheckOut(){
 
 
-        RetrofitClient.instance.checkVendorAvailability(VendorAvailabilityRequest("2024-10-05","",vendorList)).enqueue(
+        RetrofitClient.instance.checkVendorAvailability(VendorAvailabilityRequest("2024-10-05","13".toInt(),vendorList)).enqueue(
             object : Callback<VendorAvailabilityResponse> {
                 override fun onResponse(
                     call: Call<VendorAvailabilityResponse>,
