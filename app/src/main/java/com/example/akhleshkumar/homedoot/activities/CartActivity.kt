@@ -1,6 +1,7 @@
 package com.example.akhleshkumar.homedoot.activities
 
 import android.annotation.SuppressLint
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -47,6 +48,8 @@ class CartActivity : AppCompatActivity() {
     private lateinit var checkOutBtn: Button
     private val listTime : ArrayList<TimeDataModel> =  ArrayList()
     var cartItemList = ArrayList<CartItems>()
+    lateinit var sharedPreferences: SharedPreferences
+    lateinit var editorSP : SharedPreferences.Editor
     @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +58,8 @@ class CartActivity : AppCompatActivity() {
         rvCart = findViewById<RecyclerView?>(R.id.recycler_view_products)
         checkOutBtn = findViewById(R.id.button_proceed_to_checkout)
         rvCart.layoutManager = LinearLayoutManager(this)
+        sharedPreferences = getSharedPreferences("HomeDoot", MODE_PRIVATE)
+        editorSP = sharedPreferences.edit()
         id = intent.getStringExtra("userId")!!
         itemList()
         listTime.add(TimeDataModel("09:00 am"))

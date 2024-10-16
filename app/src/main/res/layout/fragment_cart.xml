@@ -1,128 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="#FFFFFF"
     android:padding="16dp">
-
-    <!-- RecyclerView for the products -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_products"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:scrollbars="vertical"
-
-        tools:itemCount="3"
-        tools:listitem="@layout/cart_item_view"
-        />
-
-    <!-- Coupon Code and Summary -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="8dp">
-
-        <EditText
-            android:id="@+id/edit_text_coupon_code"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <!-- RecyclerView for the products -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_products"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Coupon Code"
-            android:background="#E0E0E0"
-            android:padding="12dp" />
+            android:layout_marginBottom="16dp"
+            android:scrollbars="vertical"
 
-        <Button
-            android:id="@+id/button_apply_coupon"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Apply Coupon"
-            android:textColor="#FFFFFF"
-            android:background="#D32F2F"
-            android:layout_marginTop="8dp" />
+            tools:itemCount="3"
+            tools:listitem="@layout/cart_item_view"
+            />
 
-        <TextView
-            android:id="@+id/text_cart_summary"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cart Summary"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp" />
-
+        <!-- Coupon Code and Summary -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp">
+            android:orientation="vertical"
+            android:padding="8dp">
 
-            <TextView
-                android:id="@+id/text_subtotal_label"
-                android:layout_width="0dp"
+            <EditText
+                android:id="@+id/edit_text_coupon_code"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Subtotal" />
+                android:hint="Coupon Code"
+                android:background="#E0E0E0"
+                android:padding="12dp" />
+
+            <Button
+                android:id="@+id/button_apply_coupon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Apply Coupon"
+                android:textColor="#FFFFFF"
+                android:background="#D32F2F"
+                android:layout_marginTop="8dp" />
 
             <TextView
-                android:id="@+id/text_subtotal_value"
+                android:id="@+id/text_cart_summary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="₹50363.0" />
+                android:text="Cart Summary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:id="@+id/text_subtotal_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Subtotal" />
+
+                <TextView
+                    android:id="@+id/text_subtotal_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="₹50363.0" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:id="@+id/text_discount_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Discount" />
+
+                <TextView
+                    android:id="@+id/text_discount_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="- ₹" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:id="@+id/text_total_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Total"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text_total_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="₹50363.0"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/button_proceed_to_checkout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="PROCEED TO CHECKOUT"
+                android:textColor="#FFFFFF"
+                android:background="#D32F2F"
+                android:layout_marginTop="16dp" />
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp">
-
-            <TextView
-                android:id="@+id/text_discount_label"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Discount" />
-
-            <TextView
-                android:id="@+id/text_discount_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="- ₹" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp">
-
-            <TextView
-                android:id="@+id/text_total_label"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Total"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/text_total_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="₹50363.0"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/button_proceed_to_checkout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="PROCEED TO CHECKOUT"
-            android:textColor="#FFFFFF"
-            android:background="#D32F2F"
-            android:layout_marginTop="16dp" />
     </LinearLayout>
-
-</LinearLayout>
+</ScrollView>
 
