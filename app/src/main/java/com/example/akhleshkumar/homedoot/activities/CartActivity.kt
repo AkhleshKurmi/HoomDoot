@@ -1,16 +1,15 @@
 package com.example.akhleshkumar.homedoot.activities
 
 import android.annotation.SuppressLint
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Orientation
 import com.example.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.adapters.CartAdapter
 import com.example.akhleshkumar.homedoot.adapters.DateSlotAdapter
@@ -21,8 +20,11 @@ import com.example.akhleshkumar.homedoot.interfaces.OnItemDelete
 import com.example.akhleshkumar.homedoot.interfaces.OnItenUpdateCart
 import com.example.akhleshkumar.homedoot.interfaces.OnTimeSelectListener
 import com.example.akhleshkumar.homedoot.models.Cart
+import com.example.akhleshkumar.homedoot.models.CartItem
 import com.example.akhleshkumar.homedoot.models.CartItems
 import com.example.akhleshkumar.homedoot.models.CartListResponse
+import com.example.akhleshkumar.homedoot.models.OrderCheckoutRequest
+import com.example.akhleshkumar.homedoot.models.OrderCheckoutRes
 import com.example.akhleshkumar.homedoot.models.RemoveCartItemRes
 import com.example.akhleshkumar.homedoot.models.TimeDataModel
 import com.example.akhleshkumar.homedoot.models.VendorAvailabilityRequest
@@ -39,10 +41,16 @@ class CartActivity : AppCompatActivity() {
     var id = ""
     var time= ""
     var date = ""
-    var vendorList = mutableListOf<CartItems>()
+    var email  = ""
+    var mobile  = ""
+    private var vendorList = ArrayList<CartItems>()
     lateinit var rvCart: RecyclerView
     private lateinit var checkOutBtn: Button
-    val listTime : ArrayList<TimeDataModel> =  ArrayList()
+    private val listTime : ArrayList<TimeDataModel> =  ArrayList()
+    var cartItemList = ArrayList<CartItems>()
+    lateinit var sharedPreferences: SharedPreferences
+    lateinit var editorSP : SharedPreferences.Editor
+    @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -50,6 +58,8 @@ class CartActivity : AppCompatActivity() {
         rvCart = findViewById<RecyclerView?>(R.id.recycler_view_products)
         checkOutBtn = findViewById(R.id.button_proceed_to_checkout)
         rvCart.layoutManager = LinearLayoutManager(this)
+        sharedPreferences = getSharedPreferences("HomeDoot", MODE_PRIVATE)
+        editorSP = sharedPreferences.edit()
         id = intent.getStringExtra("userId")!!
         itemList()
         listTime.add(TimeDataModel("09:00 am"))
@@ -91,7 +101,7 @@ class CartActivity : AppCompatActivity() {
                 if (time.isEmpty() && date.isEmpty()) {
                     Toast.makeText(this@CartActivity, "please Select Date And Time", Toast.LENGTH_SHORT).show()
                 } else {
-                    proceedTOCheckOut()
+                   checkVendorAvailavility()
                 }
             }
 
@@ -101,12 +111,13 @@ class CartActivity : AppCompatActivity() {
 
     fun itemList() {
         RetrofitClient.instance.getCartList(id.toInt()).enqueue(object : Callback<CartListResponse> {
+            @SuppressLint("NotifyDataSetChanged")
             override fun onResponse(
                 call: Call<CartListResponse>,
                 response: Response<CartListResponse>
             ) {
                 if (response.isSuccessful) {
-                    addItemsInVendorList(response.body()!!.data.cart)
+                    cartItemList = addItemsInVendorList(response.body()!!.data.cart)
                     val cartAdapter = CartAdapter(
                         this@CartActivity,
                         response.body()!!.data.cart,
@@ -140,19 +151,20 @@ class CartActivity : AppCompatActivity() {
 
 
     }
-    fun addItemsInVendorList(list :List<Cart>) {
+    fun addItemsInVendorList(list :List<Cart>) :ArrayList<CartItems>{
 
         for (item in list) {
             // Create a new instance of Cart (or whatever type vendorList is)
             val vendorItem = CartItems(
-                item_id = item.item_id,
+                item_id = item.item_id.toInt(),
                 quantity = item.quantity.toInt(),
-                price = item.price,
-                category_id = item.category_id,
-                product_id = item.product_id
+                price = item.price.toInt(),
+                category_id = item.category_id.toInt(),
+                product_id = item.product_id.toInt()
             )
             vendorList.add(vendorItem)
         }
+        return vendorList
     }
 
 
@@ -209,29 +221,57 @@ class CartActivity : AppCompatActivity() {
 
     }
     
-    fun proceedTOCheckOut(){
+    fun checkVendorAvailavility(){
+
+        val requestBody = VendorAvailabilityRequest(date, time, cartItemList)
 
 
-        RetrofitClient.instance.checkVendorAvailability(VendorAvailabilityRequest(date,time,vendorList)).enqueue(
+        RetrofitClient.instance.checkVendorAvailability(requestBody).enqueue(
             object : Callback<VendorAvailabilityResponse> {
                 override fun onResponse(
                     call: Call<VendorAvailabilityResponse>,
                     response: Response<VendorAvailabilityResponse>
                 ) {
                     if (response.isSuccessful) {
-                        if (response.body()!!.status){
-//                            Toast.makeText(this@CartActivity, response.body()!!.data.get(0)!!.message, Toast.LENGTH_SHORT).show()
-                        }
+                        if (response.body()!!.status) {
 
+                                proceedToCheckout()
+
+
+                        }
                     }
                 }
 
                 override fun onFailure(call: Call<VendorAvailabilityResponse>, t: Throwable) {
-
+                    Toast.makeText(this@CartActivity, t.localizedMessage, Toast.LENGTH_SHORT).show()
                 }
 
             })
 
-        Toast.makeText(this, "Proceeding to checkOut", Toast.LENGTH_SHORT).show()
+
     }
+   fun proceedToCheckout(){
+       val orderRequest = OrderCheckoutRequest(id.toInt(),email,mobile,"","",date,time,"cc","",
+           "pc","","","",",","","","",
+           0,0,0,cartItemList )
+       RetrofitClient.instance.placeOrder(orderRequest).enqueue(object : Callback<OrderCheckoutRes> {
+           override fun onResponse(
+               call: Call<OrderCheckoutRes>,
+               response: Response<OrderCheckoutRes>
+           ) {
+               if (response.isSuccessful){
+                   if (response.body()!!.success){
+
+                       Toast.makeText(this@CartActivity, "${response.body()!!.message}\n "+response.body()!!.data.order_no, Toast.LENGTH_SHORT).show()
+                   }
+               }
+           }
+
+           override fun onFailure(call: Call<OrderCheckoutRes>, t: Throwable) {
+               Toast.makeText(this@CartActivity, "${t.localizedMessage}", Toast.LENGTH_SHORT).show()
+           }
+
+       })
+   }
+
 }

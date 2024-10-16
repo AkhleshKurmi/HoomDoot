@@ -52,7 +52,7 @@ class CartAdapter(
 //        val itemDetail = cartItem.item_detail
 
         // Load product image using Picasso or any image loader
-        Picasso.get().load(path+"/${cartItem.id}/"+productDetail.main_image).into(holder.productImage)
+        Picasso.get().load(path+"/${cartItem.product_id}/"+productDetail.main_image).into(holder.productImage)
 
         // Bind the product details
 

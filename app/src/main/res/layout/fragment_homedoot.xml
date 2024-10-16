@@ -37,20 +37,27 @@
          android:textSize="16sp"/>
 
      <TextView
-         android:layout_width="wrap_content"
+         android:layout_width="250dp"
          android:layout_height="wrap_content"
+         android:id="@+id/tv_address"
          android:text="A306, Sahyadri Complex, Main Road"/>
-
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/tv_pin"
+                 android:text="255441"/>
          </LinearLayout>
 <RelativeLayout
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginStart="100dp"
+    android:layout_gravity="end"
+    android:gravity="end">
          <ImageView
              android:layout_width="24dp"
              android:layout_height="24dp"
-             android:layout_marginLeft="100dp"
              android:id="@+id/ccard"
-             android:layout_gravity="center"
+             android:layout_gravity="end"
              android:src="@drawable/card" />
     <TextView
         android:layout_width="wrap_content"

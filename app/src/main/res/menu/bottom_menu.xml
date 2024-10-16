@@ -6,20 +6,20 @@
         android:title="HD" />
     <item
         android:id="@+id/navigation_personal"
-        android:icon="@drawable/ic_home"
-        android:title="Personal" />
+        android:icon="@drawable/baseline_wine_bar_24"
+        android:title="Rewards" />
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/baseline_account_circle_24"
+        android:icon="@drawable/ic_home"
         android:title="Home" />
     <item
         android:id="@+id/navigation_cart"
-        android:icon="@drawable/baseline_wine_bar_24"
-        android:title="Rewards" />
+        android:icon="@drawable/baseline_shopping_cart_24"
+        android:title="Cart" />
     <item
         android:id="@+id/navigation_Account"
-        android:icon="@drawable/baseline_shopping_cart_24"
+        android:icon="@drawable/baseline_account_circle_24"
 
         android:title="Account" />
 

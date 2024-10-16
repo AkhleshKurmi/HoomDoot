@@ -1,14 +1,17 @@
 package com.example.akhleshkumar.homedoot
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -43,12 +46,18 @@ class HomeDootFragment : Fragment() {
     lateinit var rvAC: RecyclerView
     lateinit var categoryAdapter: CategoryAdapter
     lateinit var ivCart :ImageView
+    lateinit var tvAddress: TextView
+    lateinit var tvPinCode:TextView
     lateinit var tvCartTotal :TextView
     var userId = ""
+    lateinit var sharedPreferences: SharedPreferences
+    lateinit var editorSP : SharedPreferences.Editor
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        sharedPreferences = requireContext().getSharedPreferences("HomeDoot", MODE_PRIVATE)
+        editorSP = sharedPreferences.edit()
         userId = requireArguments().getInt("id",0).toString()
     }
 
@@ -59,7 +68,10 @@ class HomeDootFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
        val view = inflater.inflate(R.layout.fragment_homedoot, container, false)
+        fetchHomeData()
 
+        fetchCategories()
+        getCart(userId)
 
         return view
     }
@@ -75,6 +87,11 @@ class HomeDootFragment : Fragment() {
         rvAC = view.findViewById(R.id.rv_ac_service)
         ivCart = view.findViewById(R.id.ccard)
         tvCartTotal = view.findViewById(R.id.tv_total_cart)
+        tvAddress = view.findViewById(R.id.tv_address)
+        tvPinCode = view.findViewById(R.id.tv_pin)
+
+        tvAddress.text= sharedPreferences.getString("fullAddress","")?: ""
+        tvPinCode.text = sharedPreferences.getString("pinCode","")?: ""
 
        ivCart.setOnClickListener {
            startActivity(Intent(requireContext(),CartActivity::class.java).putExtra("userId",userId))
@@ -237,6 +254,7 @@ class HomeDootFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<CartListResponse>, t: Throwable) {
+                Log.d("TAG", "onFailure: ${t.localizedMessage}")
             }
 
         })
