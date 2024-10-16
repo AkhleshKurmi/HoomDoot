@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_margin="5dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.PaymentMethodActivity">
+
+
+
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/baseline_arrow_back_ios_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select payment method"
+        android:layout_marginLeft="20dp"
+        android:textSize="18sp"
+        android:layout_marginTop="40dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/backButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/backButton"
+        app:layout_constraintHorizontal_bias="0.5" />
+
+    <!-- Amount to Pay -->
+    <TextView
+        android:id="@+id/amountText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Amount to pay: ₹1,647"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/titleText"
+        app:layout_constraintTop_toBottomOf="@id/titleText" />
+
+    <!-- Cards Section -->
+    <TextView
+        android:id="@+id/cardsHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cards"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/amountText"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <LinearLayout
+        android:id="@+id/addNewCardOption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:clickable="true"
+        app:layout_constraintTop_toBottomOf="@id/cardsHeading"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/baseline_credit_card_24"
+            android:contentDescription="Card" />
+
+        <TextView
+            android:id="@+id/addNewCardText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add new card"
+            android:layout_marginStart="16dp"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/baseline_arrow_back_ios_24"
+        app:layout_constraintTop_toBottomOf="@id/cardsHeading"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="Card" />
+
+    <!-- UPI Section -->
+    <TextView
+        android:id="@+id/upiHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="UPI"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/addNewCardOption"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="25dp" />
+
+    <LinearLayout
+        android:id="@+id/googlePayOption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:clickable="true"
+        app:layout_constraintTop_toBottomOf="@id/upiHeading"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/gpay_logo"
+            android:contentDescription="Google Pay" />
+
+        <TextView
+            android:id="@+id/googlePayText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Google Pay UPI"
+            android:layout_marginStart="16dp"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="5dp"
+        android:id="@+id/gpayback"
+        android:src="@drawable/baseline_arrow_back_ios_24"
+        app:layout_constraintTop_toBottomOf="@id/upiHeading"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="Card" />
+
+    <LinearLayout
+        android:id="@+id/phonePeOption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_marginTop="10dp"
+        android:clickable="true"
+        app:layout_constraintTop_toBottomOf="@id/googlePayOption"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ppay_logo"
+            android:contentDescription="PhonePe" />
+
+        <TextView
+            android:id="@+id/phonePeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PhonePe UPI"
+            android:layout_marginStart="16dp"
+            android:textSize="16sp" />
+    </LinearLayout>
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="25dp"
+        android:id="@+id/ppayback"
+        android:src="@drawable/baseline_arrow_back_ios_24"
+        app:layout_constraintTop_toBottomOf="@id/gpayback"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="Card" />
+
+    <LinearLayout
+        android:id="@+id/paytmOption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_marginTop="10dp"
+        android:clickable="true"
+        app:layout_constraintTop_toBottomOf="@id/phonePeOption"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ptmlpgo"
+            android:contentDescription="PhonePe" />
+
+        <TextView
+            android:id="@+id/paytmText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PhonePe UPI"
+            android:layout_marginStart="16dp"
+            android:textSize="16sp" />
+    </LinearLayout>
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:id="@+id/paytnback"
+        android:layout_marginTop="25dp"
+        android:src="@drawable/baseline_arrow_back_ios_24"
+        app:layout_constraintTop_toBottomOf="@id/ppayback"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="Card" />
+
+    <LinearLayout
+        android:id="@+id/anyupiOption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_marginTop="10dp"
+        android:clickable="true"
+        app:layout_constraintTop_toBottomOf="@id/paytmOption"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/upilogo"
+            android:contentDescription="PhonePe" />
+
+        <TextView
+            android:id="@+id/payanyText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PhonePe UPI"
+            android:layout_marginStart="16dp"
+            android:textSize="16sp" />
+    </LinearLayout>
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="25dp"
+        android:id="@+id/anyupiback"
+        android:src="@drawable/baseline_arrow_back_ios_24"
+        app:layout_constraintTop_toBottomOf="@id/paytnback"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="Card" />
+
+    <LinearLayout
+        android:id="@+id/addNewOption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_marginTop="10dp"
+        android:clickable="true"
+        app:layout_constraintTop_toBottomOf="@id/anyupiOption"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/upilogo"
+            android:contentDescription="PhonePe" />
+
+        <TextView
+            android:id="@+id/anyupiText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PhonePe UPI"
+            android:layout_marginStart="16dp"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="25dp"
+        android:src="@drawable/baseline_arrow_back_ios_24"
+        app:layout_constraintTop_toBottomOf="@id/anyupiback"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="Card" />
+
+    <!-- Add more UPI options similarly as needed -->
+
+    <!-- Wallet Section -->
+    <TextView
+        android:id="@+id/walletHeading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Wallet"
+
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/addNewOption"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="25dp" />
+
+    <LinearLayout
+        android:id="@+id/amazonPayOption"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:clickable="true"
+        app:layout_constraintTop_toBottomOf="@id/walletHeading"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/apay_logo"
+            android:contentDescription="Amazon Pay" />
+
+        <TextView
+            android:id="@+id/amazonPayText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Amazon Pay Balance"
+            android:layout_marginStart="16dp"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/cashondelevryOption"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:clickable="true"
+        app:layout_constraintTop_toBottomOf="@id/amazonPayOption"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/apay_logo"
+            android:contentDescription="Amazon Pay" />
+
+        <TextView
+            android:id="@+id/cashonPayText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cash on pay"
+            android:layout_marginStart="16dp"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
