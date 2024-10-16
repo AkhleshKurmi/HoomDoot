@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#12000000"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
     <ScrollView
@@ -106,33 +107,32 @@
    <TextView
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
-       android:text="CATEGORIES"
-       android:textSize="16sp"
-       android:layout_marginTop="10dp"
-       android:textStyle="bold"/>
+       android:text="Explore All Services"
+       android:textSize="12sp"
+       android:textStyle="bold"
+
+       android:layout_marginTop="10dp"/>
      <androidx.recyclerview.widget.RecyclerView
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
+         android:background="@color/white"
          android:layout_marginTop="10dp"
+         android:layout_gravity="center"
          android:nestedScrollingEnabled="false"
          android:id="@+id/rv_category"/>
+
      <TextView
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="SERVICES"
-         android:textSize="16sp"
-         android:layout_marginTop="10dp"
-         android:textStyle="bold"/>
-     <TextView
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
+         android:layout_width="match_parent"
+         android:background="@color/white"
+         android:layout_height="30dp"
+         android:padding="5dp"
+         android:textSize="12sp"
          android:text="Kitchen And Bathroom"
-         android:layout_marginTop="10dp"
-         android:textStyle="bold"/>
+         android:layout_marginTop="15dp"/>
      <androidx.recyclerview.widget.RecyclerView
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
-         android:layout_marginTop="10dp"
+         android:background="@color/white"
          android:nestedScrollingEnabled="false"
          android:id="@+id/rv_services"/>
 
@@ -164,6 +164,7 @@
      <androidx.recyclerview.widget.RecyclerView
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
+         android:background="@color/white"
          android:nestedScrollingEnabled="false"
          android:id="@+id/rv_sofa_cleaning"/>
      <TextView
@@ -176,6 +177,7 @@
      <androidx.recyclerview.widget.RecyclerView
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
+         android:background="@color/white"
          android:nestedScrollingEnabled="false"
          android:id="@+id/rv_pest_control"/>
      <TextView
@@ -188,6 +190,7 @@
      <androidx.recyclerview.widget.RecyclerView
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
+         android:background="@color/white"
          android:nestedScrollingEnabled="false"
          android:id="@+id/rv_ac_service"/>
 
