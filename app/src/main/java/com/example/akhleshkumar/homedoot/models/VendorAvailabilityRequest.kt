@@ -2,7 +2,7 @@ package com.example.akhleshkumar.homedoot.models
 
 data class VendorAvailabilityRequest(
     val date: String,
-    val time: Int,
+    val time: String,
     val cart_info: List<CartItems>
 )
 

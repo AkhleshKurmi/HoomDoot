@@ -23,6 +23,7 @@ import com.example.akhleshkumar.homedoot.models.CartItem
 import com.example.akhleshkumar.homedoot.models.CartItems
 import com.example.akhleshkumar.homedoot.models.CartListResponse
 import com.example.akhleshkumar.homedoot.models.OrderCheckoutRequest
+import com.example.akhleshkumar.homedoot.models.OrderCheckoutRes
 import com.example.akhleshkumar.homedoot.models.RemoveCartItemRes
 import com.example.akhleshkumar.homedoot.models.TimeDataModel
 import com.example.akhleshkumar.homedoot.models.VendorAvailabilityRequest
@@ -41,10 +42,11 @@ class CartActivity : AppCompatActivity() {
     var date = ""
     var email  = ""
     var mobile  = ""
-    private var vendorList = mutableListOf<CartItems>()
+    private var vendorList = ArrayList<CartItems>()
     lateinit var rvCart: RecyclerView
     private lateinit var checkOutBtn: Button
     private val listTime : ArrayList<TimeDataModel> =  ArrayList()
+    var cartItemList = ArrayList<CartItems>()
     @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,7 +96,7 @@ class CartActivity : AppCompatActivity() {
                 if (time.isEmpty() && date.isEmpty()) {
                     Toast.makeText(this@CartActivity, "please Select Date And Time", Toast.LENGTH_SHORT).show()
                 } else {
-                    proceedTOCheckOut()
+                   checkVendorAvailavility()
                 }
             }
 
@@ -110,7 +112,7 @@ class CartActivity : AppCompatActivity() {
                 response: Response<CartListResponse>
             ) {
                 if (response.isSuccessful) {
-                    addItemsInVendorList(response.body()!!.data.cart)
+                    cartItemList = addItemsInVendorList(response.body()!!.data.cart)
                     val cartAdapter = CartAdapter(
                         this@CartActivity,
                         response.body()!!.data.cart,
@@ -144,19 +146,20 @@ class CartActivity : AppCompatActivity() {
 
 
     }
-    fun addItemsInVendorList(list :List<Cart>) {
+    fun addItemsInVendorList(list :List<Cart>) :ArrayList<CartItems>{
 
         for (item in list) {
             // Create a new instance of Cart (or whatever type vendorList is)
             val vendorItem = CartItems(
-                item_id = item.item_id,
+                item_id = item.item_id.toInt(),
                 quantity = item.quantity.toInt(),
-                price = item.price,
-                category_id = item.category_id,
-                product_id = item.product_id
+                price = item.price.toInt(),
+                category_id = item.category_id.toInt(),
+                product_id = item.product_id.toInt()
             )
             vendorList.add(vendorItem)
         }
+        return vendorList
     }
 
 
@@ -213,31 +216,57 @@ class CartActivity : AppCompatActivity() {
 
     }
     
-    fun proceedTOCheckOut(){
+    fun checkVendorAvailavility(){
+
+        val requestBody = VendorAvailabilityRequest(date, time, cartItemList)
 
 
-        RetrofitClient.instance.checkVendorAvailability(VendorAvailabilityRequest("2024-10-05","13".toInt(),vendorList)).enqueue(
+        RetrofitClient.instance.checkVendorAvailability(requestBody).enqueue(
             object : Callback<VendorAvailabilityResponse> {
                 override fun onResponse(
                     call: Call<VendorAvailabilityResponse>,
                     response: Response<VendorAvailabilityResponse>
                 ) {
                     if (response.isSuccessful) {
-                        if (response.body()!!.status){
+                        if (response.body()!!.status) {
+
+                                proceedToCheckout()
+
 
                         }
-
                     }
                 }
 
                 override fun onFailure(call: Call<VendorAvailabilityResponse>, t: Throwable) {
-
+                    Toast.makeText(this@CartActivity, t.localizedMessage, Toast.LENGTH_SHORT).show()
                 }
 
             })
 
-        Toast.makeText(this, "Proceeding to checkOut", Toast.LENGTH_SHORT).show()
-    }
 
+    }
+   fun proceedToCheckout(){
+       val orderRequest = OrderCheckoutRequest(id.toInt(),email,mobile,"","",date,time,"cc","",
+           "pc","","","",",","","","",
+           0,0,0,cartItemList )
+       RetrofitClient.instance.placeOrder(orderRequest).enqueue(object : Callback<OrderCheckoutRes> {
+           override fun onResponse(
+               call: Call<OrderCheckoutRes>,
+               response: Response<OrderCheckoutRes>
+           ) {
+               if (response.isSuccessful){
+                   if (response.body()!!.success){
+
+                       Toast.makeText(this@CartActivity, "${response.body()!!.message}\n "+response.body()!!.data.order_no, Toast.LENGTH_SHORT).show()
+                   }
+               }
+           }
+
+           override fun onFailure(call: Call<OrderCheckoutRes>, t: Throwable) {
+               Toast.makeText(this@CartActivity, "${t.localizedMessage}", Toast.LENGTH_SHORT).show()
+           }
+
+       })
+   }
 
 }
