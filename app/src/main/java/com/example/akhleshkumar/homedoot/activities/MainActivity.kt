@@ -122,8 +122,17 @@ private fun getAddress(latitude: Double, longitude: Double) {
             val address = addresses[0]
             val fullAddress = address.getAddressLine(0) // Full address
             val postalCode = address.postalCode // Pin code
-            editorSP.putString("fullAddress",fullAddress)
-            editorSP.putString("pinCode",postalCode)
+            val city = address.locality // City name
+            val state = address.adminArea // State name
+            val homeNumber = address.subThoroughfare // Home number
+            val villageOrSector = address.thoroughfare // Village or sector name
+
+            editorSP.putString("fullAddress", fullAddress)
+            editorSP.putString("pinCode", postalCode)
+            editorSP.putString("city", city)
+            editorSP.putString("state", state)
+            editorSP.putString("homeNumber", homeNumber)
+            editorSP.putString("villageOrSector", villageOrSector)
             editorSP.commit()
             Log.d("Address", "Address: $fullAddress, Postal Code: $postalCode")
         } else {
