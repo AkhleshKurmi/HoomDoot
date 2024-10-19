@@ -3,6 +3,7 @@ package com.example.akhleshkumar.homedoot.api
 import com.example.akhleshkumar.homedoot.models.AddCartResponse
 import com.example.akhleshkumar.homedoot.models.ProductListResponse
 import com.example.akhleshkumar.homedoot.models.ApiResponseCategory
+import com.example.akhleshkumar.homedoot.models.CancelOrderResponse
 import com.example.akhleshkumar.homedoot.models.CartListResponse
 import com.example.akhleshkumar.homedoot.models.CheckSlotsResponse
 import com.example.akhleshkumar.homedoot.models.ChildSubCategoryResponse
@@ -91,5 +92,7 @@ interface ApiService {
     @POST("update_password")
     fun updatePassword(@Query("username") userName:String, @Query("guard") userType:String, @Query("password") password: String, @Query("password_confirmation") confirmPassword:String) : Call<UpdatePasswordResponse>
 
+    @POST("customer-update-order")
+    fun cancelOrder(@Query("order_no") orderNo:String, @Query("vendor_id") vendorId:Int, @Query("status") status: String, @Query("mobile") mobile:String) : Call<CancelOrderResponse>
 
 }

@@ -32,7 +32,7 @@ class OrderListActivity : AppCompatActivity() {
                 if (response.isSuccessful){
                     if (response.body()!!.success) {
                         val orderData = response.body()!!.data
-                       orderRecyclerView.adapter  = OrderAdapter( orderData.orders.data)
+                       orderRecyclerView.adapter  = OrderAdapter( this@OrderListActivity, orderData.orders.data[0].items, orderData.product_path)
 
                     }
                 }

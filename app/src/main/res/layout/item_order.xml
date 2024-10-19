@@ -1,70 +1,46 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!-- res/layout/item_order.xml -->
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
+    android:padding="16dp"
     android:elevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="vertical">
 
-        <!-- Order Number -->
+        <ImageView
+            android:id="@+id/productImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center"/>
+
         <TextView
-            android:id="@+id/orderNo"
+            android:id="@+id/productName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Order No: 12345"
+            android:text="Product Name"
+            android:textSize="18sp"
             android:textStyle="bold"
-            android:textSize="16sp"/>
+            android:paddingTop="8dp" />
 
-        <!-- Razor Order ID -->
         <TextView
-            android:id="@+id/razorOrderId"
+            android:id="@+id/productPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Razor Order ID: xyz123"
-            android:textSize="14sp"
-            android:layout_marginTop="4dp"/>
-
-        <!-- Grand Total -->
+            android:text="Price"
+            android:textSize="16sp"
+            android:paddingTop="4dp" />
         <TextView
-            android:id="@+id/grandTotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Total: $200.00"
-            android:textSize="14sp"
-            android:layout_marginTop="4dp"/>
-
-        <!-- Payment Method -->
-        <TextView
-            android:id="@+id/paymentMethod"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Payment: Credit Card"
-            android:textSize="14sp"
-            android:layout_marginTop="4dp"/>
-
-        <!-- Order Date and Time -->
-        <TextView
-            android:id="@+id/serviceDateTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Service Date: 2023-07-20 15:30"
-            android:textSize="14sp"
-            android:layout_marginTop="4dp"/>
-
-        <!-- Status of the Order -->
-        <TextView
-            android:id="@+id/orderStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Status: Completed"
-            android:textSize="14sp"
-            android:layout_marginTop="4dp"/>
+            android:text="status"
+            android:id="@+id/orderStatus"/>
 
     </LinearLayout>
+
 </androidx.cardview.widget.CardView>

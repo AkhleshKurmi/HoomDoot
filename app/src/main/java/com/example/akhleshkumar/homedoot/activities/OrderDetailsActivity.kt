@@ -5,13 +5,13 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
+import com.example.akhleshkumar.homedoot.models.CancelOrderResponse
 import com.squareup.picasso.Picasso
+import retrofit2.Call
+import retrofit2.Response
 
 class OrderDetailsActivity : AppCompatActivity() {
 
@@ -22,9 +22,11 @@ class OrderDetailsActivity : AppCompatActivity() {
             // Get the data passed from the previous activity
             val productName = intent.getStringExtra("PRODUCT_NAME")
             val productImageUrl = intent.getStringExtra("PRODUCT_IMAGE_URL")
-            val productPrice = intent.getDoubleExtra("PRODUCT_PRICE", 0.0)
+            val productPrice = intent.getIntExtra("PRODUCT_PRICE", 0)
             val orderDetails = intent.getStringExtra("ORDER_DETAILS")
             val orderId = intent.getStringExtra("ORDER_ID")
+            val sharedPreferences = getSharedPreferences("HomeDoot", MODE_PRIVATE)
+            val mobile = sharedPreferences.getString("mobile","")!!
 
             // Find views
             val productNameTextView: TextView = findViewById(R.id.productNameDetail)
@@ -35,7 +37,7 @@ class OrderDetailsActivity : AppCompatActivity() {
 
             // Set data in views
             productNameTextView.text = productName
-            productPriceTextView.text = "$${productPrice}"
+            productPriceTextView.text = "₹ ${productPrice}"
             detailsTextView.text = orderDetails
 
             // Load product image using Glide or any other image loading library
@@ -45,16 +47,40 @@ class OrderDetailsActivity : AppCompatActivity() {
 
             // Handle cancel order button click
             cancelOrderButton.setOnClickListener {
-                cancelOrder(orderId)
+                cancelOrder(orderId,mobile)
             }
         }
 
-        private fun cancelOrder(orderId: String?) {
+        private fun cancelOrder(orderId: String?, mobile:String) {
             // You can call your API to cancel the order here
             if (orderId != null) {
+              RetrofitClient.instance.cancelOrder(orderId!!,1,"cancelled",mobile).enqueue(object :retrofit2.Callback<CancelOrderResponse>{
+                  override fun onResponse(
+                      call: Call<CancelOrderResponse>,
+                      response: Response<CancelOrderResponse>
+                  ) {
+                      if (response.isSuccessful){
+                          if (response.body()!!.success){
+                              Toast.makeText(this@OrderDetailsActivity, response.body()!!.message, Toast.LENGTH_SHORT)
+                                  .show()
+                          }else
+                          {
+                              Toast.makeText(this@OrderDetailsActivity, response.body()!!.message, Toast.LENGTH_SHORT)
+                                  .show()
+                          }
+                      }
+                      else{
+                          Toast.makeText(this@OrderDetailsActivity, "something went wrong", Toast.LENGTH_SHORT)
+                              .show()
+                      }
+                  }
 
-                Toast.makeText(this, "Order $orderId canceled", Toast.LENGTH_SHORT).show()
+                  override fun onFailure(call: Call<CancelOrderResponse>, t: Throwable) {
+                      Toast.makeText(this@OrderDetailsActivity, "something went wrong", Toast.LENGTH_SHORT)
+                          .show()
+                  }
 
+              })
 
             } else {
                 Toast.makeText(this, "Order ID is null", Toast.LENGTH_SHORT).show()
