@@ -24,7 +24,7 @@ class OrderListActivity : AppCompatActivity() {
         orderRecyclerView = findViewById(R.id.recyclerViewOrders)
         orderRecyclerView.layoutManager = LinearLayoutManager(this)
         userId = intent.getStringExtra("userId")!!
-        RetrofitClient.instance.customerOrders(/*userId.toInt()*/ 329).enqueue(object :Callback<UserOrderResponse>{
+        RetrofitClient.instance.customerOrders(userId.toInt()).enqueue(object :Callback<UserOrderResponse>{
             override fun onResponse(
                 call: Call<UserOrderResponse>,
                 response: Response<UserOrderResponse>
@@ -32,7 +32,7 @@ class OrderListActivity : AppCompatActivity() {
                 if (response.isSuccessful){
                     if (response.body()!!.success) {
                         val orderData = response.body()!!.data
-//                       orderRecyclerView.adapter  = OrderAdapter( orderData.orders.data)
+                       orderRecyclerView.adapter  = OrderAdapter( orderData.orders.data)
 
                     }
                 }
