@@ -8,17 +8,38 @@
     android:padding="16dp">
 
     <!-- Title for Saved Addresses -->
-    <TextView
-        android:id="@+id/tv_saved_addresses"
-        android:layout_width="wrap_content"
+    <RadioGroup
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Saved addresses"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@android:color/black"
-        android:fontFamily="sans-serif-medium"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:id="@+id/rg_address"
+        android:orientation="vertical">
+        <RadioButton
+            android:id="@+id/tv_location_addresses"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location addresses"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:fontFamily="sans-serif-medium"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <RadioButton
+            android:id="@+id/tv_saved_addresses"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Saved addresses"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:fontFamily="sans-serif-medium"
+            app:layout_constraintTop_toBottomOf="@id/tv_location_addresses"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+    </RadioGroup>
 
     <!-- Add New Address Button -->
     <TextView
@@ -29,11 +50,10 @@
         android:textSize="16sp"
         android:textStyle="bold"
         android:textColor="#6B43FB"
+        app:layout_constraintTop_toBottomOf="@id/rg_address"
         android:paddingTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_saved_addresses"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/recycler_view_addresses" />
-
     <!-- RecyclerView to display addresses -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_addresses"
@@ -55,8 +75,9 @@
         android:textColor="@android:color/white"
         android:backgroundTint="#6B43FB"
         android:textSize="16sp"
-        android:paddingVertical="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="10dp"
+        android:paddingVertical="12sp"
+        app:layout_constraintTop_toBottomOf="@id/recycler_view_addresses"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

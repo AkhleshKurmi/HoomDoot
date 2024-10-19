@@ -74,11 +74,21 @@ fun login(userName:String, password:String){
             ) {
                 if (response.isSuccessful){
                     if (response.body()!!.success){
+                        val data = response.body()!!.data
                         editorSP.putString("userName",response.body()!!.data.email)
                         editorSP.putString("password",etPassword.text.toString())
+                        editorSP.putString("mobile",response.body()!!.data.mobile)
+                        editorSP.putString("cityS",data.city)
+                        editorSP.putString("stateS",data.state)
+                        editorSP.putString("addressS",data.address)
+                        editorSP.putString("pincodeS",data.pincode)
                         editorSP.putBoolean("isLogin", true)
                         editorSP.commit()
-                        startActivity(Intent(this@LoginActivity, MainActivity::class.java).putExtra("id", response.body()!!.data.id))
+                        startActivity(Intent(this@LoginActivity, MainActivity::class.java).putExtra("id", response.body()!!.data.id)
+                            .putExtra("email",data.email)
+                            .putExtra("name",data.name)
+                            .putExtra("mobile",data.mobile))
+                        finish()
                     }
                     else{
                         Toast.makeText(this@LoginActivity, response.body()!!.message, Toast.LENGTH_SHORT)
@@ -89,7 +99,7 @@ fun login(userName:String, password:String){
 
             override fun onFailure(call: Call<LoginUserResponse>, t: Throwable) {
                 Log.d("TAG", "onFailure: ${t.localizedMessage}")
-                Toast.makeText(this@LoginActivity, t.localizedMessage, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@LoginActivity, "Invalid credentials", Toast.LENGTH_SHORT).show()
             }
 
         })

@@ -5,11 +5,11 @@ data class OrderCheckoutRequest(
     val email: String,
     val mobile: String,
     val address: String,
-    val state: String,
+    val state: Int,
     val service_date: String,
     val service_time: String,
     val coupan_code: String,
-    val city: String,
+    val city: Int,
     val pincode: String,
     val other_first_name: String,
     val other_last_name: String,
@@ -24,10 +24,3 @@ data class OrderCheckoutRequest(
     val cart_info: List<CartItems>
 )
 
-data class CartItem(
-    val product_id: Int,
-    val item_id: Int,
-    val category_id: Int,
-    val price: Int,
-    val quantity: Int
-)

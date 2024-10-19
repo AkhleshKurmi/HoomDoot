@@ -3,7 +3,7 @@ package com.example.akhleshkumar.homedoot.models
 data class OrderCheckoutRes(
     val success: Boolean,
     val message: String,
-    val data: OrderData
+//    val data: List<OrderData>
 )
 
 data class OrderData(

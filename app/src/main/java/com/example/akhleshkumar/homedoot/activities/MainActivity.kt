@@ -29,6 +29,9 @@ class MainActivity : AppCompatActivity() {
     lateinit var bottomNavigationView : BottomNavigationView
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     var id = 0
+    var name = ""
+    var email = ""
+    var phone = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -46,10 +49,17 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavigationView = findViewById(R.id.bottom_navigation)
         id = intent.getIntExtra("id",0)
+        name = intent.getStringExtra("name")!!
+        email= intent.getStringExtra("email")!!
+        phone = intent.getStringExtra("mobile")!!
+
 
         val homeDootFragment = HomeDootFragment()
         val args = Bundle()
         args.putInt("id", id)
+        args.putString("mobile",phone)
+        args.putString("name",name)
+        args.putString("email",email)
         homeDootFragment.arguments = args
         val cartFragment = CartFragment()
         cartFragment.arguments = args

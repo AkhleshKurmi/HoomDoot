@@ -1,5 +1,7 @@
 package com.example.akhleshkumar.homedoot.fragments
 
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +9,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.akhleshkumar.homedoot.R
+import com.example.akhleshkumar.homedoot.activities.LoginActivity
+import com.example.akhleshkumar.homedoot.activities.OrderListActivity
 
 class ProfileFragment : Fragment() {
 
@@ -19,13 +24,19 @@ class ProfileFragment : Fragment() {
     private lateinit var myOrdersButton: Button
     private lateinit var logoutButton: Button
     private lateinit var profileImage: ImageView
+    var userId = " "
+    lateinit var sharedPreferences: SharedPreferences
+    lateinit var editorSP : SharedPreferences.Editor
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
-
+        sharedPreferences = requireContext().getSharedPreferences("HomeDoot",
+            AppCompatActivity.MODE_PRIVATE
+        )
+        editorSP = sharedPreferences.edit()
         nameTextView = view.findViewById(R.id.nameTextView)
         emailTextView = view.findViewById(R.id.emailTextView)
         phoneTextView = view.findViewById(R.id.phoneTextView)
@@ -33,18 +44,25 @@ class ProfileFragment : Fragment() {
         myOrdersButton = view.findViewById(R.id.myOrdersButton)
         logoutButton = view.findViewById(R.id.logoutButton)
         profileImage = view.findViewById(R.id.profileImage)
-
+        userId = requireArguments().getInt("id",0).toString()
+        nameTextView.text= requireArguments().getString("name","")
+        emailTextView.text = requireArguments().getString("email","")
+        phoneTextView.text = requireArguments().getString("mobile","")
         // Set up button click listeners
         editProfileButton.setOnClickListener {
             // Handle edit/update profile action
         }
 
         myOrdersButton.setOnClickListener {
-            // Handle my orders action
+            startActivity(Intent(requireContext(),OrderListActivity::class.java).putExtra("userId",userId))
         }
 
         logoutButton.setOnClickListener {
-            // Handle logout action
+           editorSP.putBoolean("isLogin",false)
+            editorSP.clear()
+            editorSP.commit()
+            requireContext().startActivity(Intent(requireContext(),LoginActivity::class.java))
+            requireActivity().finish()
         }
 
         return view

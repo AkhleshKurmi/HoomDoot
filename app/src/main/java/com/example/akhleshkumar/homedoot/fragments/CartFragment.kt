@@ -268,7 +268,7 @@ class CartFragment : Fragment() {
 
     }
     fun proceedToCheckout(){
-        val orderRequest = OrderCheckoutRequest(id.toInt(),email,mobile,"","",date,time,"cc","",
+        val orderRequest = OrderCheckoutRequest(id.toInt(),email,mobile,"","".toInt(),date,time,"cc","".toInt(),
             "pc","","","",",","","","",
             0,0,0,cartItemList )
         RetrofitClient.instance.placeOrder(orderRequest).enqueue(object :
@@ -280,7 +280,7 @@ class CartFragment : Fragment() {
                 if (response.isSuccessful){
                     if (response.body()!!.success){
 
-                        Toast.makeText(requireContext(), "${response.body()!!.message}\n "+response.body()!!.data.order_no, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "${response.body()!!.message}\n ", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

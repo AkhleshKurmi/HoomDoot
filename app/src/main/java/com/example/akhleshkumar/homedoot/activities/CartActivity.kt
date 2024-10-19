@@ -1,10 +1,13 @@
 package com.example.akhleshkumar.homedoot.activities
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -20,7 +23,6 @@ import com.example.akhleshkumar.homedoot.interfaces.OnItemDelete
 import com.example.akhleshkumar.homedoot.interfaces.OnItenUpdateCart
 import com.example.akhleshkumar.homedoot.interfaces.OnTimeSelectListener
 import com.example.akhleshkumar.homedoot.models.Cart
-import com.example.akhleshkumar.homedoot.models.CartItem
 import com.example.akhleshkumar.homedoot.models.CartItems
 import com.example.akhleshkumar.homedoot.models.CartListResponse
 import com.example.akhleshkumar.homedoot.models.OrderCheckoutRequest
@@ -43,6 +45,11 @@ class CartActivity : AppCompatActivity() {
     var date = ""
     var email  = ""
     var mobile  = ""
+    var address = ""
+    var city = ""
+    var state = ""
+    var pincode = ""
+
     private var vendorList = ArrayList<CartItems>()
     lateinit var rvCart: RecyclerView
     private lateinit var checkOutBtn: Button
@@ -234,9 +241,7 @@ class CartActivity : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful) {
                         if (response.body()!!.status) {
-
-                                proceedToCheckout()
-
+                         chooseAddress()
 
                         }
                     }
@@ -250,10 +255,59 @@ class CartActivity : AppCompatActivity() {
 
 
     }
-   fun proceedToCheckout(){
-       val orderRequest = OrderCheckoutRequest(id.toInt(),email,mobile,"","",date,time,"cc","",
-           "pc","","","",",","","","",
-           0,0,0,cartItemList )
+
+    fun chooseAddress(){
+        val bottomSheetDialog = BottomSheetDialog(this@CartActivity)
+        val bottomSheetView = layoutInflater.inflate(R.layout.bottom_sheet_saved_addresses,null)
+        bottomSheetDialog.setContentView(bottomSheetView)
+        val rgAddress = bottomSheetView.findViewById<RadioGroup>(R.id.rg_address)
+        rgAddress.setOnCheckedChangeListener { group, checkedId ->
+            if (checkedId == R.id.tv_location_addresses) {
+                city = sharedPreferences.getString("city","")!!
+                address = sharedPreferences.getString("villageOrSector","")!!
+                pincode = sharedPreferences.getString("pinCode","")!!
+                state = sharedPreferences.getString("state","")!!
+                mobile = sharedPreferences.getString("mobile","")!!
+                email = sharedPreferences.getString("userName","")!!
+            }
+            else {
+                city = sharedPreferences.getString("cityS","")!!
+                address = sharedPreferences.getString("villageOrSectorS","")!!
+                pincode = sharedPreferences.getString("pincodeS","")!!
+                state = sharedPreferences.getString("stateS","")!!
+                mobile = sharedPreferences.getString("mobileS","")!!
+                email = sharedPreferences.getString("emailS","")!!
+            }
+        }
+
+        bottomSheetView.findViewById<RadioButton>(R.id.tv_location_addresses).text = sharedPreferences.getString("homeNumber","") +" "+  sharedPreferences.getString("villageOrSector","")!!+" "+  sharedPreferences.getString("city","")!!+" "+
+                sharedPreferences.getString("pinCode","")!!+" "+
+                sharedPreferences.getString("state","")!!
+        bottomSheetView.findViewById<RadioButton>(R.id.tv_saved_addresses).text = sharedPreferences.getString("villageOrSectorS","")!!+" "+
+                sharedPreferences.getString("cityS","")!!+" "+ sharedPreferences.getString("stateS","")!!+" "+sharedPreferences.getString("pincodeS","")!!
+        bottomSheetView.findViewById<Button>(R.id.btn_proceed).setOnClickListener {
+            showConfirmDialog()
+        }
+        bottomSheetDialog.show()
+    }
+
+    private fun showConfirmDialog() {
+//        val dialog = Dialog(this@CartActivity)
+//        dialog.setContentView(R.layout.address_time_bottom_sheet)
+//        val window = dialog.window
+//        window?.setLayout(
+//            WindowManager.LayoutParams.MATCH_PARENT,
+//            WindowManager.LayoutParams.WRAP_CONTENT
+//        )
+//        val address =
+
+        proceedToCheckout()
+    }
+
+    fun proceedToCheckout(){
+       val orderRequest = OrderCheckoutRequest(id.toInt(),email,mobile,address,12,date,time,"Test",11,
+           pincode,"gdc","rre","rr","9899815159","rr","tyy","1",
+           5,164,564,cartItemList )
        RetrofitClient.instance.placeOrder(orderRequest).enqueue(object : Callback<OrderCheckoutRes> {
            override fun onResponse(
                call: Call<OrderCheckoutRes>,
@@ -261,8 +315,9 @@ class CartActivity : AppCompatActivity() {
            ) {
                if (response.isSuccessful){
                    if (response.body()!!.success){
-
-                       Toast.makeText(this@CartActivity, "${response.body()!!.message}\n "+response.body()!!.data.order_no, Toast.LENGTH_SHORT).show()
+                       startActivity(Intent(this@CartActivity,PaymentMethodActivity::class.java))
+                   }else{
+                       Toast.makeText(this@CartActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
                    }
                }
            }
