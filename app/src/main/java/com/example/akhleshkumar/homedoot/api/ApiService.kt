@@ -7,6 +7,7 @@ import com.example.akhleshkumar.homedoot.models.CancelOrderResponse
 import com.example.akhleshkumar.homedoot.models.CartListResponse
 import com.example.akhleshkumar.homedoot.models.CheckSlotsResponse
 import com.example.akhleshkumar.homedoot.models.ChildSubCategoryResponse
+import com.example.akhleshkumar.homedoot.models.CouponResponse
 import com.example.akhleshkumar.homedoot.models.OrderCheckoutRequest
 import com.example.akhleshkumar.homedoot.models.OrderCheckoutRes
 import com.example.akhleshkumar.homedoot.models.ProductDetailsResponse
@@ -95,4 +96,6 @@ interface ApiService {
     @POST("customer-update-order")
     fun cancelOrder(@Query("order_no") orderNo:String, @Query("vendor_id") vendorId:Int, @Query("status") status: String, @Query("mobile") mobile:String) : Call<CancelOrderResponse>
 
+    @POST("apply-coupan-code")
+    fun applyCouponCode(@Query("coupan_code") couponCode: String) : Call<CouponResponse>
 }
