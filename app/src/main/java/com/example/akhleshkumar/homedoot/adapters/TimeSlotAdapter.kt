@@ -38,15 +38,18 @@ class TimeSlotAdapter(val list:List<TimeDataModel>, private val onTimeSelectList
 
     override fun onBindViewHolder(holder: TimeViewHolder, position: Int) {
         holder.tvTime.text = list[position].time
-        holder.tvTime.setTextColor(
-            if (position == selectedPosition)
-                Color.RED // Selected color
-            else
-                Color.BLACK // Default color
-        )
-        holder.tvTime.setOnClickListener {
+
+        holder.itemView.setOnClickListener {
          onTimeSelectListener.onTimeSelected(list[position].time)
+            selectedPosition = holder.position
+            notifyDataSetChanged()
+
         }
 
+        if (position == selectedPosition) {
+            holder.tvTime.setTextColor(Color.RED)
+        } else {
+            holder.tvTime.setTextColor(Color.BLACK)
+        }
     }
 }

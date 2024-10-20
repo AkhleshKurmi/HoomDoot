@@ -31,13 +31,20 @@ class DateSlotAdapter (val list:List<String>, private val onDateSelectListener: 
     override fun onBindViewHolder(holder: DateViewHolder, position: Int) {
         val date = list[position]
         holder.tvTime.text = date
-        holder.tvTime.setOnClickListener {
+        holder.itemView.setOnClickListener {
+
             onDateSelectListener.onDateSelected(date)
-            holder.tvTime.setTextColor(
-
-                    Color.RED // Selected color
-
-            )
+            selectedPosition = holder.position
+            notifyDataSetChanged()
         }
+
+        if (position == selectedPosition) {
+            holder.tvTime.setTextColor(Color.RED)
+        } else {
+            holder.tvTime.setTextColor(Color.BLACK)
+        }
+
+        // Set click listener for selecting a time slot
+
     }
 }

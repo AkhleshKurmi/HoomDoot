@@ -6,28 +6,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.akhleshkumar.homedoot.R
-import com.example.akhleshkumar.homedoot.api.RetrofitClient
 import com.example.akhleshkumar.homedoot.interfaces.OnItemDelete
 import com.example.akhleshkumar.homedoot.interfaces.OnItenUpdateCart
 import com.example.akhleshkumar.homedoot.models.Cart
-import com.example.akhleshkumar.homedoot.models.RemoveCartItemRes
 import com.squareup.picasso.Picasso
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class CartAdapter(
     private val context: Context,
-    private val cartList: List<Cart>,
+    private val cartList: MutableList<Cart>,
     val userId:Int,
     val path :String,
     val onItemDelete:OnItemDelete ,
     val onItemUpdateCart: OnItenUpdateCart
 ) : RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
 
+    fun clearList(){
+        cartList.clear()
+    }
     // ViewHolder class to hold references to the UI components
     class CartViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val productImage: ImageView = view.findViewById(R.id.image_product)
@@ -59,6 +56,7 @@ class CartAdapter(
         holder.productTitle.text = productDetail.service_name
         holder.productDescription.text = productDetail.description
         holder.originalPrice.text = "₹${productDetail.price}"
+        holder.originalPrice.paintFlags
         holder.discountPrice.text = "₹${productDetail.price}"
         holder.totalPrice.text = "₹${cartItem.total_amount}"
         holder.quantity.text = cartItem.quantity.toString()

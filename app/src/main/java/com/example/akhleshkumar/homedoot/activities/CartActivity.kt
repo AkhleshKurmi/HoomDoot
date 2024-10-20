@@ -8,6 +8,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -18,6 +19,7 @@ import com.example.akhleshkumar.homedoot.adapters.CartAdapter
 import com.example.akhleshkumar.homedoot.adapters.DateSlotAdapter
 import com.example.akhleshkumar.homedoot.adapters.TimeSlotAdapter
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
+import com.example.akhleshkumar.homedoot.databinding.ActivityCartBinding
 import com.example.akhleshkumar.homedoot.interfaces.OnDateSelectListener
 import com.example.akhleshkumar.homedoot.interfaces.OnItemDelete
 import com.example.akhleshkumar.homedoot.interfaces.OnItenUpdateCart
@@ -25,6 +27,7 @@ import com.example.akhleshkumar.homedoot.interfaces.OnTimeSelectListener
 import com.example.akhleshkumar.homedoot.models.Cart
 import com.example.akhleshkumar.homedoot.models.CartItems
 import com.example.akhleshkumar.homedoot.models.CartListResponse
+import com.example.akhleshkumar.homedoot.models.CouponResponse
 import com.example.akhleshkumar.homedoot.models.OrderCheckoutRequest
 import com.example.akhleshkumar.homedoot.models.OrderCheckoutRes
 import com.example.akhleshkumar.homedoot.models.RemoveCartItemRes
@@ -49,21 +52,35 @@ class CartActivity : AppCompatActivity() {
     var city = ""
     var state = ""
     var pincode = ""
-
+    var discountPerc = 0
+    lateinit var cartAdapter : CartAdapter
     private var vendorList = ArrayList<CartItems>()
     lateinit var rvCart: RecyclerView
     private lateinit var checkOutBtn: Button
+    lateinit var tvCouponCode:TextView
+    lateinit var btnApplyCoupon:Button
     private val listTime : ArrayList<TimeDataModel> =  ArrayList()
     var cartItemList = ArrayList<CartItems>()
     lateinit var sharedPreferences: SharedPreferences
     lateinit var editorSP : SharedPreferences.Editor
+    lateinit var binding:ActivityCartBinding
+    var cartData = ArrayList<Cart>()
     @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        setContentView(R.layout.activity_cart)
+        binding = ActivityCartBinding.inflate(layoutInflater)
+            setContentView(binding.root)
         rvCart = findViewById<RecyclerView?>(R.id.recycler_view_products)
         checkOutBtn = findViewById(R.id.button_proceed_to_checkout)
+        tvCouponCode = findViewById(R.id.edit_text_coupon_code)
+        btnApplyCoupon = findViewById(R.id.button_apply_coupon)
+        
+        btnApplyCoupon.setOnClickListener {
+            if (tvCouponCode.text.toString().isNotEmpty()) {
+             applyCoupon(tvCouponCode.text.toString())
+            }
+        }
+        
         rvCart.layoutManager = LinearLayoutManager(this)
         sharedPreferences = getSharedPreferences("HomeDoot", MODE_PRIVATE)
         editorSP = sharedPreferences.edit()
@@ -112,8 +129,31 @@ class CartActivity : AppCompatActivity() {
                 }
             }
 
+
      bottomSheetDialog.show()
         }
+    }
+
+    private fun applyCoupon(couponCode: String) {
+      RetrofitClient.instance.applyCouponCode(couponCode).enqueue(object : Callback<CouponResponse>{
+          override fun onResponse(call: Call<CouponResponse>, response: Response<CouponResponse>) {
+              if (response.isSuccessful){
+                  if (response.body()!!.success){
+                      discountPerc = response.body()!!.data.discount
+                      totalAmount()
+                      cartAdapter.clearList()
+                      vendorList.clear()
+                      cartItemList.clear()
+                      itemList()
+                  }
+              }
+          }
+
+          override fun onFailure(call: Call<CouponResponse>, t: Throwable) {
+
+          }
+
+      })
     }
 
     fun itemList() {
@@ -125,20 +165,24 @@ class CartActivity : AppCompatActivity() {
             ) {
                 if (response.isSuccessful) {
                     cartItemList = addItemsInVendorList(response.body()!!.data.cart)
-                    val cartAdapter = CartAdapter(
+                    binding.textSubtotalValue.text = response.body()!!.data.cart[0].total_amount.toString()
+                    cartData.clear()
+                    cartData =response.body()!!.data.cart as ArrayList
+                        totalAmount()
+                    cartAdapter = CartAdapter(
                         this@CartActivity,
-                        response.body()!!.data.cart,
+                        response.body()!!.data.cart.toMutableList(),
                         1,
                         response.body()!!.data.main_image_path,object : OnItemDelete{
                             override fun itemDelete(itemId: Int, userId: Int) {
-                                this@CartActivity.itemDelete(itemId, userId)
+                                this@CartActivity.itemDelete(itemId, id.toInt())
 
 
 
                             }
                         },object : OnItenUpdateCart{
                             override fun onItemUpdate(itemId: Int, userId: Int, quantity: Int) {
-                                itemUpdate(itemId, userId, quantity )
+                                itemUpdate(itemId, id.toInt(), quantity )
 
                             }
 
@@ -158,6 +202,22 @@ class CartActivity : AppCompatActivity() {
 
 
     }
+
+    fun totalAmount(){
+        var amount:Long = 0
+        var discountPrice = 0L
+        for (items in cartData){
+            amount+= items.total_amount
+            if (discountPerc>0){
+                discountPrice += (items.total_amount*discountPerc)/100
+            }
+
+        }
+        binding.textSubtotalValue.text = "₹ ${amount.toString()}"
+        binding.textDiscountValue.text = "₹ ${discountPrice.toString()}"
+        binding.textTotalValue.text ="₹ ${ (amount - discountPrice).toString() }"
+
+    }
     fun addItemsInVendorList(list :List<Cart>) :ArrayList<CartItems>{
 
         for (item in list) {
@@ -165,7 +225,12 @@ class CartActivity : AppCompatActivity() {
             val vendorItem = CartItems(
                 item_id = item.item_id.toInt(),
                 quantity = item.quantity.toInt(),
-                price = item.price.toInt(),
+                price = if (discountPerc>0){
+                   item.total_amount - (item.total_amount*discountPerc)/100
+                                           }
+                else{
+                    item.total_amount
+                    }.toInt(),
                 category_id = item.category_id.toInt(),
                 product_id = item.product_id.toInt()
             )
@@ -196,6 +261,10 @@ class CartActivity : AppCompatActivity() {
                 response: Response<RemoveCartItemRes>
             ) {
                 if (response.isSuccessful){
+                    cartAdapter.clearList()
+                    vendorList.clear()
+                    cartItemList.clear()
+
                     itemList()
                     Toast.makeText(this@CartActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
                 }
@@ -215,6 +284,9 @@ class CartActivity : AppCompatActivity() {
                 response: Response<RemoveCartItemRes>
             ) {
                 if (response.isSuccessful){
+                    cartAdapter.clearList()
+                    vendorList.clear()
+                    cartItemList.clear()
                     itemList()
                     Toast.makeText(this@CartActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
                 }
@@ -315,6 +387,7 @@ class CartActivity : AppCompatActivity() {
            ) {
                if (response.isSuccessful){
                    if (response.body()!!.success){
+                       Toast.makeText(this@CartActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
                        startActivity(Intent(this@CartActivity,PaymentMethodActivity::class.java))
                    }else{
                        Toast.makeText(this@CartActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
