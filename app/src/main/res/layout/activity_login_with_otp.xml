@@ -5,97 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@drawable/backimg"
+    android:background="@drawable/backotp"
     tools:context=".activities.LoginActivity"
     android:padding="16dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_marginTop="37dp"
-            android:layout_height="50dp"
-            android:src="@drawable/hdicon"/>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_marginLeft="5sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:layout_height="wrap_content"
-            android:text="HomeDoot"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="  is here"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Home"
-                android:textStyle="bold"
-                android:textSize="22sp"
-                android:layout_marginLeft="5dp"
-                android:textColor="@color/black"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Doot"
-                android:textSize="22sp"
-                android:layout_marginLeft="5dp"
-                android:textColor="@color/black"/>
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#868484"
-                android:layout_marginLeft="5dp"
-                android:textSize="26sp"
-
-                android:text="Home Services "/>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="HOMEDOOT Service Expert"
-        android:textColor="#393535"
-        android:textStyle="bold"
-        android:textSize="20dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Fast. Reasonable. Satisfaction"
-        android:textSize="16dp"/>
 
     <!-- Username Input with improved style -->
     <EditText
