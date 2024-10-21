@@ -23,6 +23,7 @@ import com.example.akhleshkumar.homedoot.adapters.CartAdapter
 import com.example.akhleshkumar.homedoot.adapters.DateSlotAdapter
 import com.example.akhleshkumar.homedoot.adapters.TimeSlotAdapter
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
+import com.example.akhleshkumar.homedoot.databinding.FragmentCartBinding
 import com.example.akhleshkumar.homedoot.interfaces.OnDateSelectListener
 import com.example.akhleshkumar.homedoot.interfaces.OnItemDelete
 import com.example.akhleshkumar.homedoot.interfaces.OnItenUpdateCart
@@ -46,29 +47,27 @@ class CartFragment : Fragment() {
     private var city = ""
     private var state = ""
     private var pincode = ""
-
+    var discountPerc = 0
     private lateinit var cartAdapter: CartAdapter
     private var vendorList = ArrayList<CartItems>()
-    private lateinit var rvCart: RecyclerView
-    private lateinit var checkOutBtn: Button
+
     private val listTime: ArrayList<TimeDataModel> = ArrayList()
     private var cartItemList = ArrayList<CartItems>()
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editorSP: SharedPreferences.Editor
+    lateinit var binding : FragmentCartBinding
+    var cartData = ArrayList<Cart>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_cart, container, false)
-        rvCart = view.findViewById(R.id.recycler_view_products)
-        checkOutBtn = view.findViewById(R.id.button_proceed_to_checkout)
-        rvCart.layoutManager = LinearLayoutManager(requireContext())
+        binding = FragmentCartBinding.inflate(inflater,container,false)
+
+        binding.recyclerViewProducts.layoutManager = LinearLayoutManager(requireContext())
         sharedPreferences = requireContext().getSharedPreferences("HomeDoot",
             AppCompatActivity.MODE_PRIVATE
         )
-        editorSP = sharedPreferences.edit()
-        id = requireArguments().getString("userId")!!
-        itemList()
+
 
         // Add Time Slots
         listTime.apply {
@@ -86,13 +85,46 @@ class CartFragment : Fragment() {
             add(TimeDataModel("08:00 pm"))
         }
 
-        checkOutBtn.setOnClickListener {
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        editorSP = sharedPreferences.edit()
+        id = requireArguments().getInt("id")!!.toString()
+        itemList()
+        binding.buttonProceedToCheckout.setOnClickListener {
             showBottomSheetDialog()
         }
 
-        return view
+        binding.buttonApplyCoupon.setOnClickListener {
+            if (binding.editTextCouponCode.text.toString().isNotEmpty()) {
+                applyCoupon(binding.editTextCouponCode.text.toString())
+            }
+        }
     }
+    private fun applyCoupon(couponCode: String) {
+        RetrofitClient.instance.applyCouponCode(couponCode).enqueue(object : Callback<CouponResponse>{
+            override fun onResponse(call: Call<CouponResponse>, response: Response<CouponResponse>) {
+                if (response.isSuccessful){
+                    if (response.body()!!.success){
+                        discountPerc = response.body()!!.data.discount
+                        totalAmount()
+                        cartAdapter.clearList()
+                        vendorList.clear()
+                        cartItemList.clear()
+                        itemList()
+                    }
+                }
+            }
 
+            override fun onFailure(call: Call<CouponResponse>, t: Throwable) {
+
+            }
+
+        })
+    }
     private fun showBottomSheetDialog() {
         val bottomSheetDialog = BottomSheetDialog(requireContext())
         val bottomSheetView = layoutInflater.inflate(R.layout.bottom_sheet_slot_layout, null)
@@ -121,7 +153,9 @@ class CartFragment : Fragment() {
             if (time.isEmpty() && date.isEmpty()) {
                 Toast.makeText(requireContext(), "Please select date and time", Toast.LENGTH_SHORT).show()
             } else {
-                checkVendorAvailability()
+                if(checkVendorAvailability()){
+                    bottomSheetDialog.dismiss()
+                }
             }
         }
 
@@ -133,6 +167,9 @@ class CartFragment : Fragment() {
             @SuppressLint("NotifyDataSetChanged")
             override fun onResponse(call: Call<CartListResponse>, response: Response<CartListResponse>) {
                 if (response.isSuccessful) {
+                    cartData.clear()
+                    cartData =response.body()!!.data.cart as ArrayList
+                    totalAmount()
                     cartItemList = addItemsInVendorList(response.body()!!.data.cart)
                     cartAdapter = CartAdapter(
                         requireContext(),
@@ -150,7 +187,7 @@ class CartFragment : Fragment() {
                             }
                         }
                     )
-                    rvCart.adapter = cartAdapter
+                    binding.recyclerViewProducts.adapter = cartAdapter
                     cartAdapter.notifyDataSetChanged()
                 }
             }
@@ -161,13 +198,33 @@ class CartFragment : Fragment() {
             }
         })
     }
+    fun totalAmount(){
+        var amount:Long = 0
+        var discountPrice = 0L
+        for (items in cartData){
+            amount+= items.total_amount
+            if (discountPerc>0){
+                discountPrice += (items.total_amount*discountPerc)/100
+            }
+
+        }
+        binding.textSubtotalValue.text = "₹ ${amount.toString()}"
+        binding.textDiscountValue.text = "₹ ${discountPrice.toString()}"
+        binding.textTotalValue.text ="₹ ${ (amount - discountPrice).toString() }"
+
+    }
 
     private fun addItemsInVendorList(list: List<Cart>): ArrayList<CartItems> {
         for (item in list) {
             val vendorItem = CartItems(
                 item_id = item.item_id.toInt(),
                 quantity = item.quantity.toInt(),
-                price = item.price.toInt(),
+                price = if (discountPerc>0){
+                    item.total_amount - (item.total_amount*discountPerc)/100
+                }
+                else{
+                    item.total_amount
+                }.toInt(),
                 category_id = item.category_id.toInt(),
                 product_id = item.product_id.toInt()
             )
@@ -224,9 +281,9 @@ class CartFragment : Fragment() {
         })
     }
 
-    private fun checkVendorAvailability() {
+    private fun checkVendorAvailability() : Boolean{
         val requestBody = VendorAvailabilityRequest(date, time, cartItemList)
-
+        var returnValue = false
         RetrofitClient.instance.checkVendorAvailability(requestBody)
             .enqueue(object : Callback<VendorAvailabilityResponse> {
                 override fun onResponse(
@@ -236,16 +293,20 @@ class CartFragment : Fragment() {
                     if (response.isSuccessful) {
                      if(response.body()!!.status){
                          chooseAddress()
+                         returnValue = true
                      }
                     } else {
+                        returnValue = false
                         Toast.makeText(requireContext(), "Unable to find vendor.", Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 override fun onFailure(call: Call<VendorAvailabilityResponse>, t: Throwable) {
+                   returnValue = false
                     Toast.makeText(requireContext(), t.localizedMessage, Toast.LENGTH_SHORT).show()
                 }
             })
+        return returnValue
     }
     fun chooseAddress(){
         val bottomSheetDialog = BottomSheetDialog(requireContext())
@@ -255,7 +316,8 @@ class CartFragment : Fragment() {
         rgAddress.setOnCheckedChangeListener { group, checkedId ->
             if (checkedId == R.id.tv_location_addresses) {
                 city = sharedPreferences.getString("city","")!!
-                address = sharedPreferences.getString("villageOrSector","")!!
+
+                address = sharedPreferences.getString("homeNo","")+ " "+sharedPreferences.getString("villageOrSector","India")!!
                 pincode = sharedPreferences.getString("pinCode","")!!
                 state = sharedPreferences.getString("state","")!!
                 mobile = sharedPreferences.getString("mobile","")!!
@@ -271,7 +333,7 @@ class CartFragment : Fragment() {
             }
         }
 
-        bottomSheetView.findViewById<RadioButton>(R.id.tv_location_addresses).text = sharedPreferences.getString("homeNumber","") +" "+  sharedPreferences.getString("villageOrSector","")!!+" "+  sharedPreferences.getString("city","")!!+" "+
+        bottomSheetView.findViewById<RadioButton>(R.id.tv_location_addresses).text = sharedPreferences.getString("homeNo","")+ " "+ sharedPreferences.getString("homeNumber","") +" "+  sharedPreferences.getString("villageOrSector","")!!+" "+  sharedPreferences.getString("city","")!!+" "+
                 sharedPreferences.getString("pinCode","")!!+" "+
                 sharedPreferences.getString("state","")!!
         bottomSheetView.findViewById<RadioButton>(R.id.tv_saved_addresses).text = sharedPreferences.getString("villageOrSectorS","")!!+" "+

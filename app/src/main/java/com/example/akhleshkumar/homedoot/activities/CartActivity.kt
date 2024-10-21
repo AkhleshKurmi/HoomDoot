@@ -125,7 +125,9 @@ class CartActivity : AppCompatActivity() {
                 if (time.isEmpty() && date.isEmpty()) {
                     Toast.makeText(this@CartActivity, "please Select Date And Time", Toast.LENGTH_SHORT).show()
                 } else {
-                   checkVendorAvailavility()
+                   if (checkVendorAvailavility()){
+                       bottomSheetDialog.dismiss()
+                   }
                 }
             }
 
@@ -165,7 +167,8 @@ class CartActivity : AppCompatActivity() {
             ) {
                 if (response.isSuccessful) {
                     cartItemList = addItemsInVendorList(response.body()!!.data.cart)
-                    binding.textSubtotalValue.text = response.body()!!.data.cart[0].total_amount.toString()
+                    if (!cartItemList.isEmpty())
+                        binding.textSubtotalValue.text = response.body()!!.data.cart[0].total_amount.toString()
                     cartData.clear()
                     cartData =response.body()!!.data.cart as ArrayList
                         totalAmount()
@@ -300,12 +303,13 @@ class CartActivity : AppCompatActivity() {
 
     }
     
-    fun checkVendorAvailavility(){
-
+    fun checkVendorAvailavility():Boolean{
+        var returnValue = false
         val requestBody = VendorAvailabilityRequest(date, time, cartItemList)
 
 
         RetrofitClient.instance.checkVendorAvailability(requestBody).enqueue(
+
             object : Callback<VendorAvailabilityResponse> {
                 override fun onResponse(
                     call: Call<VendorAvailabilityResponse>,
@@ -314,17 +318,19 @@ class CartActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         if (response.body()!!.status) {
                          chooseAddress()
+                            returnValue = true
 
                         }
                     }
                 }
 
                 override fun onFailure(call: Call<VendorAvailabilityResponse>, t: Throwable) {
+                    returnValue = false
                     Toast.makeText(this@CartActivity, t.localizedMessage, Toast.LENGTH_SHORT).show()
                 }
 
             })
-
+       return returnValue
 
     }
 
@@ -336,7 +342,8 @@ class CartActivity : AppCompatActivity() {
         rgAddress.setOnCheckedChangeListener { group, checkedId ->
             if (checkedId == R.id.tv_location_addresses) {
                 city = sharedPreferences.getString("city","")!!
-                address = sharedPreferences.getString("villageOrSector","")!!
+
+                address = sharedPreferences.getString("homeNo","")+ " "+sharedPreferences.getString("villageOrSector","India")!!
                 pincode = sharedPreferences.getString("pinCode","")!!
                 state = sharedPreferences.getString("state","")!!
                 mobile = sharedPreferences.getString("mobile","")!!
@@ -352,7 +359,7 @@ class CartActivity : AppCompatActivity() {
             }
         }
 
-        bottomSheetView.findViewById<RadioButton>(R.id.tv_location_addresses).text = sharedPreferences.getString("homeNumber","") +" "+  sharedPreferences.getString("villageOrSector","")!!+" "+  sharedPreferences.getString("city","")!!+" "+
+        bottomSheetView.findViewById<RadioButton>(R.id.tv_location_addresses).text = sharedPreferences.getString("homeNo","")+ " "+ sharedPreferences.getString("homeNumber","") +" "+  sharedPreferences.getString("villageOrSector","")!!+" "+  sharedPreferences.getString("city","")!!+" "+
                 sharedPreferences.getString("pinCode","")!!+" "+
                 sharedPreferences.getString("state","")!!
         bottomSheetView.findViewById<RadioButton>(R.id.tv_saved_addresses).text = sharedPreferences.getString("villageOrSectorS","")!!+" "+

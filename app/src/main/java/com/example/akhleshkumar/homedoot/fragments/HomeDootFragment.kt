@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -52,6 +53,8 @@ class HomeDootFragment : Fragment() {
     var userId = ""
     lateinit var sharedPreferences: SharedPreferences
     lateinit var editorSP : SharedPreferences.Editor
+    lateinit var etSearch : EditText
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,10 +71,6 @@ class HomeDootFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
        val view = inflater.inflate(R.layout.fragment_homedoot, container, false)
-        fetchHomeData()
-
-        fetchCategories()
-        getCart(userId)
 
         return view
     }
@@ -97,11 +96,12 @@ class HomeDootFragment : Fragment() {
            startActivity(Intent(requireContext(),CartActivity::class.java).putExtra("userId",userId))
        }
 
-
         fetchHomeData()
 
         fetchCategories()
         getCart(userId)
+        fetchHomeData()
+
 
             rvServices.layoutManager = GridLayoutManager(requireContext(), 3)
 
