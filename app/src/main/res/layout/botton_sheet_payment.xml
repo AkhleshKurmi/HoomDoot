@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#F5F5F5">
+
+    <TextView
+        android:id="@+id/tvPaymentTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PAYMENT"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#8C1F1F"
+        android:layout_marginBottom="16dp" />
+
+    <RadioGroup
+        android:id="@+id/rgPaymentOptions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/rbPayOnline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pay Online"
+            android:textSize="16sp"
+            android:padding="8dp" />
+
+        <RadioButton
+            android:id="@+id/rbPayCashAfterService"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pay Cash After Service"
+            android:textSize="16sp"
+            android:padding="8dp"/>
+
+        <RadioButton
+            android:id="@+id/rbPayOnlineAfterService"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pay Online After Service"
+            android:textSize="16sp"
+            android:padding="8dp" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btnPlaceOrder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Place Order"
+        android:backgroundTint="#8C1F1F"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="16dp"
+        android:padding="12dp"
+        android:textSize="16sp" />
+</LinearLayout>
