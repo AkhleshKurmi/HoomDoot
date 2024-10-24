@@ -3,11 +3,7 @@ package com.example.akhleshkumar.homedoot.activities
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
 import com.example.akhleshkumar.homedoot.databinding.ActivityUpdatefrofileBinding
 import com.example.akhleshkumar.homedoot.models.CancelOrderResponse
@@ -34,7 +30,7 @@ class UpdatefrofileActivity : AppCompatActivity() {
             if (binding.etFullName.text.isNotEmpty()){
                 RetrofitClient.instance.updateProfile("user",binding.etFullName.text.toString(),userId.toInt(),
                     binding.etEmailAddress.text.toString(),binding.etPhoneNumber.text.toString(),binding.etEmailAddress.text.toString(),
-                    binding.etCity.text.toString().toInt(),binding.etPincode.text.toString().toInt()).enqueue(object : Callback<CancelOrderResponse> {
+                    11,binding.etPincode.text.toString().toInt()).enqueue(object : Callback<CancelOrderResponse> {
                     override fun onResponse(
                         call: Call<CancelOrderResponse>,
                         response: Response<CancelOrderResponse>

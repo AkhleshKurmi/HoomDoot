@@ -78,9 +78,12 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Search for - 'Cleaning Service'"
+            android:id="@+id/etSearch"
+            android:hint="Search for - 'Cleaning Serv'"
             android:textSize="14dp"
             android:padding="10dp"
+            android:inputType="text"
+            android:imeOptions="actionSearch"
             android:layout_margin="5dp"
             android:drawableLeft="@drawable/baseline_search_24"
             android:background="@drawable/et_background"/>

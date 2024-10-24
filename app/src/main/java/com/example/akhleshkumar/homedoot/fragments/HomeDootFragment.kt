@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -19,6 +20,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.akhleshkumar.homedoot.activities.CartActivity
+import com.example.akhleshkumar.homedoot.activities.ProductDescriptionActivity
+import com.example.akhleshkumar.homedoot.activities.ProductListActivity
 import com.example.akhleshkumar.homedoot.adapters.BottomMenuViewAdapter
 import com.example.akhleshkumar.homedoot.adapters.CategoryAdapter
 import com.example.akhleshkumar.homedoot.adapters.HomeSliderAdapter
@@ -27,6 +30,9 @@ import com.example.akhleshkumar.homedoot.api.RetrofitClient
 import com.example.akhleshkumar.homedoot.interfaces.OnCategoryClickListener
 import com.example.akhleshkumar.homedoot.models.ApiResponseCategory
 import com.example.akhleshkumar.homedoot.models.CartListResponse
+import com.example.akhleshkumar.homedoot.models.ProductDetailsResponse
+import com.example.akhleshkumar.homedoot.models.ProductListResponse
+import com.example.akhleshkumar.homedoot.models.ProductResponse
 import com.example.akhleshkumar.homedoot.models.SubCategoryResponse
 import com.example.akhleshkumar.homedoot.models.homeresponse.HomePageResponse
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -90,6 +96,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
         tvCartTotal = view.findViewById(R.id.tv_total_cart)
         tvAddress = view.findViewById(R.id.tv_address)
         tvPinCode = view.findViewById(R.id.tv_pin)
+        etSearch = view.findViewById(R.id.etSearch)
 
         tvAddress.text= sharedPreferences.getString("fullAddress","")?: ""
         tvPinCode.text = sharedPreferences.getString("pinCode","")?: ""
@@ -114,7 +121,20 @@ override fun onCreate(savedInstanceState: Bundle?) {
             rvAC.layoutManager = GridLayoutManager(contextHomeDoot, 3)
 
 
+        etSearch.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE) {
+                val searchText = etSearch.text.toString()
 
+              if (searchText.isNotEmpty()){
+                  search(searchText)
+              }else{
+                  etSearch.error = "Enter some text o search"
+              }
+                true
+            } else {
+                false
+            }
+        }
         }
 
         private fun startAutoSlider() {
@@ -140,10 +160,36 @@ override fun onCreate(savedInstanceState: Bundle?) {
             startAutoSlider()
         }
 
+
         override fun onPause() {
             super.onPause()
             sliderHandler.removeCallbacksAndMessages(null)
         }
+
+    private fun search(searchData:String){
+        RetrofitClient.instance.searchData(searchData).enqueue(object : Callback<ProductResponse>{
+            override fun onResponse(
+                call: Call<ProductResponse>,
+                response: Response<ProductResponse>
+            ) {
+                if (response.isSuccessful){
+                    if (response.body()!!.success){
+                        val intent = Intent(context, ProductDescriptionActivity::class.java)
+                        intent.putExtra("id",response.body()!!.data.products[0].sub_category_id)
+                        intent.putExtra("catName", response.body()!!.data.products.get(0).service_name)
+                        intent.putExtra("userId",userId)
+                        startActivity(intent)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ProductResponse>, t: Throwable) {
+
+            }
+
+        })
+    }
+
     private fun fetchCategories() {
         RetrofitClient.instance.fetchCategories()
             .enqueue(object : Callback<ApiResponseCategory> {

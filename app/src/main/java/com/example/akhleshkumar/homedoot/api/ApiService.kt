@@ -11,6 +11,7 @@ import com.example.akhleshkumar.homedoot.models.CouponResponse
 import com.example.akhleshkumar.homedoot.models.OrderCheckoutRequest
 import com.example.akhleshkumar.homedoot.models.OrderCheckoutRes
 import com.example.akhleshkumar.homedoot.models.ProductDetailsResponse
+import com.example.akhleshkumar.homedoot.models.ProductResponse
 import com.example.akhleshkumar.homedoot.models.RemoveCartItemRes
 import com.example.akhleshkumar.homedoot.models.SubCategoryResponse
 import com.example.akhleshkumar.homedoot.models.UserOrderResponse
@@ -109,4 +110,7 @@ interface ApiService {
         @Query("city") city: Int,
         @Query("pincode") pincode: Int
     ): Call<CancelOrderResponse>
+
+    @POST("search-result")
+    fun searchData(@Query("product_name") search: String) : Call<ProductResponse>
 }
