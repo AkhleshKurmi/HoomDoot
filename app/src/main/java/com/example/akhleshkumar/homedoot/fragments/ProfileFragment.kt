@@ -73,4 +73,12 @@ class ProfileFragment : Fragment() {
         }
 
     }
+
+    override fun onResume() {
+        super.onResume()
+        userId = requireArguments().getInt("id",0).toString()
+        nameTextView.text= requireArguments().getString("name","")
+        emailTextView.text = requireArguments().getString("email","")
+        phoneTextView.text = requireArguments().getString("mobile","")
+    }
 }

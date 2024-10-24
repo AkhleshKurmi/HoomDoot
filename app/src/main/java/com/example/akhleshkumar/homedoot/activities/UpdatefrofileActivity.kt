@@ -33,8 +33,8 @@ class UpdatefrofileActivity : AppCompatActivity() {
         binding.btnUpdateNow.setOnClickListener {
             if (binding.etFullName.text.isNotEmpty()){
                 RetrofitClient.instance.updateProfile("user",binding.etFullName.text.toString(),userId.toInt(),
-                    binding.etEmailAddress.text.toString(),binding.etPhoneNumber.text.toString(),"pilibhit",
-                    26,262121).enqueue(object : Callback<CancelOrderResponse> {
+                    binding.etEmailAddress.text.toString(),binding.etPhoneNumber.text.toString(),binding.etEmailAddress.text.toString(),
+                    binding.etCity.text.toString().toInt(),binding.etPincode.text.toString().toInt()).enqueue(object : Callback<CancelOrderResponse> {
                     override fun onResponse(
                         call: Call<CancelOrderResponse>,
                         response: Response<CancelOrderResponse>

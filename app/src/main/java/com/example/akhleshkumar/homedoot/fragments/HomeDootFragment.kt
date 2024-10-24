@@ -57,9 +57,7 @@ class HomeDootFragment : Fragment() {
     lateinit var etSearch : EditText
     lateinit var contextHomeDoot: Context
 
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
+override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         contextHomeDoot = requireContext()
         sharedPreferences = contextHomeDoot.getSharedPreferences("HomeDoot", MODE_PRIVATE)
