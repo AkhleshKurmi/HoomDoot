@@ -66,10 +66,7 @@
         android:textColor="#8C8C8C"
         android:layout_marginTop="16dp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+
 
 
 
@@ -83,7 +80,86 @@
             android:background="@android:color/transparent"
             android:inputType="phone"
             android:layout_marginStart="8dp" />
-    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DADADA" />
+
+    <TextView
+        android:id="@+id/tvAddressLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Adress"
+        android:textSize="16sp"
+        android:textColor="#8C8C8C" />
+
+    <EditText
+        android:id="@+id/etedressName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Adress"
+        android:textSize="18sp"
+        android:textColor="#000000"
+        android:background="@android:color/transparent"
+        android:paddingBottom="8dp"
+        android:inputType="textPersonName" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DADADA" />
+
+    <TextView
+        android:id="@+id/tvCityLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="City"
+        android:textSize="16sp"
+        android:textColor="#8C8C8C"
+        android:layout_marginTop="16dp" />
+
+    <EditText
+        android:id="@+id/etCity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="shsjsjs"
+        android:textSize="18sp"
+        android:textColor="#000000"
+        android:background="@android:color/transparent"
+        android:paddingBottom="8dp"
+        android:inputType="textEmailAddress" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DADADA" />
+
+    <TextView
+        android:id="@+id/tvPincodeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pincode"
+        android:textSize="16sp"
+        android:textColor="#8C8C8C"
+        android:layout_marginTop="16dp" />
+
+
+
+
+
+    <EditText
+        android:id="@+id/etPincode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2525262"
+        android:textSize="18sp"
+        android:textColor="#000000"
+        android:background="@android:color/transparent"
+        android:inputType="phone"
+        android:layout_marginStart="8dp" />
+
 
     <View
         android:layout_width="match_parent"
