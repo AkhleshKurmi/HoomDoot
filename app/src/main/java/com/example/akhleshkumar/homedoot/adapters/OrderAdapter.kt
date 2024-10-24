@@ -16,7 +16,7 @@ import com.example.akhleshkumar.homedoot.models.Orders
 import com.squareup.picasso.Picasso
 
 
-class OrderAdapter(val context: Context, private val orders: List<Item>, val path:String) :
+class OrderAdapter(val context: Context, private val orders: List<DataX>, val path:String) :
     RecyclerView.Adapter<OrderAdapter.OrderViewHolder>() {
 
     class OrderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -34,16 +34,16 @@ class OrderAdapter(val context: Context, private val orders: List<Item>, val pat
 
     override fun onBindViewHolder(holder: OrderViewHolder, position: Int) {
         val order = orders[position]
-        holder.ProductName.text = order.products.service_name
-        holder.orderStatus.text= order.order_current_status
-        holder.grandTotal.text= "₹ ${order.total_amount.toString()}"
-        val imageUrl = "$path/${order.product_id}/${order.products.main_image}"
+        holder.ProductName.text = order.items[0].products.service_name
+        holder.orderStatus.text= order.order_status
+        holder.grandTotal.text= "₹ ${order.sub_total.toString()}"
+        val imageUrl = "$path/${order.items[0].product_id}/${order.items[0].products.main_image}"
         Picasso.get().load(imageUrl).into(holder.ivProduct)
         holder.itemView.setOnClickListener {
             context.startActivity(Intent(context,OrderDetailsActivity::class.java).putExtra("ORDER_ID", order.order_no)
-                .putExtra("ORDER_DETAILS",order.products.description )
-                .putExtra("PRODUCT_PRICE", order.total_amount)
-                .putExtra("PRODUCT_NAME",order.products.service_name)
+                .putExtra("ORDER_DETAILS",order.items[0].products.description )
+                .putExtra("PRODUCT_PRICE", order.items[0].total_amount)
+                .putExtra("PRODUCT_NAME",order.items[0].products.service_name)
                 .putExtra("PRODUCT_IMAGE_URL", imageUrl))
         }
     }

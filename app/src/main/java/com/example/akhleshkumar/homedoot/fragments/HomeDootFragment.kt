@@ -1,5 +1,6 @@
 package com.example.akhleshkumar.homedoot
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -54,14 +55,17 @@ class HomeDootFragment : Fragment() {
     lateinit var sharedPreferences: SharedPreferences
     lateinit var editorSP : SharedPreferences.Editor
     lateinit var etSearch : EditText
+    lateinit var contextHomeDoot: Context
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sharedPreferences = requireContext().getSharedPreferences("HomeDoot", MODE_PRIVATE)
+        contextHomeDoot = requireContext()
+        sharedPreferences = contextHomeDoot.getSharedPreferences("HomeDoot", MODE_PRIVATE)
         editorSP = sharedPreferences.edit()
         userId = requireArguments().getInt("id",0).toString()
+
     }
 
 
@@ -93,7 +97,7 @@ class HomeDootFragment : Fragment() {
         tvPinCode.text = sharedPreferences.getString("pinCode","")?: ""
 
        ivCart.setOnClickListener {
-           startActivity(Intent(requireContext(),CartActivity::class.java).putExtra("userId",userId))
+           startActivity(Intent(contextHomeDoot,CartActivity::class.java).putExtra("userId",userId))
        }
 
         fetchHomeData()
@@ -103,13 +107,13 @@ class HomeDootFragment : Fragment() {
         fetchHomeData()
 
 
-            rvServices.layoutManager = GridLayoutManager(requireContext(), 3)
+            rvServices.layoutManager = GridLayoutManager(contextHomeDoot, 3)
 
-            rvSofa.layoutManager = GridLayoutManager(requireContext(), 3)
+            rvSofa.layoutManager = GridLayoutManager(contextHomeDoot, 3)
 
-            rvPest.layoutManager = GridLayoutManager(requireContext(), 3)
+            rvPest.layoutManager = GridLayoutManager(contextHomeDoot, 3)
 
-            rvAC.layoutManager = GridLayoutManager(requireContext(), 3)
+            rvAC.layoutManager = GridLayoutManager(contextHomeDoot, 3)
 
 
 
@@ -152,25 +156,25 @@ class HomeDootFragment : Fragment() {
                     if (response.isSuccessful) {
                         if (response.body()!!.success) {
                             val categories = response.body()?.data?.category
-                            categoryAdapter = CategoryAdapter(requireContext(), categories!!, response.body()!!.data.path, object :
+                            categoryAdapter = CategoryAdapter(contextHomeDoot, categories!!, response.body()!!.data.path, object :
                                 OnCategoryClickListener {
                                 override fun onCategoryClick(id: Int,serviceName:String) {
                                     showBottomView(id,serviceName,userId)
                                 }
 
                             }, userId)
-                            rvCategery.layoutManager = GridLayoutManager(requireContext(), 3)
+                            rvCategery.layoutManager = GridLayoutManager(contextHomeDoot, 3)
                             rvCategery.adapter = categoryAdapter
                         }else{
-                            Toast.makeText(requireContext(), "No Data", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(contextHomeDoot, "No Data", Toast.LENGTH_SHORT).show()
                         }
                     } else {
-                        Toast.makeText(requireContext(), "No Response", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(contextHomeDoot, "No Response", Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 override fun onFailure(call: Call<ApiResponseCategory>, t: Throwable) {
-                    Toast.makeText(requireContext(), t.localizedMessage, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(contextHomeDoot, t.localizedMessage, Toast.LENGTH_SHORT).show()
                 }
             })
     }
@@ -186,22 +190,22 @@ class HomeDootFragment : Fragment() {
                       sliderAdapter= HomeSliderAdapter(homeResponse.sliders, homeResponse.slider_path)
                       viewPager.setAdapter(sliderAdapter)
                       tableLayout.attachTo(viewPager)
-                       rvServices.adapter = ServiceAdapter(requireContext().applicationContext,homeResponse.product_list.`3`,homeResponse.product_path)
-                       rvSofa.adapter = ServiceAdapter(requireContext().applicationContext,homeResponse.product_list.`4`,homeResponse.product_path)
-                      rvPest.adapter = ServiceAdapter(requireContext().applicationContext, homeResponse.product_list.`7`,homeResponse.product_path)
-                      rvAC.adapter = ServiceAdapter(requireContext().applicationContext,homeResponse.product_list.`9`,homeResponse.product_path)
+                       rvServices.adapter = ServiceAdapter(contextHomeDoot.applicationContext,homeResponse.product_list.`3`,homeResponse.product_path)
+                       rvSofa.adapter = ServiceAdapter(contextHomeDoot.applicationContext,homeResponse.product_list.`4`,homeResponse.product_path)
+                      rvPest.adapter = ServiceAdapter(contextHomeDoot.applicationContext, homeResponse.product_list.`7`,homeResponse.product_path)
+                      rvAC.adapter = ServiceAdapter(contextHomeDoot.applicationContext,homeResponse.product_list.`9`,homeResponse.product_path)
 
                   }
               }
           }
 
           override fun onFailure(call: Call<HomePageResponse>, t: Throwable) {
-              Toast.makeText(requireContext(), t.localizedMessage, Toast.LENGTH_SHORT).show()
+              Toast.makeText(contextHomeDoot, t.localizedMessage, Toast.LENGTH_SHORT).show()
           }
       })
   }
     fun showBottomView( id: Int, serviceName : String,userId:String){
-        val bottomSheetDialog = BottomSheetDialog(requireContext())
+        val bottomSheetDialog = BottomSheetDialog(contextHomeDoot)
         val bottomSheetView = layoutInflater.inflate(R.layout.bottom_menu_view,null)
         val rvSubCat = bottomSheetView.findViewById<RecyclerView>(R.id.rv_sub_cat)
         val tvServiceName = bottomSheetView.findViewById<TextView>(R.id.tv_service_name)
@@ -209,7 +213,7 @@ class HomeDootFragment : Fragment() {
         bottomSheetDialog.setContentView(bottomSheetView)
 
 
-        rvSubCat.layoutManager = GridLayoutManager(requireContext(),3)
+        rvSubCat.layoutManager = GridLayoutManager(contextHomeDoot,3)
 
         RetrofitClient.instance.fetchSubCategory(id).enqueue(object : Callback<SubCategoryResponse>{
             override fun onResponse(
@@ -218,7 +222,7 @@ class HomeDootFragment : Fragment() {
             ) {
                 if (response.isSuccessful){
                     if (response.body()!!.success){
-                        val bottomMenuViewAdapter = BottomMenuViewAdapter(requireContext(),response.body()!!.data.sub_category, response.body()!!.data.path, userId)
+                        val bottomMenuViewAdapter = BottomMenuViewAdapter(contextHomeDoot,response.body()!!.data.sub_category, response.body()!!.data.path, userId)
                         rvSubCat.adapter = bottomMenuViewAdapter
 
                     }
@@ -226,7 +230,7 @@ class HomeDootFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<SubCategoryResponse>, t: Throwable) {
-                Toast.makeText(requireContext(), t.localizedMessage, Toast.LENGTH_SHORT).show()
+                Toast.makeText(contextHomeDoot, t.localizedMessage, Toast.LENGTH_SHORT).show()
             }
 
         })

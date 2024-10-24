@@ -98,4 +98,15 @@ interface ApiService {
 
     @POST("apply-coupan-code")
     fun applyCouponCode(@Query("coupan_code") couponCode: String) : Call<CouponResponse>
+    @POST("update_profile")
+    fun updateProfile(
+        @Query("profile_guard") profileGuard: String,
+        @Query("name") name: String,
+        @Query("user_id") userId: Int,
+        @Query("email") email: String,
+        @Query("mobile") mobile: String,
+        @Query("address") address: String,
+        @Query("city") city: Int,
+        @Query("pincode") pincode: Int
+    ): Call<CancelOrderResponse>
 }

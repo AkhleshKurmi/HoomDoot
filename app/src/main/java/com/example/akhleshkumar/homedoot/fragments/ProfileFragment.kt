@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import com.example.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.activities.LoginActivity
 import com.example.akhleshkumar.homedoot.activities.OrderListActivity
+import com.example.akhleshkumar.homedoot.activities.UpdatefrofileActivity
 
 class ProfileFragment : Fragment() {
 
@@ -37,6 +38,12 @@ class ProfileFragment : Fragment() {
             AppCompatActivity.MODE_PRIVATE
         )
         editorSP = sharedPreferences.edit()
+
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         nameTextView = view.findViewById(R.id.nameTextView)
         emailTextView = view.findViewById(R.id.emailTextView)
         phoneTextView = view.findViewById(R.id.phoneTextView)
@@ -50,7 +57,7 @@ class ProfileFragment : Fragment() {
         phoneTextView.text = requireArguments().getString("mobile","")
         // Set up button click listeners
         editProfileButton.setOnClickListener {
-            // Handle edit/update profile action
+            startActivity(Intent(requireContext(), UpdatefrofileActivity::class.java).putExtra("userId",userId))
         }
 
         myOrdersButton.setOnClickListener {
@@ -58,13 +65,12 @@ class ProfileFragment : Fragment() {
         }
 
         logoutButton.setOnClickListener {
-           editorSP.putBoolean("isLogin",false)
+            editorSP.putBoolean("isLogin",false)
             editorSP.clear()
             editorSP.commit()
             requireContext().startActivity(Intent(requireContext(),LoginActivity::class.java))
             requireActivity().finish()
         }
 
-        return view
     }
 }
