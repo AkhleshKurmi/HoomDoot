@@ -111,7 +111,6 @@ class CartActivity : AppCompatActivity() {
                 override fun onDateSelected(date: String) {
                     this@CartActivity.date = date
                 }
-
             })
             rvTime.layoutManager = GridLayoutManager(this@CartActivity,3)
             val timeSlotAdapter = TimeSlotAdapter(listTime, object : OnTimeSelectListener{

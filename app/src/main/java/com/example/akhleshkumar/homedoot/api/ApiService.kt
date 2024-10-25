@@ -11,6 +11,7 @@ import com.example.akhleshkumar.homedoot.models.CouponResponse
 import com.example.akhleshkumar.homedoot.models.OrderCheckoutRequest
 import com.example.akhleshkumar.homedoot.models.OrderCheckoutRes
 import com.example.akhleshkumar.homedoot.models.ProductDetailsResponse
+import com.example.akhleshkumar.homedoot.models.ProductResponse
 import com.example.akhleshkumar.homedoot.models.RemoveCartItemRes
 import com.example.akhleshkumar.homedoot.models.SubCategoryResponse
 import com.example.akhleshkumar.homedoot.models.UserOrderResponse
@@ -98,4 +99,18 @@ interface ApiService {
 
     @POST("apply-coupan-code")
     fun applyCouponCode(@Query("coupan_code") couponCode: String) : Call<CouponResponse>
+    @POST("update_profile")
+    fun updateProfile(
+        @Query("profile_guard") profileGuard: String,
+        @Query("name") name: String,
+        @Query("user_id") userId: Int,
+        @Query("email") email: String,
+        @Query("mobile") mobile: String,
+        @Query("address") address: String,
+        @Query("city") city: Int,
+        @Query("pincode") pincode: Int
+    ): Call<CancelOrderResponse>
+
+    @POST("search-result")
+    fun searchData(@Query("product_name") search: String) : Call<ProductResponse>
 }

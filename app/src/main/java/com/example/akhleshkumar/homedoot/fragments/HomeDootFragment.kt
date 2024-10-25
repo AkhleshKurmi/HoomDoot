@@ -1,5 +1,6 @@
 package com.example.akhleshkumar.homedoot
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -18,6 +20,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.akhleshkumar.homedoot.activities.CartActivity
+import com.example.akhleshkumar.homedoot.activities.ProductDescriptionActivity
+import com.example.akhleshkumar.homedoot.activities.ProductListActivity
 import com.example.akhleshkumar.homedoot.adapters.BottomMenuViewAdapter
 import com.example.akhleshkumar.homedoot.adapters.CategoryAdapter
 import com.example.akhleshkumar.homedoot.adapters.HomeSliderAdapter
@@ -26,6 +30,9 @@ import com.example.akhleshkumar.homedoot.api.RetrofitClient
 import com.example.akhleshkumar.homedoot.interfaces.OnCategoryClickListener
 import com.example.akhleshkumar.homedoot.models.ApiResponseCategory
 import com.example.akhleshkumar.homedoot.models.CartListResponse
+import com.example.akhleshkumar.homedoot.models.ProductDetailsResponse
+import com.example.akhleshkumar.homedoot.models.ProductListResponse
+import com.example.akhleshkumar.homedoot.models.ProductResponse
 import com.example.akhleshkumar.homedoot.models.SubCategoryResponse
 import com.example.akhleshkumar.homedoot.models.homeresponse.HomePageResponse
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -54,14 +61,15 @@ class HomeDootFragment : Fragment() {
     lateinit var sharedPreferences: SharedPreferences
     lateinit var editorSP : SharedPreferences.Editor
     lateinit var etSearch : EditText
+    lateinit var contextHomeDoot: Context
 
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
+override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sharedPreferences = requireContext().getSharedPreferences("HomeDoot", MODE_PRIVATE)
+        contextHomeDoot = requireContext()
+        sharedPreferences = contextHomeDoot.getSharedPreferences("HomeDoot", MODE_PRIVATE)
         editorSP = sharedPreferences.edit()
         userId = requireArguments().getInt("id",0).toString()
+
     }
 
 
@@ -88,12 +96,13 @@ class HomeDootFragment : Fragment() {
         tvCartTotal = view.findViewById(R.id.tv_total_cart)
         tvAddress = view.findViewById(R.id.tv_address)
         tvPinCode = view.findViewById(R.id.tv_pin)
+        etSearch = view.findViewById(R.id.etSearch)
 
         tvAddress.text= sharedPreferences.getString("fullAddress","")?: ""
         tvPinCode.text = sharedPreferences.getString("pinCode","")?: ""
 
        ivCart.setOnClickListener {
-           startActivity(Intent(requireContext(),CartActivity::class.java).putExtra("userId",userId))
+           startActivity(Intent(contextHomeDoot,CartActivity::class.java).putExtra("userId",userId))
        }
 
         fetchHomeData()
@@ -103,16 +112,29 @@ class HomeDootFragment : Fragment() {
         fetchHomeData()
 
 
-            rvServices.layoutManager = GridLayoutManager(requireContext(), 3)
+            rvServices.layoutManager = GridLayoutManager(contextHomeDoot, 3)
 
-            rvSofa.layoutManager = GridLayoutManager(requireContext(), 3)
+            rvSofa.layoutManager = GridLayoutManager(contextHomeDoot, 3)
 
-            rvPest.layoutManager = GridLayoutManager(requireContext(), 3)
+            rvPest.layoutManager = GridLayoutManager(contextHomeDoot, 3)
 
-            rvAC.layoutManager = GridLayoutManager(requireContext(), 3)
+            rvAC.layoutManager = GridLayoutManager(contextHomeDoot, 3)
 
 
+        etSearch.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE) {
+                val searchText = etSearch.text.toString()
 
+              if (searchText.isNotEmpty()){
+                  search(searchText)
+              }else{
+                  etSearch.error = "Enter some text o search"
+              }
+                true
+            } else {
+                false
+            }
+        }
         }
 
         private fun startAutoSlider() {
@@ -138,10 +160,36 @@ class HomeDootFragment : Fragment() {
             startAutoSlider()
         }
 
+
         override fun onPause() {
             super.onPause()
             sliderHandler.removeCallbacksAndMessages(null)
         }
+
+    private fun search(searchData:String){
+        RetrofitClient.instance.searchData(searchData).enqueue(object : Callback<ProductResponse>{
+            override fun onResponse(
+                call: Call<ProductResponse>,
+                response: Response<ProductResponse>
+            ) {
+                if (response.isSuccessful){
+                    if (response.body()!!.success){
+                        val intent = Intent(context, ProductDescriptionActivity::class.java)
+                        intent.putExtra("id",response.body()!!.data.products[0].sub_category_id)
+                        intent.putExtra("catName", response.body()!!.data.products.get(0).service_name)
+                        intent.putExtra("userId",userId)
+                        startActivity(intent)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ProductResponse>, t: Throwable) {
+
+            }
+
+        })
+    }
+
     private fun fetchCategories() {
         RetrofitClient.instance.fetchCategories()
             .enqueue(object : Callback<ApiResponseCategory> {
@@ -152,25 +200,25 @@ class HomeDootFragment : Fragment() {
                     if (response.isSuccessful) {
                         if (response.body()!!.success) {
                             val categories = response.body()?.data?.category
-                            categoryAdapter = CategoryAdapter(requireContext(), categories!!, response.body()!!.data.path, object :
+                            categoryAdapter = CategoryAdapter(contextHomeDoot, categories!!, response.body()!!.data.path, object :
                                 OnCategoryClickListener {
                                 override fun onCategoryClick(id: Int,serviceName:String) {
                                     showBottomView(id,serviceName,userId)
                                 }
 
                             }, userId)
-                            rvCategery.layoutManager = GridLayoutManager(requireContext(), 3)
+                            rvCategery.layoutManager = GridLayoutManager(contextHomeDoot, 3)
                             rvCategery.adapter = categoryAdapter
                         }else{
-                            Toast.makeText(requireContext(), "No Data", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(contextHomeDoot, "No Data", Toast.LENGTH_SHORT).show()
                         }
                     } else {
-                        Toast.makeText(requireContext(), "No Response", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(contextHomeDoot, "No Response", Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 override fun onFailure(call: Call<ApiResponseCategory>, t: Throwable) {
-                    Toast.makeText(requireContext(), t.localizedMessage, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(contextHomeDoot, t.localizedMessage, Toast.LENGTH_SHORT).show()
                 }
             })
     }
@@ -186,22 +234,22 @@ class HomeDootFragment : Fragment() {
                       sliderAdapter= HomeSliderAdapter(homeResponse.sliders, homeResponse.slider_path)
                       viewPager.setAdapter(sliderAdapter)
                       tableLayout.attachTo(viewPager)
-                       rvServices.adapter = ServiceAdapter(requireContext().applicationContext,homeResponse.product_list.`3`,homeResponse.product_path)
-                       rvSofa.adapter = ServiceAdapter(requireContext().applicationContext,homeResponse.product_list.`4`,homeResponse.product_path)
-                      rvPest.adapter = ServiceAdapter(requireContext().applicationContext, homeResponse.product_list.`7`,homeResponse.product_path)
-                      rvAC.adapter = ServiceAdapter(requireContext().applicationContext,homeResponse.product_list.`9`,homeResponse.product_path)
+                       rvServices.adapter = ServiceAdapter(contextHomeDoot.applicationContext,homeResponse.product_list.`3`,homeResponse.product_path)
+                       rvSofa.adapter = ServiceAdapter(contextHomeDoot.applicationContext,homeResponse.product_list.`4`,homeResponse.product_path)
+                      rvPest.adapter = ServiceAdapter(contextHomeDoot.applicationContext, homeResponse.product_list.`7`,homeResponse.product_path)
+                      rvAC.adapter = ServiceAdapter(contextHomeDoot.applicationContext,homeResponse.product_list.`9`,homeResponse.product_path)
 
                   }
               }
           }
 
           override fun onFailure(call: Call<HomePageResponse>, t: Throwable) {
-              Toast.makeText(requireContext(), t.localizedMessage, Toast.LENGTH_SHORT).show()
+              Toast.makeText(contextHomeDoot, t.localizedMessage, Toast.LENGTH_SHORT).show()
           }
       })
   }
     fun showBottomView( id: Int, serviceName : String,userId:String){
-        val bottomSheetDialog = BottomSheetDialog(requireContext())
+        val bottomSheetDialog = BottomSheetDialog(contextHomeDoot)
         val bottomSheetView = layoutInflater.inflate(R.layout.bottom_menu_view,null)
         val rvSubCat = bottomSheetView.findViewById<RecyclerView>(R.id.rv_sub_cat)
         val tvServiceName = bottomSheetView.findViewById<TextView>(R.id.tv_service_name)
@@ -209,7 +257,7 @@ class HomeDootFragment : Fragment() {
         bottomSheetDialog.setContentView(bottomSheetView)
 
 
-        rvSubCat.layoutManager = GridLayoutManager(requireContext(),3)
+        rvSubCat.layoutManager = GridLayoutManager(contextHomeDoot,3)
 
         RetrofitClient.instance.fetchSubCategory(id).enqueue(object : Callback<SubCategoryResponse>{
             override fun onResponse(
@@ -218,7 +266,7 @@ class HomeDootFragment : Fragment() {
             ) {
                 if (response.isSuccessful){
                     if (response.body()!!.success){
-                        val bottomMenuViewAdapter = BottomMenuViewAdapter(requireContext(),response.body()!!.data.sub_category, response.body()!!.data.path, userId)
+                        val bottomMenuViewAdapter = BottomMenuViewAdapter(contextHomeDoot,response.body()!!.data.sub_category, response.body()!!.data.path, userId)
                         rvSubCat.adapter = bottomMenuViewAdapter
 
                     }
@@ -226,7 +274,7 @@ class HomeDootFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<SubCategoryResponse>, t: Throwable) {
-                Toast.makeText(requireContext(), t.localizedMessage, Toast.LENGTH_SHORT).show()
+                Toast.makeText(contextHomeDoot, t.localizedMessage, Toast.LENGTH_SHORT).show()
             }
 
         })

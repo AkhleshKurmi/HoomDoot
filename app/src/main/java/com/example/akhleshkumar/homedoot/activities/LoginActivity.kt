@@ -78,6 +78,7 @@ fun login(userName:String, password:String){
                         editorSP.putString("userName",response.body()!!.data.email)
                         editorSP.putString("password",etPassword.text.toString())
                         editorSP.putString("mobile",response.body()!!.data.mobile)
+                        editorSP.putString("name",data.name)
                         editorSP.putString("cityS",data.city)
                         editorSP.putString("stateS",data.state)
                         editorSP.putString("addressS",data.address)
