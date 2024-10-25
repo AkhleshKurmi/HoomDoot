@@ -4,55 +4,78 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:layout_marginTop="40dp"
     android:padding="16dp"
     android:background="#F5F5F5">
 
     <TextView
         android:id="@+id/tvPaymentTitle"
+        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="PAYMENT"
-        android:textSize="18sp"
+        android:text="SELECT  PAYMENT MODE"
+        android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="#8C1F1F"
+        android:textColor="#0F7D14"
         android:layout_marginBottom="16dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:background="@color/black"/>
+
+
+
 
     <RadioGroup
         android:id="@+id/rgPaymentOptions"
         android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
         android:layout_height="wrap_content">
 
         <RadioButton
             android:id="@+id/rbPayOnline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:background="@color/white"
+
+            android:layout_height="60dp"
+            android:textSize="20sp"
+
             android:text="Pay Online"
-            android:textSize="16sp"
             android:padding="8dp" />
 
         <RadioButton
             android:id="@+id/rbPayCashAfterService"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:textStyle="bold"
+
+            android:background="@color/white"
             android:text="Pay Cash After Service"
-            android:textSize="16sp"
+            android:layout_height="60dp"
+            android:textSize="20sp"
             android:padding="8dp"/>
 
         <RadioButton
             android:id="@+id/rbPayOnlineAfterService"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_height="60dp"
+            android:textSize="20sp"
+            android:background="@color/white"
             android:text="Pay Online After Service"
-            android:textSize="16sp"
             android:padding="8dp" />
     </RadioGroup>
 
     <Button
         android:id="@+id/btnPlaceOrder"
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Place Order"
-        android:backgroundTint="#8C1F1F"
+        android:layout_gravity="center"
+        android:backgroundTint="#752FF1"
         android:textColor="#FFFFFF"
         android:layout_marginTop="16dp"
         android:padding="12dp"

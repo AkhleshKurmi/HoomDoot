@@ -10,13 +10,6 @@
     android:elevation="4dp">
 
     <!-- Warranty Text -->
-    <TextView
-        android:id="@+id/tvWarranty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="30 days warranty"
-        android:textColor="#009688"
-        android:textSize="14sp" />
 
     <!-- Title and Thumbnail Container -->
     <LinearLayout
@@ -40,8 +33,8 @@
                 android:layout_height="wrap_content"
                 android:text="Premium Full Home Cleaning"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black" />
+                android:fontFamily="@font/roboto_medium"
+                android:textColor="#1E1D1D" />
 
             <!-- Rating and Reviews Container -->
             <LinearLayout
@@ -65,11 +58,19 @@
                     android:layout_marginStart="4dp" />
 
                 <TextView
+                    android:id="@+id/tvReviewsNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(10k"
+                    android:textColor="#7E1390"
+                    android:textSize="14sp"
+                    android:layout_marginStart="8dp" />
+                <TextView
                     android:id="@+id/tvReviews"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="(0k reviews)"
-                    android:textColor="@android:color/darker_gray"
+                    android:text="reviews)"
+                    android:textColor="@color/black"
                     android:textSize="14sp"
                     android:layout_marginStart="8dp" />
             </LinearLayout>
@@ -96,19 +97,12 @@
                     android:layout_height="wrap_content"
                     android:text="• 45 Mins"
                     android:textSize="14sp"
-                    android:textColor="@android:color/darker_gray"
+                    android:textColor="#4E4B4B"
                     android:layout_marginStart="16dp" />
             </LinearLayout>
 
             <!-- Offer Text -->
-            <TextView
-                android:id="@+id/tvOffer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="20% off on 2nd item onwards"
-                android:textColor="#4CAF50"
-                android:textSize="14sp"
-                android:layout_marginTop="4dp" />
+
 
             <!-- Description Text -->
             <TextView
@@ -116,8 +110,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Get 2x deeper dust removal with Foam + PowerJet Technology"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="14sp"
+                android:textColor="#666363"
+                android:textSize="12sp"
                 android:layout_marginTop="4dp" />
         </LinearLayout>
 
@@ -136,10 +130,10 @@
     <Button
         android:id="@+id/btnAdd"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="40dp"
         android:layout_gravity="end"
         android:textSize="10sp"
-        android:background="@drawable/rounded_button_bg"
+        android:backgroundTint="#5B27B8"
         android:text="Add"
         android:textColor="@android:color/white" />
 

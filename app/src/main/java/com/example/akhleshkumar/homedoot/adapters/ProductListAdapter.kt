@@ -18,13 +18,13 @@ class ProductListAdapter (val context: Context, private val items: List<ProductD
     RecyclerView.Adapter<ProductListAdapter.ServiceViewHolder>() {
 
     class ServiceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvWarranty: TextView = itemView.findViewById(R.id.tvWarranty)
+       // val tvWarranty: TextView = itemView.findViewById(R.id.tvWarranty)
         val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
         val tvRating: TextView = itemView.findViewById(R.id.tvRating)
         val tvReviews: TextView = itemView.findViewById(R.id.tvReviews)
         val tvPrice: TextView = itemView.findViewById(R.id.tvPrice)
         val tvTime: TextView = itemView.findViewById(R.id.tvTime)
-        val tvOffer: TextView = itemView.findViewById(R.id.tvOffer)
+     //   val tvOffer: TextView = itemView.findViewById(R.id.tvOffer)
         val tvDescription: TextView = itemView.findViewById(R.id.tvDescription)
         val ivThumbnail: ImageView = itemView.findViewById(R.id.ivThumbnail)
         val btnAdd: Button = itemView.findViewById(R.id.btnAdd)
