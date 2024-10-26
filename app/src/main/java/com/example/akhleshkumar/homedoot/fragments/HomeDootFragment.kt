@@ -173,18 +173,30 @@ override fun onCreate(savedInstanceState: Bundle?) {
                 response: Response<ProductResponse>
             ) {
                 if (response.isSuccessful){
-                    if (response.body()!!.success){
-                        val intent = Intent(context, ProductDescriptionActivity::class.java)
-                        intent.putExtra("id",response.body()!!.data.products[0].sub_category_id)
-                        intent.putExtra("catName", response.body()!!.data.products.get(0).service_name)
-                        intent.putExtra("userId",userId)
-                        startActivity(intent)
+                    if (response.body()!!.success) {
+                        if (!response.body()!!.data.products.isEmpty()) {
+                            val intent = Intent(context, ProductListActivity::class.java)
+                            intent.putExtra(
+                                "id",
+                                response.body()!!.data.products[0].childSubCategoryId
+                            )
+                            intent.putExtra(
+                                "catName",
+                                response.body()!!.data.products.get(0).serviceName
+                            )
+                            intent.putExtra("userId", userId)
+                            startActivity(intent)
+                        }else {
+                            Toast.makeText(contextHomeDoot, "No data found", Toast.LENGTH_SHORT).show()
+                        }
+                    }else{
+                        Toast.makeText(contextHomeDoot, response.body()!!.message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
 
             override fun onFailure(call: Call<ProductResponse>, t: Throwable) {
-
+                Toast.makeText(contextHomeDoot, "Something went wrong", Toast.LENGTH_SHORT).show()
             }
 
         })

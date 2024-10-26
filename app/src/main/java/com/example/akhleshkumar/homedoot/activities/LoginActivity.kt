@@ -39,12 +39,6 @@ class LoginActivity : AppCompatActivity() {
         editorSP = sharedPreferences.edit()
         tvLoginWithOtp= findViewById(R.id.loginOtp)
 
-        if (sharedPreferences.getBoolean("isLogin",false)){
-            val userName = sharedPreferences.getString("userName","")!!
-            val password = sharedPreferences.getString("password","")!!
-            login(userName,password)
-        }
-
         tvLoginWithOtp.setOnClickListener {
             startActivity(Intent(this@LoginActivity, LoginWithOtpActivity::class.java))
         }
@@ -75,20 +69,18 @@ fun login(userName:String, password:String){
                 if (response.isSuccessful){
                     if (response.body()!!.success){
                         val data = response.body()!!.data
+                        editorSP.putInt("userId",data.id)
                         editorSP.putString("userName",response.body()!!.data.email)
                         editorSP.putString("password",etPassword.text.toString())
                         editorSP.putString("mobile",response.body()!!.data.mobile)
                         editorSP.putString("name",data.name)
-                        editorSP.putString("cityS",data.city)
-                        editorSP.putString("stateS",data.state)
+                        editorSP.putString("cityS",data.city.toString())
+                        editorSP.putString("stateS",data.state.toString())
                         editorSP.putString("addressS",data.address)
-                        editorSP.putString("pincodeS",data.pincode)
+                        editorSP.putString("pincodeS",data.pincode.toString())
                         editorSP.putBoolean("isLogin", true)
                         editorSP.commit()
-                        startActivity(Intent(this@LoginActivity, MainActivity::class.java).putExtra("id", response.body()!!.data.id)
-                            .putExtra("email",data.email)
-                            .putExtra("name",data.name)
-                            .putExtra("mobile",data.mobile))
+                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                         finish()
                     }
                     else{
