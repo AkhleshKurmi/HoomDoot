@@ -74,10 +74,18 @@
                     android:textSize="14sp"
                     android:layout_marginStart="4dp" />
                 <TextView
+                    android:id="@+id/tvReviewInt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(10k"
+                    android:textColor="#5425A9"
+                    android:textSize="14sp"
+                    android:layout_marginStart="8dp" />
+                <TextView
                     android:id="@+id/tvReviews"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="(0 k reviews)"
+                    android:text="reviews)"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="14sp"
                     android:layout_marginStart="8dp" />
@@ -86,15 +94,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="20dp"
-                android:background="@color/black"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="   Items available"
-                android:layout_marginTop="25dp"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:drawableLeft="@drawable/baseline_arrow_drop_down_circle_24"/>
+                android:background="#777373"/>
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="   Items available"-->
+<!--                android:layout_marginTop="25dp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textSize="14sp"-->
+<!--                android:drawableLeft="@drawable/baseline_arrow_drop_down_circle_24"/>-->
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

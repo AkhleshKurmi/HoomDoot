@@ -121,7 +121,7 @@
                 android:id="@+id/button_proceed_to_checkout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="PROCEED TO CHECKOUT"
+                android:text="Add Address And Slot"
                 android:textColor="#FFFFFF"
                 android:background="#D32F2F"
                 android:layout_marginTop="16dp" />
