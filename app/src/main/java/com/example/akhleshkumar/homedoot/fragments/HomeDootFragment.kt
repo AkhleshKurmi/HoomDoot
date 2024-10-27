@@ -69,7 +69,8 @@ override fun onCreate(savedInstanceState: Bundle?) {
         sharedPreferences = contextHomeDoot.getSharedPreferences("HomeDoot", MODE_PRIVATE)
         editorSP = sharedPreferences.edit()
         userId = requireArguments().getInt("id",0).toString()
-
+        fetchCategories()
+        fetchHomeData()
     }
 
 
@@ -138,26 +139,31 @@ override fun onCreate(savedInstanceState: Bundle?) {
         }
 
         private fun startAutoSlider() {
-            sliderHandler.postDelayed(object : Runnable {
-                override fun run() {
-                    val currentItem: Int = viewPager.currentItem
-                    val totalItems: Int = sliderAdapter.itemCount
+            if (::sliderAdapter.isInitialized) {
+                sliderHandler.postDelayed(object : Runnable {
+                    override fun run() {
+                        val currentItem: Int = viewPager.currentItem
+                        val totalItems: Int = sliderAdapter.itemCount
 
-                    if (currentItem < totalItems - 1) {
-                        viewPager.currentItem = currentItem + 1
-                    } else {
-                        viewPager.currentItem = 0
+                        if (currentItem < totalItems - 1) {
+                            viewPager.currentItem = currentItem + 1
+                        } else {
+                            viewPager.currentItem = 0
+                        }
+
+                        sliderHandler.postDelayed(this, 3000) // Change image every 3 seconds
                     }
-
-                    sliderHandler.postDelayed(this, 3000) // Change image every 3 seconds
-                }
-            }, 3000)
+                }, 3000)
+            }
         }
 
         override fun onResume() {
             super.onResume()
+            fetchCategories()
             getCart(userId)
-            startAutoSlider()
+            if (::sliderAdapter.isInitialized) {
+                startAutoSlider()
+            }
         }
 
 

@@ -270,6 +270,7 @@ class CartActivity : AppCompatActivity() {
                     itemList()
                     Toast.makeText(this@CartActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
                 }
+
             }
 
             override fun onFailure(call: Call<RemoveCartItemRes>, t: Throwable) {
@@ -322,7 +323,11 @@ class CartActivity : AppCompatActivity() {
                         }else{
                             Toast.makeText(this@CartActivity, "Vendor not available", Toast.LENGTH_SHORT).show()
                         }
+                    }        else if (response.code() == 500){
+                        Toast.makeText(this@CartActivity, "Delete another category Products", Toast.LENGTH_SHORT).show()
                     }
+                    else
+                        Toast.makeText(this@CartActivity, "Check category", Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onFailure(call: Call<VendorAvailabilityResponse>, t: Throwable) {
@@ -386,14 +391,16 @@ class CartActivity : AppCompatActivity() {
         var paymentMethod =false
         rgPaymentOption.setOnCheckedChangeListener{group, checkedId ->
             if (checkedId == R.id.rbPayOnline){
-             paymentMethod =  true
+                paymentMethod =  true
                 isPaymentSelected = true
             }
             else if (checkedId==R.id.rbPayCashAfterService){
                 isPaymentSelected = true
+                paymentMethod = false
             }
             else if (checkedId == R.id.rbPayOnlineAfterService){
-             isPaymentSelected=true
+                isPaymentSelected=true
+                paymentMethod = false
 
             }else{
                 isPaymentSelected = false
