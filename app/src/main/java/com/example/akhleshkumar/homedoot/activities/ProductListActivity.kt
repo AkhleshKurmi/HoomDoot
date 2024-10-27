@@ -49,7 +49,6 @@ class ProductListActivity : AppCompatActivity() {
         }
         getChildSubCatList(id)
 
-
     }
 
     private fun getChildSubCatList(id:Int){

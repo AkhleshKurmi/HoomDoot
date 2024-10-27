@@ -48,10 +48,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         bottomNavigationView = findViewById(R.id.bottom_navigation)
-        id = intent.getIntExtra("id",0)
-        name = intent.getStringExtra("name")!!
-        email= intent.getStringExtra("email")!!
-        phone = intent.getStringExtra("mobile")!!
+        id = sharedPreferences.getInt("userId",0)!!
+        name = sharedPreferences.getString("name","")!!
+        email= sharedPreferences.getString("email","")!!
+        phone = sharedPreferences.getString("mobile","")!!
 
 
         val homeDootFragment = HomeDootFragment()

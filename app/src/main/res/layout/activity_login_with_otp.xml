@@ -20,12 +20,46 @@
         android:layout_marginRight="25dp"
         android:background="@drawable/rounded_edit_text"
 
+        android:hint="Enter Name"
+        android:textStyle="bold"
+        android:textColorHint="@color/black"
+
+        android:inputType="textPersonName"
+        android:layout_marginTop="100dp"
+        android:padding="12dp"
+        android:textSize="18sp" />
+    <EditText
+        android:id="@+id/userEmail_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+
+        android:layout_marginRight="25dp"
+        android:background="@drawable/rounded_edit_text"
+
+        android:hint="Enter Email"
+        android:textStyle="bold"
+        android:textColorHint="@color/black"
+
+        android:inputType="textPersonName"
+        android:layout_marginTop="10dp"
+        android:padding="12dp"
+        android:textSize="18sp" />
+    <EditText
+        android:id="@+id/userMobile_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+
+        android:layout_marginRight="25dp"
+        android:background="@drawable/rounded_edit_text"
+
         android:hint="Enter Mobile No."
         android:textStyle="bold"
         android:textColorHint="@color/black"
 
         android:inputType="textPersonName"
-        android:layout_marginTop="85dp"
+        android:layout_marginTop="10dp"
         android:padding="12dp"
         android:textSize="18sp" />
 

@@ -20,7 +20,9 @@ import com.example.akhleshkumar.homedoot.models.VendorAvailabilityResponse
 import com.example.akhleshkumar.homedoot.models.homeresponse.HomePageResponse
 import com.example.akhleshkumar.homedoot.models.user.ForgotPasswordResponse
 import com.example.akhleshkumar.homedoot.models.user.LoginUserResponse
+import com.example.akhleshkumar.homedoot.models.user.LoginWithOtpRes
 import com.example.akhleshkumar.homedoot.models.user.OtpResponse
+import com.example.akhleshkumar.homedoot.models.user.RegisterWithOtpLoginRes
 import com.example.akhleshkumar.homedoot.models.user.RegistrationRequest
 import com.example.akhleshkumar.homedoot.models.user.RegistrationResponse
 import com.example.akhleshkumar.homedoot.models.user.SendOtpRequest
@@ -113,4 +115,24 @@ interface ApiService {
 
     @POST("search-result")
     fun searchData(@Query("product_name") search: String) : Call<ProductResponse>
+
+    @POST("user-register")
+    fun registerUserOtp(
+        @Query("role_id") roleId: Int,
+        @Query("name") name: String,
+        @Query("mobile") mobile: String,
+        @Query("email") email: String,
+        @Query("fast_login") fastLogin: Boolean,
+    ): Call<LoginWithOtpRes>
+
+    @POST("user-register")
+    fun registerUser(
+        @Query("role_id") roleId: Int,
+        @Query("name") name: String,
+        @Query("mobile") mobile: String,
+        @Query("email") email: String,
+        @Query("fast_login") fastLogin: Boolean,
+        @Query("VerificationCode") verificationCode: Int,
+        @Query("register_otp") registerOtp: Int
+    ): Call<RegisterWithOtpLoginRes>
 }
