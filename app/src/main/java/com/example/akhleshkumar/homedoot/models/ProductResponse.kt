@@ -7,11 +7,11 @@ data class ProductResponse(
 )
 
 data class ProductDataS(
-    val products: List<ProductS>,
+    val products: List<ProductSData1>,
     val product_path: String
 )
 
-data class ProductS(
+data class ProductSData1(
     val id: Int,
     val product_token: String?,
     val category_id: Int,

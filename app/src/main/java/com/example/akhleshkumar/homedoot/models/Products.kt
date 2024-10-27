@@ -1,6 +1,6 @@
 package com.example.akhleshkumar.homedoot.models
 
-data class Products(
+data class ProductsData(
     val assign_to_menu: String,
     val category_id: Int,
     val child_sub_category_id: Int,

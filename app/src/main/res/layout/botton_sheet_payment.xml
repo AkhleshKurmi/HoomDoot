@@ -33,6 +33,7 @@
         android:id="@+id/rgPaymentOptions"
         android:layout_width="match_parent"
         android:layout_marginTop="10dp"
+        android:orientation="vertical"
         android:layout_height="wrap_content">
 
         <RadioButton

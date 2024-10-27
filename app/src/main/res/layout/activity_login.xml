@@ -96,4 +96,11 @@
         android:gravity="center"
         android:text="Login with OTP"/>
 
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:id="@+id/loginProgress"></ProgressBar>
+
+
 </LinearLayout>

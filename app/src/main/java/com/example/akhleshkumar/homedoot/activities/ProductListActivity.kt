@@ -1,5 +1,6 @@
 package com.example.akhleshkumar.homedoot.activities
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
@@ -24,11 +25,17 @@ class ProductListActivity : AppCompatActivity() {
 
     lateinit var rvChildSubCat : RecyclerView
     lateinit var tvChiledSubName : TextView
+    lateinit var progressDialog: ProgressDialog
+
     var userId = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product_list)
+        progressDialog = ProgressDialog(this).apply {
+            setMessage("Loading...")
+            setCancelable(false)
+        }
         tvChiledSubName = findViewById(R.id.title)
         rvChildSubCat = findViewById(R.id.recyclerViewProduct)
         rvChildSubCat.layoutManager = LinearLayoutManager(this@ProductListActivity)
@@ -46,6 +53,9 @@ class ProductListActivity : AppCompatActivity() {
     }
 
     private fun getChildSubCatList(id:Int){
+
+        progressDialog.show()
+
         RetrofitClient.instance.fetchProductList(id.toString()).enqueue(object :
             Callback<ProductListResponse> {
             override fun onResponse(
@@ -53,6 +63,8 @@ class ProductListActivity : AppCompatActivity() {
                 response: Response<ProductListResponse>
             ) {
                 if (response.isSuccessful){
+                    progressDialog.dismiss()
+
                     if (response.body()!!.success){
                         val childItemAdapter = ProductListAdapter(this@ProductListActivity,response.body()!!.data.product_list,response.body()!!.data.product_path,id,userId)
                         rvChildSubCat.adapter = childItemAdapter
@@ -66,6 +78,8 @@ class ProductListActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<ProductListResponse>, t: Throwable) {
                 Toast.makeText(this@ProductListActivity, t.localizedMessage, Toast.LENGTH_SHORT).show()
+                progressDialog.dismiss()
+
             }
 
         })

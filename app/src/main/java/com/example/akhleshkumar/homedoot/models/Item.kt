@@ -8,7 +8,7 @@ data class Item(
     val order_no: String,
     val price: Int,
     val product_id: Int,
-    val products: Products,
+    val products: ProductsData,
     val quantity: Int,
     val total_amount: Int,
     val updated_at: String

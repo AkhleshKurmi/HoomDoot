@@ -319,13 +319,15 @@ class CartActivity : AppCompatActivity() {
                          chooseAddress()
                             returnValue = true
 
+                        }else{
+                            Toast.makeText(this@CartActivity, "Vendor not available", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
 
                 override fun onFailure(call: Call<VendorAvailabilityResponse>, t: Throwable) {
                     returnValue = false
-                    Toast.makeText(this@CartActivity, t.localizedMessage, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@CartActivity, "Something went wrong", Toast.LENGTH_SHORT).show()
                 }
 
             })
@@ -370,16 +372,53 @@ class CartActivity : AppCompatActivity() {
     }
 
     private fun showConfirmDialog() {
-//        val dialog = Dialog(this@CartActivity)
-//        dialog.setContentView(R.layout.address_time_bottom_sheet)
-//        val window = dialog.window
-//        window?.setLayout(
-//            WindowManager.LayoutParams.MATCH_PARENT,
-//            WindowManager.LayoutParams.WRAP_CONTENT
-//        )
-//        val address =
 
-        proceedToCheckout()
+        val bottomSheetDialog = BottomSheetDialog(this)
+        val bottomSheetView = layoutInflater.inflate(R.layout.botton_sheet_payment,null)
+        val rgPaymentOption= bottomSheetView.findViewById<RadioGroup>(R.id.rgPaymentOptions)
+        bottomSheetDialog.setContentView(bottomSheetView)
+        val checkOutButton = bottomSheetView.findViewById<Button>(R.id.btnPlaceOrder)
+
+//        val payOnline= bottomSheetView.findViewById<RadioButton>(R.id.rbPayOnline)
+//        val payOnlineAfterService=bottomSheetView.findViewById<RadioButton>(R.id.rbPayOnlineAfterService)
+//        val payCashAfterService = bottomSheetView.findViewById<RadioButton>(R.id.rbPayCashAfterService)
+        var isPaymentSelected = false
+        var paymentMethod =false
+        rgPaymentOption.setOnCheckedChangeListener{group, checkedId ->
+            if (checkedId == R.id.rbPayOnline){
+             paymentMethod =  true
+                isPaymentSelected = true
+            }
+            else if (checkedId==R.id.rbPayCashAfterService){
+                isPaymentSelected = true
+            }
+            else if (checkedId == R.id.rbPayOnlineAfterService){
+             isPaymentSelected=true
+
+            }else{
+                isPaymentSelected = false
+            }
+
+            checkOutButton.setOnClickListener {
+
+                if (isPaymentSelected) {
+                    if (!paymentMethod) {
+                        proceedToCheckout()
+                        bottomSheetDialog.dismiss()
+                    }else{
+                        startActivity(Intent(this,PaymentMethodActivity::class.java))
+                    }
+                } else {
+                    Toast.makeText(this@CartActivity, "please select a option", Toast.LENGTH_SHORT)
+                        .show()
+
+                }
+            }
+
+        }
+
+
+    bottomSheetDialog.show()
     }
 
     fun proceedToCheckout(){
@@ -394,7 +433,6 @@ class CartActivity : AppCompatActivity() {
                if (response.isSuccessful){
                    if (response.body()!!.success){
                        Toast.makeText(this@CartActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
-                       startActivity(Intent(this@CartActivity,PaymentMethodActivity::class.java))
                    }else{
                        Toast.makeText(this@CartActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
                    }

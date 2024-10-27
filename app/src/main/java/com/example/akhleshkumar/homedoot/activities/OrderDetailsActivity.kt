@@ -14,7 +14,7 @@ import retrofit2.Call
 import retrofit2.Response
 
 class OrderDetailsActivity : AppCompatActivity() {
-
+    lateinit var cancelOrderButton: Button
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setContentView(R.layout.activity_order_details)
@@ -33,7 +33,7 @@ class OrderDetailsActivity : AppCompatActivity() {
             val productImageView: ImageView = findViewById(R.id.productImageDetail)
             val productPriceTextView: TextView = findViewById(R.id.productPriceDetail)
             val detailsTextView: TextView = findViewById(R.id.orderDetailsTextView)
-            val cancelOrderButton: Button = findViewById(R.id.cancelOrderButtonDetail)
+             cancelOrderButton = findViewById(R.id.cancelOrderButtonDetail)
 
             // Set data in views
             productNameTextView.text = productName
@@ -46,8 +46,10 @@ class OrderDetailsActivity : AppCompatActivity() {
                 .into(productImageView)
 
             // Handle cancel order button click
-            cancelOrderButton.setOnClickListener {
-                cancelOrder(orderId,mobile)
+            if (cancelOrderButton.text.toString() == "cancel") {
+                cancelOrderButton.setOnClickListener {
+                    cancelOrder(orderId, mobile)
+                }
             }
         }
 
@@ -60,7 +62,9 @@ class OrderDetailsActivity : AppCompatActivity() {
                       response: Response<CancelOrderResponse>
                   ) {
                       if (response.isSuccessful){
+
                           if (response.body()!!.success){
+                              cancelOrderButton.text = "Cancelled"
                               Toast.makeText(this@OrderDetailsActivity, response.body()!!.message, Toast.LENGTH_SHORT)
                                   .show()
                           }else

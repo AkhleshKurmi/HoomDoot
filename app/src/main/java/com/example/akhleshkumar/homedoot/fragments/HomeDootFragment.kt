@@ -174,7 +174,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
             ) {
                 if (response.isSuccessful){
                     if (response.body()!!.success){
-                        val intent = Intent(context, ProductDescriptionActivity::class.java)
+                        val intent = Intent(contextHomeDoot, ProductDescriptionActivity::class.java)
                         intent.putExtra("id",response.body()!!.data.products[0].sub_category_id)
                         intent.putExtra("catName", response.body()!!.data.products.get(0).service_name)
                         intent.putExtra("userId",userId)
@@ -234,10 +234,10 @@ override fun onCreate(savedInstanceState: Bundle?) {
                       sliderAdapter= HomeSliderAdapter(homeResponse.sliders, homeResponse.slider_path)
                       viewPager.setAdapter(sliderAdapter)
                       tableLayout.attachTo(viewPager)
-                       rvServices.adapter = ServiceAdapter(contextHomeDoot.applicationContext,homeResponse.product_list.`3`,homeResponse.product_path)
-                       rvSofa.adapter = ServiceAdapter(contextHomeDoot.applicationContext,homeResponse.product_list.`4`,homeResponse.product_path)
-                      rvPest.adapter = ServiceAdapter(contextHomeDoot.applicationContext, homeResponse.product_list.`7`,homeResponse.product_path)
-                      rvAC.adapter = ServiceAdapter(contextHomeDoot.applicationContext,homeResponse.product_list.`9`,homeResponse.product_path)
+                       rvServices.adapter = ServiceAdapter(contextHomeDoot,homeResponse.product_list.`3`,homeResponse.product_path,userId)
+                       rvSofa.adapter = ServiceAdapter(contextHomeDoot,homeResponse.product_list.`4`,homeResponse.product_path,userId)
+                      rvPest.adapter = ServiceAdapter(contextHomeDoot, homeResponse.product_list.`7`,homeResponse.product_path,userId)
+                      rvAC.adapter = ServiceAdapter(contextHomeDoot,homeResponse.product_list.`9`,homeResponse.product_path,userId)
 
                   }
               }
