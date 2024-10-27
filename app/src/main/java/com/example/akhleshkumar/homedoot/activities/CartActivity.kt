@@ -69,7 +69,7 @@ class CartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCartBinding.inflate(layoutInflater)
-            setContentView(binding.root)
+        setContentView(binding.root)
         rvCart = findViewById<RecyclerView?>(R.id.recycler_view_products)
         checkOutBtn = findViewById(R.id.button_proceed_to_checkout)
         tvCouponCode = findViewById(R.id.edit_text_coupon_code)
@@ -170,7 +170,7 @@ class CartActivity : AppCompatActivity() {
                         binding.textSubtotalValue.text = response.body()!!.data.cart[0].total_amount.toString()
                     cartData.clear()
                     cartData =response.body()!!.data.cart as ArrayList
-                        totalAmount()
+                    totalAmount()
                     cartAdapter = CartAdapter(
                         this@CartActivity,
                         response.body()!!.data.cart.toMutableList(),

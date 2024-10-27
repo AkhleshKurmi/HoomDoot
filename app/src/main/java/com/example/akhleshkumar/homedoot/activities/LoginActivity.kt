@@ -1,5 +1,6 @@
 package com.example.akhleshkumar.homedoot.activities
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -22,7 +23,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var tvLoginWithOtp : TextView
     lateinit var etUserName:EditText
     lateinit var etPassword:EditText
-
+    lateinit var progressDialog: ProgressDialog
     lateinit var forgotPassword:TextView
     lateinit var sharedPreferences: SharedPreferences
     lateinit var editorSP :SharedPreferences.Editor
@@ -38,6 +39,13 @@ class LoginActivity : AppCompatActivity() {
         sharedPreferences = getSharedPreferences("HomeDoot", MODE_PRIVATE)
         editorSP = sharedPreferences.edit()
         tvLoginWithOtp= findViewById(R.id.loginOtp)
+
+
+        progressDialog = ProgressDialog(this).apply {
+            setMessage("Loading...")
+            setCancelable(false)
+        }
+
 
         if (sharedPreferences.getBoolean("isLogin",false)){
             val userName = sharedPreferences.getString("userName","")!!
@@ -66,6 +74,7 @@ class LoginActivity : AppCompatActivity() {
 
     }
 fun login(userName:String, password:String){
+    progressDialog.show()
     RetrofitClient.instance.userLogin(userName,"user", password).enqueue(
         object : Callback<LoginUserResponse>{
             override fun onResponse(
@@ -75,16 +84,19 @@ fun login(userName:String, password:String){
                 if (response.isSuccessful){
                     if (response.body()!!.success){
                         val data = response.body()!!.data
+                        editorSP.putInt("userId",data.id)
                         editorSP.putString("userName",response.body()!!.data.email)
                         editorSP.putString("password",etPassword.text.toString())
                         editorSP.putString("mobile",response.body()!!.data.mobile)
                         editorSP.putString("name",data.name)
-                        editorSP.putString("cityS",data.city)
-                        editorSP.putString("stateS",data.state)
+                        editorSP.putString("cityS",data.city.toString())
+                        editorSP.putString("stateS",data.state.toString())
                         editorSP.putString("addressS",data.address)
-                        editorSP.putString("pincodeS",data.pincode)
+                        editorSP.putString("pincodeS",data.pincode.toString())
                         editorSP.putBoolean("isLogin", true)
                         editorSP.commit()
+
+                        progressDialog.dismiss()
                         startActivity(Intent(this@LoginActivity, MainActivity::class.java).putExtra("id", response.body()!!.data.id)
                             .putExtra("email",data.email)
                             .putExtra("name",data.name)
@@ -100,6 +112,7 @@ fun login(userName:String, password:String){
 
             override fun onFailure(call: Call<LoginUserResponse>, t: Throwable) {
                 Log.d("TAG", "onFailure: ${t.localizedMessage}")
+                progressDialog.dismiss()
                 Toast.makeText(this@LoginActivity, "Invalid credentials", Toast.LENGTH_SHORT).show()
             }
 
