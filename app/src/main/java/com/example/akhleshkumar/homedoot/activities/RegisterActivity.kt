@@ -1,6 +1,7 @@
 package com.example.akhleshkumar.homedoot.activities
 
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -11,8 +12,12 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.akhleshkumar.homedoot.R
+import com.example.akhleshkumar.homedoot.adapters.CitySpinnerAdapter
+import com.example.akhleshkumar.homedoot.adapters.StateSpinnerAdapter
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
 import com.example.akhleshkumar.homedoot.databinding.ActivityRegisterBinding
+import com.example.akhleshkumar.homedoot.models.CityResponse
+import com.example.akhleshkumar.homedoot.models.StateResponse
 import com.example.akhleshkumar.homedoot.models.user.OtpResponse
 import com.example.akhleshkumar.homedoot.models.user.RegistrationRequest
 import com.example.akhleshkumar.homedoot.models.user.RegistrationResponse
@@ -23,28 +28,87 @@ import retrofit2.Response
 
 class RegisterActivity : AppCompatActivity() {
     lateinit var binding: ActivityRegisterBinding
-
+    lateinit var stateSpinnerAdapter: StateSpinnerAdapter
+    lateinit var cityAdapter: CitySpinnerAdapter
+    lateinit var progressDialog: ProgressDialog
+    var cityId = 0
+    var stateId = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        progressDialog = ProgressDialog(this).apply {
+            setMessage("Loading...")
+            setCancelable(false)
+        }
+        getState()
 
+
+        binding.stateInput.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                val selectedCityId = cityAdapter.getCityId(position)
+                stateId = selectedCityId
+                getCity(selectedCityId)
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+
+            }
+        }
+
+        binding.cityInput.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                val selectedCityId = cityAdapter.getCityId(position)
+                cityId = selectedCityId
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Handle case when no city is selected if needed
+            }
+        }
 
         binding.btnRegister.setOnClickListener {
-            if (isValidation()){
-                RetrofitClient.instance.sendOtp(SendOtpRequest(2,binding.nameInput.text.toString(),binding.emailInput.text.toString(),
-                    binding.mobileInput.text.toString(),binding.addressInput.text.toString(),binding.stateInput.text.toString(),binding.cityInput.text.toString(),binding.pincodeInput.text.toString(),
-                    binding.passwordInput.text.toString(),binding.CpasswordInput.text.toString()
-                    )).enqueue(object : Callback<OtpResponse>{
+            if (isValidation()) {
+                progressDialog.show()
+                RetrofitClient.instance.sendOtp(
+                    SendOtpRequest(
+                        2,
+                        binding.nameInput.text.toString(),
+                        binding.emailInput.text.toString(),
+                        binding.mobileInput.text.toString(),
+                        binding.addressInput.text.toString(),
+                        stateId,
+                        cityId,
+                        binding.pincodeInput.text.toString(),
+                        binding.passwordInput.text.toString(),
+                        binding.CpasswordInput.text.toString()
+                    )
+                ).enqueue(object : Callback<OtpResponse> {
                     override fun onResponse(
                         call: Call<OtpResponse>,
                         response: Response<OtpResponse>
                     ) {
-                        if (response.isSuccessful){
+                        if (response.isSuccessful) {
+                            progressDialog.dismiss()
                             if (response.body()!!.success) {
                                 validateOtp(response.body()!!.data.VerificationCode.toString())
-                            } else{
-                                Toast.makeText(this@RegisterActivity, response.message(), Toast.LENGTH_SHORT)
+                            } else {
+                                Toast.makeText(
+                                    this@RegisterActivity,
+                                    response.message(),
+                                    Toast.LENGTH_SHORT
+                                )
                                     .show()
                             }
                         }
@@ -52,7 +116,7 @@ class RegisterActivity : AppCompatActivity() {
 
 
                     override fun onFailure(call: Call<OtpResponse>, t: Throwable) {
-
+                        progressDialog.dismiss()
                     }
 
                 })
@@ -60,48 +124,70 @@ class RegisterActivity : AppCompatActivity() {
         }
 
     }
-    fun isValidation():Boolean{
-        if (binding.nameInput.text.toString().isEmpty()){
-            binding.nameInput.error= "Enter Name"
+
+    fun getState() {
+        progressDialog.show()
+        RetrofitClient.instance.getState().enqueue(object : Callback<StateResponse> {
+            override fun onResponse(call: Call<StateResponse>, response: Response<StateResponse>) {
+                if (response.isSuccessful) {
+                    progressDialog.dismiss()
+                    if (response.body()!!.success) {
+                        stateSpinnerAdapter =
+                            StateSpinnerAdapter(this@RegisterActivity, response.body()!!.data)
+                        binding.stateInput.adapter = stateSpinnerAdapter
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<StateResponse>, t: Throwable) {
+               progressDialog.dismiss()
+            }
+
+        })
+    }
+
+    fun isValidation(): Boolean {
+        if (binding.nameInput.text.toString().isEmpty()) {
+            binding.nameInput.error = "Enter Name"
             return false
         }
-        if (binding.emailInput.text.toString().isEmpty()){
-            binding.emailInput.error= "Enter Email"
+        if (binding.emailInput.text.toString().isEmpty()) {
+            binding.emailInput.error = "Enter Email"
             return false
         }
-        if (binding.mobileInput.text.toString().isEmpty()){
-            binding.mobileInput.error= "Enter Mobile Number"
+        if (binding.mobileInput.text.toString().isEmpty()) {
+            binding.mobileInput.error = "Enter Mobile Number"
             return false
         }
-        if (binding.addressInput.text.toString().isEmpty()){
-            binding.addressInput.error= "Enter Address"
+        if (binding.addressInput.text.toString().isEmpty()) {
+            binding.addressInput.error = "Enter Address"
             return false
         }
-//        if (binding.cityInput.text.toString().isEmpty()){
-//            binding.cityInput.error= "Enter City"
-//            return false
-//        }
-//        if (binding.stateInput.text.toString().isEmpty()){
-//            binding.stateInput.error= "Enter State"
-//            return false
-//        }
-        if (binding.pincodeInput.text.toString().isEmpty()){
-            binding.pincodeInput.error= "Enter Pin code"
+        if (cityId<=0){
+            Toast.makeText(this, "Select City", Toast.LENGTH_SHORT).show()
             return false
         }
-        if (binding.passwordInput.text.toString().isEmpty()){
-            binding.passwordInput.error= "Enter Password"
+        if (stateId<=0){
+            Toast.makeText(this, "Select State", Toast.LENGTH_SHORT).show()
             return false
         }
-        if (binding.CpasswordInput.text.toString().isEmpty()){
-            binding.CpasswordInput.error= "Enter Confirm Password"
+        if (binding.pincodeInput.text.toString().isEmpty()) {
+            binding.pincodeInput.error = "Enter Pin code"
+            return false
+        }
+        if (binding.passwordInput.text.toString().isEmpty()) {
+            binding.passwordInput.error = "Enter Password"
+            return false
+        }
+        if (binding.CpasswordInput.text.toString().isEmpty()) {
+            binding.CpasswordInput.error = "Enter Confirm Password"
             return false
         }
 
         return true
     }
 
-    fun validateOtp(verificationCode:String){
+    fun validateOtp(verificationCode: String) {
         val dialog = Dialog(this@RegisterActivity)
         dialog.setContentView(R.layout.dialog_otp)
         val window = dialog.window
@@ -113,35 +199,57 @@ class RegisterActivity : AppCompatActivity() {
         val etOtp2 = dialog.findViewById<EditText>(R.id.otp2)
         val etOtp3 = dialog.findViewById<EditText>(R.id.otp3)
         val etOtp4 = dialog.findViewById<EditText>(R.id.otp4)
-        val btnValidate= dialog.findViewById<Button>(R.id.btnSubmitOtp)
+        val btnValidate = dialog.findViewById<Button>(R.id.btnSubmitOtp)
 
         dialog.setCancelable(false)
         btnValidate.setOnClickListener {
-            if(etOtp1.text.toString().isEmpty() || etOtp2.text.toString().isEmpty() || etOtp3.text.toString().isEmpty()
-                || etOtp4.text.toString().isEmpty()){
+            if (etOtp1.text.toString().isEmpty() || etOtp2.text.toString()
+                    .isEmpty() || etOtp3.text.toString().isEmpty()
+                || etOtp4.text.toString().isEmpty()
+            ) {
                 Toast.makeText(this@RegisterActivity, "Enter full otp", Toast.LENGTH_SHORT).show()
-            }else{
-                RetrofitClient.instance.userRegister(RegistrationRequest(2,binding.nameInput.text.toString(),binding.emailInput.text.toString(),
-                    binding.mobileInput.text.toString(),binding.addressInput.text.toString(),binding.stateInput.text.toString(),binding.cityInput.text.toString(),binding.pincodeInput.text.toString(),
-                    binding.passwordInput.text.toString(),binding.CpasswordInput.text.toString(),register_otp = etOtp1.text.toString() +
-                    etOtp2.text.toString() + etOtp3.text.toString() + etOtp4.text.toString(), VerificationCode = verificationCode))
-                    .enqueue(object : Callback<RegistrationResponse>{
+            } else {
+                progressDialog.show()
+                RetrofitClient.instance.userRegister(
+                    RegistrationRequest(
+                        2,
+                        binding.nameInput.text.toString(),
+                        binding.emailInput.text.toString(),
+                        binding.mobileInput.text.toString(),
+                        binding.addressInput.text.toString(),
+                        stateId,
+                        cityId,
+                        binding.pincodeInput.text.toString(),
+                        binding.passwordInput.text.toString(),
+                        binding.CpasswordInput.text.toString(),
+                        register_otp = etOtp1.text.toString() +
+                                etOtp2.text.toString() + etOtp3.text.toString() + etOtp4.text.toString(),
+                        VerificationCode = verificationCode
+                    )
+                )
+                    .enqueue(object : Callback<RegistrationResponse> {
                         override fun onResponse(
                             call: Call<RegistrationResponse>,
                             response: Response<RegistrationResponse>
 
                         ) {
-                            if (response.isSuccessful){
-                                if (response.body()!!.success){
-                                    Toast.makeText(this@RegisterActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
-                                  dialog.dismiss()
-                                   finish()
+                            if (response.isSuccessful) {
+                                progressDialog.dismiss()
+                                if (response.body()!!.success) {
+                                    Toast.makeText(
+                                        this@RegisterActivity,
+                                        response.body()!!.message,
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    dialog.dismiss()
+                                    finish()
 
                                 }
                             }
                         }
 
                         override fun onFailure(call: Call<RegistrationResponse>, t: Throwable) {
+                            progressDialog.dismiss()
                         }
 
                     })
@@ -151,7 +259,23 @@ class RegisterActivity : AppCompatActivity() {
         dialog.show()
 
     }
+    fun getCity(stateId:Int){
+        progressDialog.show()
+        RetrofitClient.instance.getCity(stateId).enqueue(object : Callback<CityResponse>{
+            override fun onResponse(call: Call<CityResponse>, response: Response<CityResponse>) {
+                if (response.isSuccessful){
+                    progressDialog.dismiss()
+                    if (response.body()!!.success){
+                        cityAdapter = CitySpinnerAdapter(this@RegisterActivity,response.body()!!.data)
+                        binding.cityInput.adapter = cityAdapter
+                    }
+                }
+            }
 
-
+            override fun onFailure(call: Call<CityResponse>, t: Throwable) {
+             progressDialog.dismiss()
+            }
+        })
+    }
 
 }
