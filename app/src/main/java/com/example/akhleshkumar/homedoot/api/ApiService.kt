@@ -7,12 +7,14 @@ import com.example.akhleshkumar.homedoot.models.CancelOrderResponse
 import com.example.akhleshkumar.homedoot.models.CartListResponse
 import com.example.akhleshkumar.homedoot.models.CheckSlotsResponse
 import com.example.akhleshkumar.homedoot.models.ChildSubCategoryResponse
+import com.example.akhleshkumar.homedoot.models.CityResponse
 import com.example.akhleshkumar.homedoot.models.CouponResponse
 import com.example.akhleshkumar.homedoot.models.OrderCheckoutRequest
 import com.example.akhleshkumar.homedoot.models.OrderCheckoutRes
 import com.example.akhleshkumar.homedoot.models.ProductDetailsResponse
 import com.example.akhleshkumar.homedoot.models.ProductResponse
 import com.example.akhleshkumar.homedoot.models.RemoveCartItemRes
+import com.example.akhleshkumar.homedoot.models.StateResponse
 import com.example.akhleshkumar.homedoot.models.SubCategoryResponse
 import com.example.akhleshkumar.homedoot.models.UserOrderResponse
 import com.example.akhleshkumar.homedoot.models.VendorAvailabilityRequest
@@ -36,6 +38,12 @@ import retrofit2.http.Query
 interface ApiService {
     @GET("category")
     fun fetchCategories(): Call<ApiResponseCategory>
+
+    @GET("state")
+    fun getState(): Call<StateResponse>
+
+    @POST("city")
+    fun getCity(@Query("state_id")stateId:Int) :Call<CityResponse>
 
     @GET("home")
     fun fetchHomePage(): Call<HomePageResponse>

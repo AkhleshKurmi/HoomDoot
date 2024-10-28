@@ -77,14 +77,14 @@ class RegisterActivity : AppCompatActivity() {
             binding.addressInput.error= "Enter Address"
             return false
         }
-        if (binding.cityInput.text.toString().isEmpty()){
-            binding.cityInput.error= "Enter City"
-            return false
-        }
-        if (binding.stateInput.text.toString().isEmpty()){
-            binding.stateInput.error= "Enter State"
-            return false
-        }
+//        if (binding.cityInput.text.toString().isEmpty()){
+//            binding.cityInput.error= "Enter City"
+//            return false
+//        }
+//        if (binding.stateInput.text.toString().isEmpty()){
+//            binding.stateInput.error= "Enter State"
+//            return false
+//        }
         if (binding.pincodeInput.text.toString().isEmpty()){
             binding.pincodeInput.error= "Enter Pin code"
             return false

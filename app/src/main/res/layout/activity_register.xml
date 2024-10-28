@@ -69,7 +69,7 @@
         android:textColorHint="#757575"
         android:textColor="#000000"
         android:textSize="16sp" />
-    <EditText
+    <Spinner
         android:id="@+id/state_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
         android:textSize="16sp" />
 
     <!-- Password Input with improved style -->
-    <EditText
+    <Spinner
         android:id="@+id/city_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

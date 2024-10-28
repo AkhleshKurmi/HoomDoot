@@ -24,6 +24,8 @@ class OrderAdapter(val context: Context, private val orders: List<DataX>, val pa
         val ivProduct: ImageView = view.findViewById(R.id.productImage)
         val grandTotal: TextView = view.findViewById(R.id.productPrice)
         val orderStatus: TextView = view.findViewById(R.id.orderStatus)
+        val tvServiceTime : TextView = view.findViewById(R.id.serviceTime)
+        val tvServiceDate: TextView = view.findViewById(R.id.serviceDate)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrderViewHolder {
@@ -37,6 +39,8 @@ class OrderAdapter(val context: Context, private val orders: List<DataX>, val pa
         holder.ProductName.text = order.items[0].products.service_name
         holder.orderStatus.text= order.order_status
         holder.grandTotal.text= "₹ ${order.sub_total.toString()}"
+        holder.tvServiceDate.text = order.service_date
+        holder.tvServiceTime.text = order.service_time
         val imageUrl = "$path/${order.items[0].product_id}/${order.items[0].products.main_image}"
         Picasso.get().load(imageUrl).into(holder.ivProduct)
         holder.itemView.setOnClickListener {
@@ -44,6 +48,7 @@ class OrderAdapter(val context: Context, private val orders: List<DataX>, val pa
                 .putExtra("ORDER_DETAILS",order.items[0].products.description )
                 .putExtra("PRODUCT_PRICE", order.items[0].total_amount)
                 .putExtra("PRODUCT_NAME",order.items[0].products.service_name)
+                .putExtra("OrderStatus",order.order_status)
                 .putExtra("PRODUCT_IMAGE_URL", imageUrl))
         }
     }

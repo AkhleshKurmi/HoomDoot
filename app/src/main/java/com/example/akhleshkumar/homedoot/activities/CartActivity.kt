@@ -439,7 +439,9 @@ class CartActivity : AppCompatActivity() {
            ) {
                if (response.isSuccessful){
                    if (response.body()!!.success){
+                       startActivity(Intent(this@CartActivity,MainActivity::class.java))
                        Toast.makeText(this@CartActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
+                       finish()
                    }else{
                        Toast.makeText(this@CartActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
                    }

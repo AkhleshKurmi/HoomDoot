@@ -10,11 +10,14 @@ import com.example.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
 import com.example.akhleshkumar.homedoot.models.CancelOrderResponse
 import com.squareup.picasso.Picasso
+import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Response
 
 class OrderDetailsActivity : AppCompatActivity() {
     lateinit var cancelOrderButton: Button
+    lateinit var tvOrderStatus :TextView
+    var orderStatus : String? = null
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setContentView(R.layout.activity_order_details)
@@ -25,6 +28,7 @@ class OrderDetailsActivity : AppCompatActivity() {
             val productPrice = intent.getIntExtra("PRODUCT_PRICE", 0)
             val orderDetails = intent.getStringExtra("ORDER_DETAILS")
             val orderId = intent.getStringExtra("ORDER_ID")
+             orderStatus = intent.getStringExtra("OrderStatus")
             val sharedPreferences = getSharedPreferences("HomeDoot", MODE_PRIVATE)
             val mobile = sharedPreferences.getString("mobile","")!!
 
@@ -33,7 +37,9 @@ class OrderDetailsActivity : AppCompatActivity() {
             val productImageView: ImageView = findViewById(R.id.productImageDetail)
             val productPriceTextView: TextView = findViewById(R.id.productPriceDetail)
             val detailsTextView: TextView = findViewById(R.id.orderDetailsTextView)
-             cancelOrderButton = findViewById(R.id.cancelOrderButtonDetail)
+             tvOrderStatus = findViewById(R.id.orderStatus)
+            tvOrderStatus.text = orderStatus
+            cancelOrderButton = findViewById(R.id.cancelOrderButtonDetail)
 
             // Set data in views
             productNameTextView.text = productName
@@ -44,12 +50,13 @@ class OrderDetailsActivity : AppCompatActivity() {
             Picasso.get()
                 .load(productImageUrl)
                 .into(productImageView)
-
+               cancelOrderButton.text = if (orderStatus == "cancelled")  orderStatus else "cancel order"
             // Handle cancel order button click
-            if (cancelOrderButton.text.toString() == "cancel") {
+
                 cancelOrderButton.setOnClickListener {
-                    cancelOrder(orderId, mobile)
-                }
+                    if (orderStatus != "cancelled") {
+                        cancelOrder(orderId, mobile)
+                    }
             }
         }
 
@@ -65,7 +72,10 @@ class OrderDetailsActivity : AppCompatActivity() {
 
                           if (response.body()!!.success){
                               cancelOrderButton.text = "Cancelled"
-                              Toast.makeText(this@OrderDetailsActivity, response.body()!!.message, Toast.LENGTH_SHORT)
+
+                              orderStatus = "cancelled"
+                              tvOrderStatus.text = orderStatus
+                                  Toast.makeText(this@OrderDetailsActivity, response.body()!!.message, Toast.LENGTH_SHORT)
                                   .show()
                           }else
                           {

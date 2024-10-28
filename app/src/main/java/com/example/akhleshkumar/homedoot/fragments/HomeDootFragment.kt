@@ -107,10 +107,9 @@ override fun onCreate(savedInstanceState: Bundle?) {
        }
 
         fetchHomeData()
-
         fetchCategories()
         getCart(userId)
-        fetchHomeData()
+
 
 
             rvServices.layoutManager = GridLayoutManager(contextHomeDoot, 3)
@@ -161,9 +160,9 @@ override fun onCreate(savedInstanceState: Bundle?) {
             super.onResume()
             fetchCategories()
             getCart(userId)
-            if (::sliderAdapter.isInitialized) {
-                startAutoSlider()
-            }
+
+
+
         }
 
 
@@ -180,17 +179,29 @@ override fun onCreate(savedInstanceState: Bundle?) {
             ) {
                 if (response.isSuccessful){
                     if (response.body()!!.success){
-                        val intent = Intent(context, ProductDescriptionActivity::class.java)
-                        intent.putExtra("id",response.body()!!.data.products[0].sub_category_id)
-                        intent.putExtra("catName", response.body()!!.data.products.get(0).service_name)
-                        intent.putExtra("userId",userId)
-                        startActivity(intent)
+                        if (response.body()!!.data.products.isNotEmpty()) {
+                            val intent = Intent(context, ProductListActivity::class.java)
+                            intent.putExtra(
+                                "id",
+                                response.body()!!.data.products[0].child_sub_category_id
+                            )
+                            intent.putExtra(
+                                "catName",
+                                response.body()!!.data.products.get(0).service_name
+                            )
+                            intent.putExtra("userId", userId)
+                            startActivity(intent)
+                        }else{
+                            Toast.makeText(contextHomeDoot, "Try another service", Toast.LENGTH_SHORT).show()
+                        }
+                    }else{
+                        Toast.makeText(contextHomeDoot, "No data found", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
 
             override fun onFailure(call: Call<ProductResponse>, t: Throwable) {
-
+                Toast.makeText(contextHomeDoot, "Something went wrong", Toast.LENGTH_SHORT).show()
             }
 
         })
@@ -240,11 +251,11 @@ override fun onCreate(savedInstanceState: Bundle?) {
                       sliderAdapter= HomeSliderAdapter(homeResponse.sliders, homeResponse.slider_path)
                       viewPager.setAdapter(sliderAdapter)
                       tableLayout.attachTo(viewPager)
-                       rvServices.adapter = ServiceAdapter(contextHomeDoot.applicationContext,homeResponse.product_list.`3`,homeResponse.product_path,userId)
-                       rvSofa.adapter = ServiceAdapter(contextHomeDoot.applicationContext,homeResponse.product_list.`4`,homeResponse.product_path,userId)
-                      rvPest.adapter = ServiceAdapter(contextHomeDoot.applicationContext, homeResponse.product_list.`7`,homeResponse.product_path,userId)
-                      rvAC.adapter = ServiceAdapter(contextHomeDoot.applicationContext,homeResponse.product_list.`9`,homeResponse.product_path,userId)
-
+                       rvServices.adapter = ServiceAdapter(contextHomeDoot,homeResponse.product_list.`3`,homeResponse.product_path,userId)
+                       rvSofa.adapter = ServiceAdapter(contextHomeDoot,homeResponse.product_list.`4`,homeResponse.product_path,userId)
+                      rvPest.adapter = ServiceAdapter(contextHomeDoot, homeResponse.product_list.`7`,homeResponse.product_path,userId)
+                      rvAC.adapter = ServiceAdapter(contextHomeDoot,homeResponse.product_list.`9`,homeResponse.product_path,userId)
+                      startAutoSlider()
                   }
               }
           }
