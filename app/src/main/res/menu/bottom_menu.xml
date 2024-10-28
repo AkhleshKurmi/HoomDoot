@@ -5,8 +5,9 @@
         android:icon="@drawable/baseline_hd_24"
         android:title="HD" />
     <item
+
         android:id="@+id/navigation_personal"
-        android:icon="@drawable/baseline_wine_bar_24"
+        android:icon="@drawable/mirror"
         android:title="Rewards" />
 
     <item

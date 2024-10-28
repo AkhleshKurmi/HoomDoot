@@ -99,7 +99,7 @@ fun login(userName:String, password:String){
                         editorSP.putString("pincodeS",data.pincode.toString())
                         editorSP.putBoolean("isLogin", true)
                         editorSP.commit()
-                        if(activityFrom != "addCart"){
+                        if(activityFrom == "addCart"){
                         progressDialog.dismiss()
                             startActivity(Intent(this@LoginActivity,ProductDescriptionActivity::class.java).putExtra("id",productId))
 
