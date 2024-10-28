@@ -1,5 +1,6 @@
 package com.example.akhleshkumar.homedoot.activities
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.widget.ImageView
@@ -32,6 +33,8 @@ class ProductDescriptionActivity : AppCompatActivity() {
     lateinit var bottomContainer: ViewPager2
     lateinit var tableLayout: DotsIndicator
     lateinit var tabLayoutBottom: TabLayout
+    lateinit var sharedPreferences: SharedPreferences
+    lateinit var editorSP : SharedPreferences.Editor
     var id = ""
     var userId = ""
     val sliderHandler: Handler = Handler()
@@ -39,6 +42,8 @@ class ProductDescriptionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product_description)
+        sharedPreferences = getSharedPreferences("HomeDoot", MODE_PRIVATE)
+        editorSP = sharedPreferences.edit()
         title = findViewById(R.id.title)
         rvAddItem = findViewById(R.id.rv_items_toAdd)
         viewPager = findViewById(R.id.viewPager)
@@ -46,7 +51,7 @@ class ProductDescriptionActivity : AppCompatActivity() {
         bottomContainer = findViewById(R.id.view_pager_include)
         tabLayoutBottom = findViewById(R.id.tabLayoutBottom)
          id = intent.getIntExtra("id", 1).toString()
-        userId = intent.getStringExtra("userId")!!
+        userId = sharedPreferences.getInt("userId",0).toString()
         val subChildCatName = intent.getStringExtra("catName")
         title.text = subChildCatName.toString()
         rvAddItem.layoutManager = LinearLayoutManager(this@ProductDescriptionActivity)

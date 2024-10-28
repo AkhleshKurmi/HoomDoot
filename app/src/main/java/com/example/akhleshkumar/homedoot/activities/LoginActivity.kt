@@ -27,6 +27,8 @@ class LoginActivity : AppCompatActivity() {
     lateinit var forgotPassword:TextView
     lateinit var sharedPreferences: SharedPreferences
     lateinit var editorSP :SharedPreferences.Editor
+    var productId = 0
+    var activityFrom = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +42,8 @@ class LoginActivity : AppCompatActivity() {
         editorSP = sharedPreferences.edit()
         tvLoginWithOtp= findViewById(R.id.loginOtp)
 
+        activityFrom = intent.getStringExtra("from")!!
+        productId = intent.getIntExtra("productId",0)
 
         progressDialog = ProgressDialog(this).apply {
             setMessage("Loading...")
@@ -95,13 +99,18 @@ fun login(userName:String, password:String){
                         editorSP.putString("pincodeS",data.pincode.toString())
                         editorSP.putBoolean("isLogin", true)
                         editorSP.commit()
-
+                        if(activityFrom != "addCart"){
                         progressDialog.dismiss()
-                        startActivity(Intent(this@LoginActivity, MainActivity::class.java).putExtra("id", response.body()!!.data.id)
-                            .putExtra("email",data.email)
-                            .putExtra("name",data.name)
-                            .putExtra("mobile",data.mobile))
-                        finish()
+                            startActivity(Intent(this@LoginActivity,ProductDescriptionActivity::class.java).putExtra("id",productId))
+
+                    }else{
+                            progressDialog.dismiss()
+                            startActivity(Intent(this@LoginActivity, MainActivity::class.java).putExtra("id", response.body()!!.data.id)
+                                .putExtra("email",data.email)
+                                .putExtra("name",data.name)
+                                .putExtra("mobile",data.mobile))
+                            finish()
+                        }
                     }
                     else{
                         Toast.makeText(this@LoginActivity, response.body()!!.message, Toast.LENGTH_SHORT)

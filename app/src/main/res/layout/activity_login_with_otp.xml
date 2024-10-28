@@ -83,9 +83,14 @@
         android:textColor="#625F5F" />
 
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Login with Password"
+        android:id="@+id/tvLginWithPass"/>
+    <TextView
         android:layout_width="30dp"
         android:layout_height="20dp"
-
+        android:id="@+id/tvSkip"
         android:layout_gravity="end"
         android:layout_margin="20dp"
         android:text="skip"

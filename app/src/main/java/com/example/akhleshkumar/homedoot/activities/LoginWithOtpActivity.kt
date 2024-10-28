@@ -34,6 +34,13 @@ class LoginWithOtpActivity : AppCompatActivity() {
                        binding.usernameInput.text.toString())
            }
         }
+        binding.tvSkip.setOnClickListener {
+            startActivity(Intent(this@LoginWithOtpActivity,MainActivity::class.java))
+        }
+        binding.tvLginWithPass.setOnClickListener {
+            startActivity(Intent(this,LoginActivity::class.java).putExtra("from","initial")
+                .putExtra("productId",0))
+        }
 
     }
 
@@ -106,6 +113,7 @@ class LoginWithOtpActivity : AppCompatActivity() {
                             if (response.body()!!.success){
                                 val data = response.body()!!.data
                                 editorSP.putInt("userId",data.id)
+                                editorSP.putBoolean("isLogin",true)
                                 editorSP.putString("userName",response.body()!!.data.email)
                                 editorSP.putString("mobile",response.body()!!.data.mobile)
                                 editorSP.putString("name",data.name)

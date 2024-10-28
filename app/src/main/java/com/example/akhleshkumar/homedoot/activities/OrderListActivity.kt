@@ -1,5 +1,6 @@
 package com.example.akhleshkumar.homedoot.activities
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -16,14 +17,17 @@ import retrofit2.Response
 class OrderListActivity : AppCompatActivity() {
     private lateinit var orderRecyclerView: RecyclerView
 //    private lateinit var orderAdapter: OrderAdapter
+lateinit var sharedPreferences: SharedPreferences
+    lateinit var editorSP : SharedPreferences.Editor
     lateinit var userId:String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order_list)
-
+        sharedPreferences = getSharedPreferences("HomeDoot", MODE_PRIVATE)
+        editorSP = sharedPreferences.edit()
         orderRecyclerView = findViewById(R.id.recyclerViewOrders)
         orderRecyclerView.layoutManager = LinearLayoutManager(this)
-        userId = intent.getStringExtra("userId")!!
+        userId = sharedPreferences.getInt("userId",0).toString()
         fetchOrder( userId)
 
     }

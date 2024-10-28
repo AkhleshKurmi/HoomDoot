@@ -84,7 +84,7 @@ class CartActivity : AppCompatActivity() {
         rvCart.layoutManager = LinearLayoutManager(this)
         sharedPreferences = getSharedPreferences("HomeDoot", MODE_PRIVATE)
         editorSP = sharedPreferences.edit()
-        id = intent.getStringExtra("userId")!!
+        id = sharedPreferences.getInt("userId",0).toString()
         itemList()
         listTime.add(TimeDataModel("09:00 am"))
         listTime.add(TimeDataModel("10:00 am"))

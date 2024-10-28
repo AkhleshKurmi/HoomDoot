@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.activities.CartActivity
+import com.example.akhleshkumar.homedoot.activities.LoginActivity
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
 import com.example.akhleshkumar.homedoot.models.AddCartResponse
 import com.example.akhleshkumar.homedoot.models.ProductItem
@@ -58,7 +59,13 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
         }
 
         holder.btnAdd.setOnClickListener {
-            addItemToList(acItem.productId, acItem.id, quantity, acItem.offerPrice)
+            if (userId>0){
+                addItemToList(acItem.productId, acItem.id, quantity, acItem.offerPrice)
+            }else{
+                context.startActivity(Intent(context, LoginActivity::class.java).putExtra("from","addCart")
+                    .putExtra("productId",acItem.productId ))
+            }
+
 
 
         }

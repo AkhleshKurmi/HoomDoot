@@ -44,39 +44,9 @@ class RegisterActivity : AppCompatActivity() {
         getState()
 
 
-        binding.stateInput.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View,
-                position: Int,
-                id: Long
-            ) {
-                val selectedCityId = cityAdapter.getCityId(position)
-                stateId = selectedCityId
-                getCity(selectedCityId)
 
-            }
 
-            override fun onNothingSelected(parent: AdapterView<*>) {
 
-            }
-        }
-
-        binding.cityInput.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View,
-                position: Int,
-                id: Long
-            ) {
-                val selectedCityId = cityAdapter.getCityId(position)
-                cityId = selectedCityId
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                // Handle case when no city is selected if needed
-            }
-        }
 
         binding.btnRegister.setOnClickListener {
             if (isValidation()) {
@@ -135,6 +105,23 @@ class RegisterActivity : AppCompatActivity() {
                         stateSpinnerAdapter =
                             StateSpinnerAdapter(this@RegisterActivity, response.body()!!.data)
                         binding.stateInput.adapter = stateSpinnerAdapter
+                        binding.stateInput.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                            override fun onItemSelected(
+                                parent: AdapterView<*>,
+                                view: View,
+                                position: Int,
+                                id: Long
+                            ) {
+                                val selectedCityId = stateSpinnerAdapter.getCityId(position)
+                                stateId = selectedCityId
+                                getCity(selectedCityId)
+
+                            }
+
+                            override fun onNothingSelected(parent: AdapterView<*>) {
+
+                            }
+                        }
                     }
                 }
             }
@@ -268,6 +255,21 @@ class RegisterActivity : AppCompatActivity() {
                     if (response.body()!!.success){
                         cityAdapter = CitySpinnerAdapter(this@RegisterActivity,response.body()!!.data)
                         binding.cityInput.adapter = cityAdapter
+                        binding.cityInput.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                            override fun onItemSelected(
+                                parent: AdapterView<*>,
+                                view: View,
+                                position: Int,
+                                id: Long
+                            ) {
+                                val selectedCityId = cityAdapter.getCityId(position)
+                                cityId = selectedCityId
+                            }
+
+                            override fun onNothingSelected(parent: AdapterView<*>) {
+                                // Handle case when no city is selected if needed
+                            }
+                        }
                     }
                 }
             }

@@ -68,7 +68,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
         contextHomeDoot = requireContext()
         sharedPreferences = contextHomeDoot.getSharedPreferences("HomeDoot", MODE_PRIVATE)
         editorSP = sharedPreferences.edit()
-        userId = requireArguments().getInt("id",0).toString()
+        userId = sharedPreferences.getInt("userId",0).toString()
         fetchCategories()
         fetchHomeData()
     }
