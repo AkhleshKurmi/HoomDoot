@@ -51,7 +51,7 @@ class UpdatefrofileActivity : AppCompatActivity() {
                 progressDialog.show()
                 RetrofitClient.instance.updateProfile("user",binding.etFullName.text.toString(),userId.toInt(),
                     binding.etEmailAddress.text.toString(),binding.etPhoneNumber.text.toString(),binding.etEmailAddress.text.toString(),
-                    11,binding.etPincode.text.toString().toInt()).enqueue(object : Callback<CancelOrderResponse> {
+                    cityId,binding.etPincode.text.toString().toInt()).enqueue(object : Callback<CancelOrderResponse> {
                     override fun onResponse(
                         call: Call<CancelOrderResponse>,
                         response: Response<CancelOrderResponse>
@@ -62,7 +62,7 @@ class UpdatefrofileActivity : AppCompatActivity() {
                                 val email  = binding.etEmailAddress.text.toString()
                                 editorSP.putString("userName",email)
                                 editorSP.putString("mobile",binding.etPhoneNumber.text.toString())
-                                editorSP.putString("name",binding.etFullName.toString())
+                                editorSP.putString("name",binding.etFullName.text.toString())
                                 editorSP.commit()
                             }
                             Toast.makeText(this@UpdatefrofileActivity, response.body()!!.message, Toast.LENGTH_SHORT)

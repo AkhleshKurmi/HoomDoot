@@ -124,14 +124,14 @@ class CartActivity : AppCompatActivity() {
                 if (time.isEmpty() && date.isEmpty()) {
                     Toast.makeText(this@CartActivity, "please Select Date And Time", Toast.LENGTH_SHORT).show()
                 } else {
-                   if (checkVendorAvailavility()){
-                       bottomSheetDialog.dismiss()
-                   }
+                    if (checkVendorAvailavility()){
+                        bottomSheetDialog.dismiss()
+                    }
                 }
             }
 
 
-     bottomSheetDialog.show()
+            bottomSheetDialog.show()
         }
     }
 
