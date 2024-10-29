@@ -68,7 +68,8 @@ class ProfileFragment : Fragment() {
             editorSP.putBoolean("isLogin",false)
             editorSP.clear()
             editorSP.commit()
-            requireContext().startActivity(Intent(requireContext(),LoginActivity::class.java))
+            requireContext().startActivity(Intent(requireContext(),LoginActivity::class.java).putExtra("from", "logout"))
+
             requireActivity().finish()
         }
 

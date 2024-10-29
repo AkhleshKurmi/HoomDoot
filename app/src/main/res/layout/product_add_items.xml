@@ -15,7 +15,7 @@
         <!-- Product Name -->
         <TextView
             android:id="@+id/tvProductName"
-            android:layout_width="wrap_content"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:text="Service Name"
             android:textSize="16sp"

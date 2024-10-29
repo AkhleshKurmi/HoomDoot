@@ -60,7 +60,9 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
 
         holder.btnAdd.setOnClickListener {
             if (userId>0){
-                addItemToList(acItem.productId, acItem.id, quantity, acItem.offerPrice)
+                if (quantity>0) {
+                    addItemToList(acItem.productId, acItem.id, quantity, acItem.offerPrice)
+                }
             }else{
                 context.startActivity(Intent(context, LoginActivity::class.java).putExtra("from","addCart")
                     .putExtra("productId",acItem.productId ))
