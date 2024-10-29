@@ -33,7 +33,7 @@
                 android:id="@+id/edit_text_coupon_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Coupon Code"
+                android:hint="Enter Coupon Code"
                 android:background="#E0E0E0"
                 android:padding="12dp" />
 
@@ -42,6 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Apply Coupon"
+                android:backgroundTint="#127208"
                 android:textColor="#FFFFFF"
                 android:background="#D32F2F"
                 android:layout_marginTop="8dp" />
@@ -51,6 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Cart Summary"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_marginTop="16dp" />
@@ -64,6 +66,7 @@
                 <TextView
                     android:id="@+id/text_subtotal_label"
                     android:layout_width="0dp"
+
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Subtotal" />
@@ -86,6 +89,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:textColor="#093903"
                     android:text="Discount" />
 
                 <TextView
@@ -107,6 +112,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Total"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
                     android:textStyle="bold" />
 
                 <TextView
@@ -114,6 +121,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="₹50363.0"
+                    android:textColor="@color/black"
                     android:textStyle="bold" />
             </LinearLayout>
 

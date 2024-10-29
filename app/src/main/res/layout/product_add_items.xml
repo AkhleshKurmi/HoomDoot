@@ -121,7 +121,7 @@
         android:layout_gravity="end"
         android:layout_marginRight="34dp"
         android:text="00.0"
-        android:textColor="#15BF02"
+        android:textColor="#127208"
         app:layout_constraintTop_toBottomOf="@id/btnPlus"
         app:layout_constraintRight_toLeftOf="@id/btnPlus"
         android:layout_marginTop="35dp" />

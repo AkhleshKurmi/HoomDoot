@@ -17,21 +17,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:layout_gravity="center"
         android:orientation="vertical"
         android:paddingStart="8dp">
 
         <TextView
             android:id="@+id/text_product_title"
             android:layout_width="wrap_content"
+            android:textColor="@color/black"
             android:layout_height="wrap_content"
             android:text="Product Title"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/text_product_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:text="Product Description"
             android:textColor="#666666"
             android:textSize="14sp" />
@@ -46,6 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="₹5999.0"
+                android:visibility="gone"
                 android:textColor="#FF0000"
                 android:textSize="14sp" />
 
@@ -54,6 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" ₹3999.0"
+                android:visibility="gone"
                 android:layout_marginLeft="20dp"
                 android:textColor="#FF0000"
                 android:textSize="14sp" />
@@ -74,6 +78,7 @@
                 android:id="@+id/text_product_total"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
+                android:textColor="#127208"
                 android:text="5"
                 android:layout_marginLeft="50dp"
                 android:textSize="14sp"
