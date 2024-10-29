@@ -143,4 +143,8 @@ interface ApiService {
         @Query("VerificationCode") verificationCode: Int,
         @Query("register_otp") registerOtp: Int
     ): Call<RegisterWithOtpLoginRes>
+
+    @POST("update-schedule")
+    fun updateSchedule(@Query("order_no") orderNo:String, @Query("type") type:String = "date", @Query("time")
+    time:String, @Query("date") date:String) : Call<RemoveCartItemRes>
 }
