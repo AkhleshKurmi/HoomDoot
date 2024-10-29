@@ -29,7 +29,6 @@ class LoginActivity : AppCompatActivity() {
     lateinit var editorSP :SharedPreferences.Editor
     var productId = 0
     var activityFrom = ""
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -41,22 +40,12 @@ class LoginActivity : AppCompatActivity() {
         sharedPreferences = getSharedPreferences("HomeDoot", MODE_PRIVATE)
         editorSP = sharedPreferences.edit()
         tvLoginWithOtp= findViewById(R.id.loginOtp)
-
         activityFrom = intent.getStringExtra("from")!!
         productId = intent.getIntExtra("productId",0)
-
         progressDialog = ProgressDialog(this).apply {
             setMessage("Loading...")
             setCancelable(false)
         }
-
-
-        if (sharedPreferences.getBoolean("isLogin",false)){
-            val userName = sharedPreferences.getString("userName","")!!
-            val password = sharedPreferences.getString("password","")!!
-            login(userName,password)
-        }
-
         tvLoginWithOtp.setOnClickListener {
             startActivity(Intent(this@LoginActivity, LoginWithOtpActivity::class.java))
         }

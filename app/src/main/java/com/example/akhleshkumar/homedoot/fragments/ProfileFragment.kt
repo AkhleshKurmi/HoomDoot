@@ -51,10 +51,10 @@ class ProfileFragment : Fragment() {
         myOrdersButton = view.findViewById(R.id.myOrdersButton)
         logoutButton = view.findViewById(R.id.logoutButton)
         profileImage = view.findViewById(R.id.profileImage)
-        userId = requireArguments().getInt("id",0).toString()
-        nameTextView.text= requireArguments().getString("name","")
-        emailTextView.text = requireArguments().getString("email","")
-        phoneTextView.text = requireArguments().getString("mobile","")
+        userId = sharedPreferences.getInt("userId",0).toString()
+        nameTextView.text= sharedPreferences.getString("name","")
+        emailTextView.text = sharedPreferences.getString("userName","")
+        phoneTextView.text = sharedPreferences.getString("mobile","")
         // Set up button click listeners
         editProfileButton.setOnClickListener {
             startActivity(Intent(requireContext(), UpdatefrofileActivity::class.java).putExtra("userId",userId))
@@ -76,9 +76,9 @@ class ProfileFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        userId = requireArguments().getInt("id",0).toString()
-        nameTextView.text= requireArguments().getString("name","")
-        emailTextView.text = requireArguments().getString("email","")
-        phoneTextView.text = requireArguments().getString("mobile","")
+        userId = sharedPreferences.getInt("userId",0).toString()
+        nameTextView.text= sharedPreferences.getString("name","")
+        emailTextView.text = sharedPreferences.getString("userName","")
+        phoneTextView.text = sharedPreferences.getString("mobile","")
     }
 }

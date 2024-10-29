@@ -110,6 +110,24 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#DADADA" />
+    <TextView
+        android:id="@+id/tvStateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="State"
+        android:textSize="16sp"
+        android:textColor="#8C8C8C"
+        android:layout_marginTop="16dp" />
+
+    <Spinner
+        android:id="@+id/spState"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="#000000"
+        android:background="@android:color/transparent"
+        android:paddingBottom="8dp"
+        android:inputType="textEmailAddress" />
 
     <TextView
         android:id="@+id/tvCityLabel"
@@ -120,7 +138,7 @@
         android:textColor="#8C8C8C"
         android:layout_marginTop="16dp" />
 
-    <EditText
+    <Spinner
         android:id="@+id/etCity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
