@@ -5,6 +5,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.akhleshkumar.homedoot.R
@@ -25,7 +26,9 @@ class ChildCategoryActivity : AppCompatActivity() {
         setContentView(R.layout.activity_child_category)
         tvChiledSubName = findViewById(R.id.title)
         rvChildSubCat = findViewById(R.id.recyclerViewChiled)
-        rvChildSubCat.layoutManager = LinearLayoutManager(this@ChildCategoryActivity)
+       // rvChildSubCat.layoutManager = LinearLayoutManager(this@ChildCategoryActivity)
+        val gridLayoutManager = GridLayoutManager(this, 3) // 3 columns
+        rvChildSubCat.layoutManager = gridLayoutManager
         val id = intent.getIntExtra("id",1)
         userId = intent.getStringExtra("userId")!!
         val subChildCatName = intent.getStringExtra("catName")

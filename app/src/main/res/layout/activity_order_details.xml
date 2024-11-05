@@ -46,7 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/btnUpdateTimeDate"
-        android:text="update time and date"/>
+        android:text="Reschedule"/>
 
     <Button
         android:id="@+id/cancelOrderButtonDetail"

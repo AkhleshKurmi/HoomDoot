@@ -174,7 +174,7 @@ class OrderDetailsActivity : AppCompatActivity() {
 
                               orderStatus = "cancelled"
                               tvOrderStatus.text = orderStatus
-                                  Toast.makeText(this@OrderDetailsActivity, response.body()!!.message, Toast.LENGTH_SHORT)
+                              Toast.makeText(this@OrderDetailsActivity, response.body()!!.message, Toast.LENGTH_SHORT)
                                   .show()
                           }else
                           {

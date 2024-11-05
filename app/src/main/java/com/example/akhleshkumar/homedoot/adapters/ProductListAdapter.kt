@@ -23,7 +23,7 @@ class ProductListAdapter (val context: Context, private val items: List<ProductD
         val tvRating: TextView = itemView.findViewById(R.id.tvRating)
         val tvReviews: TextView = itemView.findViewById(R.id.tvReviews)
         val tvPrice: TextView = itemView.findViewById(R.id.tvPrice)
-        val tvTime: TextView = itemView.findViewById(R.id.tvTime)
+      //  val tvTime: TextView = itemView.findViewById(R.id.tvTime)
      //   val tvOffer: TextView = itemView.findViewById(R.id.tvOffer)
         val tvDescription: TextView = itemView.findViewById(R.id.tvDescription)
         val ivThumbnail: ImageView = itemView.findViewById(R.id.ivThumbnail)
@@ -45,7 +45,7 @@ class ProductListAdapter (val context: Context, private val items: List<ProductD
 
         holder.tvDescription.text = item.description
         Picasso.get().load(path+"/${item.id}/"+item.main_image).into(holder.ivThumbnail)
-        holder.itemView.setOnClickListener {
+        holder.btnAdd.setOnClickListener {
             val intent = Intent(context, ProductDescriptionActivity::class.java)
             intent.putExtra("id",item.id)
             intent.putExtra("userId",userId)
