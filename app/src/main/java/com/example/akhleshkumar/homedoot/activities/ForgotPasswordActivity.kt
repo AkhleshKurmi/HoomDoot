@@ -15,6 +15,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.chaos.view.PinView
 import com.example.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
 import com.example.akhleshkumar.homedoot.databinding.ActivityForgotPasswordBinding
@@ -79,17 +80,15 @@ class ForgotPasswordActivity : AppCompatActivity() {
             WindowManager.LayoutParams.WRAP_CONTENT
         )
         dialog.setCancelable(false)
-        val etOtp1 = dialog.findViewById<EditText>(R.id.otp1)
-        val etOtp2 = dialog.findViewById<EditText>(R.id.otp2)
-        val etOtp3 = dialog.findViewById<EditText>(R.id.otp3)
-        val etOtp4 = dialog.findViewById<EditText>(R.id.otp4)
+        val etOtp = dialog.findViewById<PinView>(R.id.pinview)
+
         val btnValidate= dialog.findViewById<Button>(R.id.btnSubmitOtp)
         btnValidate.setOnClickListener {
-            if(etOtp1.text.toString().isEmpty() || etOtp2.text.toString().isEmpty() || etOtp3.text.toString().isEmpty()
-                || etOtp4.text.toString().isEmpty()){
+            if(etOtp.text.toString().isEmpty()){
                 Toast.makeText(this@ForgotPasswordActivity, "Enter full otp", Toast.LENGTH_SHORT).show()
-            }else {
-                if (etOtp1.text.toString() + etOtp2.text.toString() + etOtp3.text.toString() + etOtp4.text.toString() == verificationCode) {
+            }
+            else {
+                if (etOtp.text.toString()== verificationCode) {
                    updatePassword()
                     dialog.dismiss()
                 }else{

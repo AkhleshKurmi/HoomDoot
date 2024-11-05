@@ -1,6 +1,7 @@
 package com.example.akhleshkumar.homedoot.activities
 
 import android.annotation.SuppressLint
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -64,6 +65,8 @@ class CartActivity : AppCompatActivity() {
     lateinit var sharedPreferences: SharedPreferences
     lateinit var editorSP : SharedPreferences.Editor
     lateinit var binding:ActivityCartBinding
+    lateinit var progressDialog: ProgressDialog
+
     var cartData = ArrayList<Cart>()
     @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,6 +77,10 @@ class CartActivity : AppCompatActivity() {
         checkOutBtn = findViewById(R.id.button_proceed_to_checkout)
         tvCouponCode = findViewById(R.id.edit_text_coupon_code)
         btnApplyCoupon = findViewById(R.id.button_apply_coupon)
+        progressDialog = ProgressDialog(this).apply {
+            setMessage("Loading...")
+            setCancelable(false)
+        }
         
         btnApplyCoupon.setOnClickListener {
             if (tvCouponCode.text.toString().isNotEmpty()) {
@@ -146,6 +153,7 @@ class CartActivity : AppCompatActivity() {
                       vendorList.clear()
                       cartItemList.clear()
                       itemList()
+                      Toast.makeText(this@CartActivity, "Coupon code applied", Toast.LENGTH_SHORT).show()
                   }
               }
           }
@@ -248,7 +256,7 @@ class CartActivity : AppCompatActivity() {
         val dateList = mutableListOf<String>()
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
 
-        for (i in 0 until 30) {
+        for (i in 0 until 4) {
             val date = LocalDate.now().plusDays(i.toLong())
             dateList.add(date.format(formatter)) // Format to include day name
         }
@@ -281,12 +289,14 @@ class CartActivity : AppCompatActivity() {
     }
 
     fun itemUpdate(itemId: Int, userId: Int, quantity: Int){
+        progressDialog.show()
         RetrofitClient.instance.updateCart(itemId,userId, quantity + 1 ).enqueue(object :Callback<RemoveCartItemRes>{
             override fun onResponse(
                 call: Call<RemoveCartItemRes>,
                 response: Response<RemoveCartItemRes>
             ) {
                 if (response.isSuccessful){
+                    progressDialog.dismiss()
                     cartAdapter.clearList()
                     vendorList.clear()
                     cartItemList.clear()
@@ -297,6 +307,7 @@ class CartActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<RemoveCartItemRes>, t: Throwable) {
                 Toast.makeText(this@CartActivity, t.localizedMessage, Toast.LENGTH_SHORT).show()
+                progressDialog.dismiss()
             }
 
         })
@@ -307,6 +318,8 @@ class CartActivity : AppCompatActivity() {
         var returnValue = false
         val requestBody = VendorAvailabilityRequest(date, time, cartItemList)
 
+        progressDialog.show()
+
 
         RetrofitClient.instance.checkVendorAvailability(requestBody).enqueue(
 
@@ -316,6 +329,8 @@ class CartActivity : AppCompatActivity() {
                     response: Response<VendorAvailabilityResponse>
                 ) {
                     if (response.isSuccessful) {
+                        progressDialog.dismiss()
+
                         if (response.body()!!.status) {
                          chooseAddress()
                             returnValue = true
@@ -333,6 +348,7 @@ class CartActivity : AppCompatActivity() {
                 override fun onFailure(call: Call<VendorAvailabilityResponse>, t: Throwable) {
                     returnValue = false
                     Toast.makeText(this@CartActivity, "Something went wrong", Toast.LENGTH_SHORT).show()
+                    progressDialog.dismiss()
                 }
 
             })
@@ -432,12 +448,14 @@ class CartActivity : AppCompatActivity() {
        val orderRequest = OrderCheckoutRequest(id.toInt(),email,mobile,address,12,date,time,"Test",11,
            pincode,"gdc","rre","rr","9899815159","rr","tyy","1",
            5,164,564,cartItemList )
+        progressDialog.show()
        RetrofitClient.instance.placeOrder(orderRequest).enqueue(object : Callback<OrderCheckoutRes> {
            override fun onResponse(
                call: Call<OrderCheckoutRes>,
                response: Response<OrderCheckoutRes>
            ) {
                if (response.isSuccessful){
+                   progressDialog.dismiss()
                    if (response.body()!!.success){
                        startActivity(Intent(this@CartActivity,MainActivity::class.java))
                        Toast.makeText(this@CartActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
@@ -450,6 +468,7 @@ class CartActivity : AppCompatActivity() {
 
            override fun onFailure(call: Call<OrderCheckoutRes>, t: Throwable) {
                Toast.makeText(this@CartActivity, "${t.localizedMessage}", Toast.LENGTH_SHORT).show()
+               progressDialog.dismiss()
            }
 
        })

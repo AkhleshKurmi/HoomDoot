@@ -63,6 +63,8 @@ class UpdatefrofileActivity : AppCompatActivity() {
                                 editorSP.putString("userName",email)
                                 editorSP.putString("mobile",binding.etPhoneNumber.text.toString())
                                 editorSP.putString("name",binding.etFullName.text.toString())
+                                editorSP.putInt("cityId",cityId)
+                                editorSP.putInt("stateId",stateId)
                                 editorSP.commit()
                             }
                             Toast.makeText(this@UpdatefrofileActivity, response.body()!!.message, Toast.LENGTH_SHORT)
@@ -78,6 +80,7 @@ class UpdatefrofileActivity : AppCompatActivity() {
                 })
             }
         }
+
     }
 
     fun getState() {
@@ -90,6 +93,10 @@ class UpdatefrofileActivity : AppCompatActivity() {
                         stateSpinnerAdapter =
                             StateSpinnerAdapter(this@UpdatefrofileActivity, response.body()!!.data)
                         binding.spState.adapter = stateSpinnerAdapter
+                        val position = response.body()!!.data.indexOfFirst { it.id == sharedPreferences.getInt("stateId",0) }
+                        if (position >= 0) {
+                            binding.spState.setSelection(position)
+                        }
                         binding.spState.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                             override fun onItemSelected(
                                 parent: AdapterView<*>,
@@ -100,7 +107,6 @@ class UpdatefrofileActivity : AppCompatActivity() {
                                 val selectedCityId = stateSpinnerAdapter.getCityId(position)
                                 stateId = selectedCityId
                                 getCity(selectedCityId)
-
                             }
 
                             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -127,6 +133,10 @@ class UpdatefrofileActivity : AppCompatActivity() {
                     if (response.body()!!.success){
                         cityAdapter = CitySpinnerAdapter(this@UpdatefrofileActivity,response.body()!!.data)
                         binding.etCity.adapter = cityAdapter
+                        val position = response.body()!!.data.indexOfFirst { it.id == sharedPreferences.getInt("cityId",0) }
+                        if (position >= 0) {
+                            binding.etCity.setSelection(position)
+                        }
                         binding.etCity.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                             override fun onItemSelected(
                                 parent: AdapterView<*>,
@@ -139,7 +149,7 @@ class UpdatefrofileActivity : AppCompatActivity() {
                             }
 
                             override fun onNothingSelected(parent: AdapterView<*>) {
-                                // Handle case when no city is selected if needed
+
                             }
                         }
                     }
@@ -150,10 +160,5 @@ class UpdatefrofileActivity : AppCompatActivity() {
                 progressDialog.dismiss()
             }
         })
-    }
-
-
-    override fun onResume() {
-        super.onResume()
     }
 }

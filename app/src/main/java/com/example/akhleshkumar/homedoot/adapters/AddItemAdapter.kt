@@ -62,6 +62,8 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
             if (userId>0){
                 if (quantity>0) {
                     addItemToList(acItem.productId, acItem.id, quantity, acItem.offerPrice)
+                }else{
+                    Toast.makeText(context, "Please add at least one item", Toast.LENGTH_SHORT).show()
                 }
             }else{
                 context.startActivity(Intent(context, LoginActivity::class.java).putExtra("from","addCart")

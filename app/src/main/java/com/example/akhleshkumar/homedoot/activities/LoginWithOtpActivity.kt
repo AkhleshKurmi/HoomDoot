@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.chaos.view.PinView
 import com.example.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
 import com.example.akhleshkumar.homedoot.databinding.ActivityLoginWithOtpBinding
@@ -91,20 +92,16 @@ class LoginWithOtpActivity : AppCompatActivity() {
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.WRAP_CONTENT
         )
-        val etOtp1 = dialog.findViewById<EditText>(R.id.otp1)
-        val etOtp2 = dialog.findViewById<EditText>(R.id.otp2)
-        val etOtp3 = dialog.findViewById<EditText>(R.id.otp3)
-        val etOtp4 = dialog.findViewById<EditText>(R.id.otp4)
+        val etOtp = dialog.findViewById<PinView>(R.id.pinview)
         val btnValidate= dialog.findViewById<Button>(R.id.btnSubmitOtp)
 
         dialog.setCancelable(false)
         btnValidate.setOnClickListener {
-            if(etOtp1.text.toString().isEmpty() || etOtp2.text.toString().isEmpty() || etOtp3.text.toString().isEmpty()
-                || etOtp4.text.toString().isEmpty()){
+            if(etOtp.text.toString().isEmpty()){
                 Toast.makeText(this@LoginWithOtpActivity, "Enter full otp", Toast.LENGTH_SHORT).show()
-            }else{
-                RetrofitClient.instance.registerUser(2,name,mobile,email,true, verificationCode, registerOtp = (etOtp1.text.toString() +
-                        etOtp2.text.toString() + etOtp3.text.toString() + etOtp4.text.toString()).toInt()).enqueue(object : Callback<RegisterWithOtpLoginRes>{
+            }
+            else{
+                RetrofitClient.instance.registerUser(2,name,mobile,email,true, verificationCode, registerOtp = etOtp.text.toString().toInt()).enqueue(object : Callback<RegisterWithOtpLoginRes>{
                     override fun onResponse(
                         call: Call<RegisterWithOtpLoginRes>,
                         response: Response<RegisterWithOtpLoginRes>

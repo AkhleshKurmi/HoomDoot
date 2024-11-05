@@ -237,7 +237,7 @@ class CartFragment : Fragment() {
         val dateList = mutableListOf<String>()
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
 
-        for (i in 0 until 30) {
+        for (i in 0 until 4) {
             val date = LocalDate.now().plusDays(i.toLong())
             dateList.add(date.format(formatter))
         }
