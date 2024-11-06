@@ -36,7 +36,7 @@ class LoginWithOtpActivity : AppCompatActivity() {
            }
         }
         binding.tvSkip.setOnClickListener {
-            startActivity(Intent(this@LoginWithOtpActivity,MainActivity::class.java))
+            startActivity(Intent(this@LoginWithOtpActivity,MainActivity::class.java).putExtra("fragment","h"))
         }
         binding.tvLginWithPass.setOnClickListener {
             startActivity(Intent(this,LoginActivity::class.java).putExtra("from","initial")
@@ -61,7 +61,7 @@ class LoginWithOtpActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<LoginWithOtpRes>, t: Throwable) {
-                Toast.makeText(this@LoginWithOtpActivity, "Something went wrong", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@LoginWithOtpActivity, t.message, Toast.LENGTH_SHORT).show()
             }
         })
 
@@ -116,7 +116,7 @@ class LoginWithOtpActivity : AppCompatActivity() {
                                 editorSP.putString("name",data.name)
                                 editorSP.commit()
                                 startActivity(
-                                    Intent(this@LoginWithOtpActivity, MainActivity::class.java))
+                                    Intent(this@LoginWithOtpActivity, MainActivity::class.java).putExtra("fragment","h"))
                                 finish()
                             }
                         }

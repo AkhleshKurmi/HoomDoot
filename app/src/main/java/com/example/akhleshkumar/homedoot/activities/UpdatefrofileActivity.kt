@@ -46,11 +46,12 @@ class UpdatefrofileActivity : AppCompatActivity() {
         binding.etFullName.setText(sharedPreferences.getString("name","")!!)
         binding.etPhoneNumber.setText(sharedPreferences.getString("mobile",""))
         binding.etEmailAddress.setText(sharedPreferences.getString("userName","")!!)
+        binding.etedressName.setText(sharedPreferences.getString("address",""))
         binding.btnUpdateNow.setOnClickListener {
             if (binding.etFullName.text.isNotEmpty()){
                 progressDialog.show()
                 RetrofitClient.instance.updateProfile("user",binding.etFullName.text.toString(),userId.toInt(),
-                    binding.etEmailAddress.text.toString(),binding.etPhoneNumber.text.toString(),binding.etEmailAddress.text.toString(),
+                    binding.etEmailAddress.text.toString(),binding.etPhoneNumber.text.toString(),binding.etedressName.text.toString(),
                     cityId,binding.etPincode.text.toString().toInt()).enqueue(object : Callback<CancelOrderResponse> {
                     override fun onResponse(
                         call: Call<CancelOrderResponse>,
@@ -63,6 +64,7 @@ class UpdatefrofileActivity : AppCompatActivity() {
                                 editorSP.putString("userName",email)
                                 editorSP.putString("mobile",binding.etPhoneNumber.text.toString())
                                 editorSP.putString("name",binding.etFullName.text.toString())
+                                editorSP.putString("address",binding.etedressName.text.toString())
                                 editorSP.putInt("cityId",cityId)
                                 editorSP.putInt("stateId",stateId)
                                 editorSP.commit()

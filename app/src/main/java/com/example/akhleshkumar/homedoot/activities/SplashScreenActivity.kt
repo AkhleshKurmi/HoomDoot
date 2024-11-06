@@ -22,7 +22,7 @@ class SplashScreenActivity : AppCompatActivity() {
         val isLogin = sharedPreferences.getBoolean("isLogin",false)
         if (isLogin){
 
-            startActivity(Intent(this@SplashScreenActivity,MainActivity::class.java))
+            startActivity(Intent(this@SplashScreenActivity,MainActivity::class.java).putExtra("fragment","h"))
             finish()
         }else{
 

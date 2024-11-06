@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     var name = ""
     var email = ""
     var phone = ""
+    var loadFrag = "h"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         editorSP = sharedPreferences.edit()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
+        loadFrag = intent.getStringExtra("fragment")!!
         // Request location permission
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
             ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -65,8 +67,13 @@ class MainActivity : AppCompatActivity() {
         cartFragment.arguments = args
         val profileFragment =  ProfileFragment()
         profileFragment.arguments = args
-        loadFragment(homeDootFragment)
+        if (loadFrag == "orderPlaced"){
+            loadFragment(profileFragment)
+            bottomNavigationView.selectedItemId = R.id.navigation_Account
+        }else {
+            loadFragment(homeDootFragment)
 
+        }
         bottomNavigationView.setOnItemSelectedListener(NavigationBarView.OnItemSelectedListener { item: MenuItem ->
             var fragment: Fragment? = null
             val itemId = item.itemId

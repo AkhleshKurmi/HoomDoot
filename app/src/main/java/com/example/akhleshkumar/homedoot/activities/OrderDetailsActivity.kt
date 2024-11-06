@@ -1,5 +1,6 @@
 package com.example.akhleshkumar.homedoot.activities
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
@@ -20,7 +21,6 @@ import com.example.akhleshkumar.homedoot.models.RemoveCartItemRes
 import com.example.akhleshkumar.homedoot.models.TimeDataModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.squareup.picasso.Picasso
-import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -35,6 +35,7 @@ class OrderDetailsActivity : AppCompatActivity() {
     var time= ""
     var date = ""
     private val listTime : ArrayList<TimeDataModel> =  ArrayList()
+        @SuppressLint("InflateParams", "SetTextI18n")
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setContentView(R.layout.activity_order_details)
@@ -61,7 +62,7 @@ class OrderDetailsActivity : AppCompatActivity() {
 
             // Set data in views
             productNameTextView.text = productName
-            productPriceTextView.text = "₹ ${productPrice}"
+            productPriceTextView.text = "₹ $productPrice"
             detailsTextView.text = orderDetails
 
             // Load product image using Glide or any other image loading library
@@ -134,8 +135,8 @@ class OrderDetailsActivity : AppCompatActivity() {
              if (response.isSuccessful){
                  if (response.body()!!.success){
                      Toast.makeText(this@OrderDetailsActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
-                 }
-//                 Toast.makeText(this@OrderDetailsActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
+                 }else
+                     Toast.makeText(this@OrderDetailsActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
 
              }
          }
@@ -162,7 +163,8 @@ class OrderDetailsActivity : AppCompatActivity() {
         private fun cancelOrder(orderId: String?, mobile:String) {
             // You can call your API to cancel the order here
             if (orderId != null) {
-              RetrofitClient.instance.cancelOrder(orderId!!,1,"cancelled",mobile).enqueue(object :retrofit2.Callback<CancelOrderResponse>{
+              RetrofitClient.instance.cancelOrder(orderId,1,"cancelled",mobile).enqueue(object : Callback<CancelOrderResponse>{
+                  @SuppressLint("SetTextI18n")
                   override fun onResponse(
                       call: Call<CancelOrderResponse>,
                       response: Response<CancelOrderResponse>

@@ -457,7 +457,7 @@ class CartActivity : AppCompatActivity() {
                if (response.isSuccessful){
                    progressDialog.dismiss()
                    if (response.body()!!.success){
-                       startActivity(Intent(this@CartActivity,MainActivity::class.java))
+                       startActivity(Intent(this@CartActivity,MainActivity::class.java).putExtra("fragment","orderPlaced"))
                        Toast.makeText(this@CartActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
                        finish()
                    }else{

@@ -51,6 +51,13 @@ class ProfileFragment : Fragment() {
         myOrdersButton = view.findViewById(R.id.myOrdersButton)
         logoutButton = view.findViewById(R.id.logoutButton)
         profileImage = view.findViewById(R.id.profileImage)
+
+        if (!sharedPreferences.getBoolean("isLogin",false)){
+            startActivity(Intent(requireContext(),LoginActivity::class.java).putExtra("from","")
+                .putExtra("productId",0))
+            requireActivity().finish()
+        }
+
         userId = sharedPreferences.getInt("userId",0).toString()
         nameTextView.text= sharedPreferences.getString("name","")
         emailTextView.text = sharedPreferences.getString("userName","")

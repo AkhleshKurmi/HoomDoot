@@ -94,10 +94,9 @@ fun login(userName:String, password:String){
 
                     }else{
                             progressDialog.dismiss()
-                            startActivity(Intent(this@LoginActivity, MainActivity::class.java).putExtra("id", response.body()!!.data.id)
-                                .putExtra("email",data.email)
-                                .putExtra("name",data.name)
-                                .putExtra("mobile",data.mobile))
+                            startActivity(Intent(this@LoginActivity, MainActivity::class.java)
+
+                                .putExtra("fragment","h"))
                             finish()
                         }
                     }
