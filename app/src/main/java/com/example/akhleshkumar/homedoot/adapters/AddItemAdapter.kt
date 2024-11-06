@@ -24,6 +24,8 @@ import retrofit2.Response
 
 class AddItemAdapter ( val context: Context,private val acList: List<ProductItem>, val path:String, val userId:Int) :
     RecyclerView.Adapter<AddItemAdapter.ACViewHolder>() {
+        var addCart = false
+    val bottomSheetDialog = BottomSheetDialog(context)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ACViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.product_add_items, parent, false)
@@ -37,15 +39,18 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
         holder.priceOrignal.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
         holder.priceDiscount.text = acItem.offerPrice.toFloat().toString()
         holder.productName.text = acItem.itemName.toString()
-        var quantity = 0
+        var quantity = 1
         var totalPrice = 0.0f
         holder.btnPlus.setOnClickListener {
             if (quantity >= 0) {
                 quantity += 1
                 totalPrice = (quantity * acItem.offerPrice).toFloat()
-
+                holder.btnMinus.visibility = View.VISIBLE
+                holder.btnPlus.visibility = View.VISIBLE
+                holder.totalItem.visibility = View.VISIBLE
                 holder.totalItem.text = quantity.toString()
                 holder.totalPrice.text = totalPrice.toString()
+                addItemToList(acItem.productId, acItem.id, quantity, acItem.offerPrice)
             }
         }
         holder.btnMinus.setOnClickListener {
@@ -55,15 +60,40 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
 
                 holder.totalItem.text = quantity.toString()
                 holder.totalPrice.text = totalPrice.toString()
+                holder.btnMinus.visibility = View.VISIBLE
+                holder.btnPlus.visibility = View.VISIBLE
+                holder.totalItem.visibility = View.VISIBLE
+                addItemToList(acItem.productId, acItem.id, quantity, acItem.offerPrice)
+            }else{
+                holder.btnAdd.visibility = View.VISIBLE
+                holder.btnMinus.visibility = View.INVISIBLE
+                holder.btnPlus.visibility = View.INVISIBLE
+                holder.totalItem.visibility = View.INVISIBLE
             }
         }
+        holder.btnMinus.visibility = View.INVISIBLE
+        holder.btnPlus.visibility = View.INVISIBLE
+        holder.totalItem.visibility = View.INVISIBLE
+        holder.btnAdd.visibility = View.VISIBLE
+
 
         holder.btnAdd.setOnClickListener {
             if (userId>0){
                 if (quantity>0) {
-                    addItemToList(acItem.productId, acItem.id, quantity, acItem.offerPrice)
+                    holder.btnMinus.visibility = View.VISIBLE
+                    holder.btnPlus.visibility = View.VISIBLE
+                    holder.totalItem.visibility = View.VISIBLE
+                    holder.btnAdd.visibility = View.INVISIBLE
+                    holder.totalItem.text = quantity.toString()
+                    holder.totalPrice.text = totalPrice.toString()
+
                 }else{
-                    Toast.makeText(context, "Please add at least one item", Toast.LENGTH_SHORT).show()
+                    holder.btnMinus.visibility = View.INVISIBLE
+                    holder.btnPlus.visibility = View.INVISIBLE
+                    holder.totalItem.visibility = View.INVISIBLE
+                    holder.btnAdd.visibility = View.VISIBLE
+                    holder.totalItem.text = quantity.toString()
+                    holder.totalPrice.text = totalPrice.toString()
                 }
             }else{
                 context.startActivity(Intent(context, LoginActivity::class.java).putExtra("from","addCart")
@@ -75,6 +105,7 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
         }
     }
     fun addItemToList(productId:Int, itemId:Int, quantity:Int, price: Int){
+
         RetrofitClient.instance.addToCart(productId, itemId,userId, quantity, price).enqueue(object : Callback<AddCartResponse>{
             override fun onResponse(
                 call: Call<AddCartResponse>,
@@ -82,8 +113,7 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
             ) {
                 if (response.isSuccessful){
                     if (response.body()!!.success){
-                        Toast.makeText(context, response.body()!!.message, Toast.LENGTH_SHORT).show()
-                        showBottomSheetToCart()
+                      addCart = true
                     }
                 }
             }
@@ -93,6 +123,24 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
             }
 
         })
+        if (addCart){
+
+            val bottomSheetView =
+                LayoutInflater.from(context).inflate(R.layout.bottom_view_cart, null)
+            val tvCartPrice = bottomSheetView.findViewById<TextView>(R.id.tv_cart_price)
+            val btnViewCart = bottomSheetView.findViewById<Button>(R.id.btn_view_cart)
+            bottomSheetDialog.setContentView(bottomSheetView)
+
+            btnViewCart.setOnClickListener {
+                context.startActivity(
+                    Intent(
+                        context,
+                        CartActivity::class.java
+                    ).putExtra("userId",userId.toString())
+                )
+            }
+//            bottomSheetDialog.show()
+        }
 
     }
 
@@ -111,23 +159,6 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
 
     }
 
-    fun showBottomSheetToCart(){
-        val bottomSheetDialog = BottomSheetDialog(context)
-        val bottomSheetView =
-            LayoutInflater.from(context).inflate(R.layout.bottom_view_cart, null)
-        val tvCartPrice = bottomSheetView.findViewById<TextView>(R.id.tv_cart_price)
-        val btnViewCart = bottomSheetView.findViewById<Button>(R.id.btn_view_cart)
-        bottomSheetDialog.setContentView(bottomSheetView)
 
-        btnViewCart.setOnClickListener {
-            context.startActivity(
-                Intent(
-                    context,
-                    CartActivity::class.java
-                ).putExtra("userId",userId.toString())
-            )
-        }
-        bottomSheetDialog.show()
-    }
 
 }

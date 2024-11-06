@@ -332,17 +332,30 @@ class CartActivity : AppCompatActivity() {
                         progressDialog.dismiss()
 
                         if (response.body()!!.status) {
-                         chooseAddress()
+                            chooseAddress()
+                            progressDialog.dismiss()
                             returnValue = true
 
-                        }else{
-                            Toast.makeText(this@CartActivity, "Vendor not available", Toast.LENGTH_SHORT).show()
+                        } else {
+                            progressDialog.dismiss()
+                            Toast.makeText(
+                                this@CartActivity,
+                                "Vendor not available",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
-                    }        else if (response.code() == 500){
-                        Toast.makeText(this@CartActivity, "Delete another category Products", Toast.LENGTH_SHORT).show()
+                    } else if (response.code() == 500) {
+                        progressDialog.dismiss()
+                        Toast.makeText(
+                            this@CartActivity,
+                            "Delete another category Products",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        progressDialog.dismiss()
+                        Toast.makeText(this@CartActivity, "Check category", Toast.LENGTH_SHORT)
+                            .show()
                     }
-                    else
-                        Toast.makeText(this@CartActivity, "Check category", Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onFailure(call: Call<VendorAvailabilityResponse>, t: Throwable) {
