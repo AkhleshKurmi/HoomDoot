@@ -56,7 +56,7 @@ class CartAdapter(
         holder.productTitle.text = productDetail.service_name
         holder.productDescription.text = productDetail.description
         holder.originalPrice.text = "₹${cartItem.price}"
-        holder.originalPrice.paintFlags
+//        holder.originalPrice.paintFlags
         holder.discountPrice.text = "₹${cartItem.price}"
         holder.totalPrice.text = "₹${cartItem.total_amount}"
         holder.quantity.text = cartItem.quantity.toString()
