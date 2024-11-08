@@ -139,7 +139,7 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
                     ).putExtra("userId",userId.toString())
                 )
             }
-//            bottomSheetDialog.show()
+            bottomSheetDialog.show()
         }
 
     }
