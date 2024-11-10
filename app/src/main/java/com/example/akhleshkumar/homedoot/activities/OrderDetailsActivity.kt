@@ -77,18 +77,18 @@ class OrderDetailsActivity : AppCompatActivity() {
                         cancelOrder(orderId, mobile)
                     }
             }
-            listTime.add(TimeDataModel("09:00 am"))
-            listTime.add(TimeDataModel("10:00 am"))
-            listTime.add(TimeDataModel("11:00 am"))
-            listTime.add(TimeDataModel("12:00 pm"))
-            listTime.add(TimeDataModel("01:00 pm"))
-            listTime.add(TimeDataModel("02:00 pm"))
-            listTime.add(TimeDataModel("03:00 pm"))
-            listTime.add(TimeDataModel("04:00 pm"))
-            listTime.add(TimeDataModel("05:00 pm"))
-            listTime.add(TimeDataModel("06:00 pm"))
-            listTime.add(TimeDataModel("07:00 pm"))
-            listTime.add(TimeDataModel("08:00 pm"))
+            listTime.add(TimeDataModel("09:00 am","09"))
+            listTime.add(TimeDataModel("10:00 am","10"))
+            listTime.add(TimeDataModel("11:00 am","11"))
+            listTime.add(TimeDataModel("12:00 pm","12"))
+            listTime.add(TimeDataModel("01:00 pm","13"))
+            listTime.add(TimeDataModel("02:00 pm","14"))
+            listTime.add(TimeDataModel("03:00 pm","15"))
+            listTime.add(TimeDataModel("04:00 pm","16"))
+            listTime.add(TimeDataModel("05:00 pm","17"))
+            listTime.add(TimeDataModel("06:00 pm","18"))
+            listTime.add(TimeDataModel("07:00 pm","19"))
+            listTime.add(TimeDataModel("08:00 pm","20"))
 
 
             updateTimeDate.setOnClickListener {
@@ -138,6 +138,8 @@ class OrderDetailsActivity : AppCompatActivity() {
                  }else
                      Toast.makeText(this@OrderDetailsActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
 
+             }else if(response.code() == 422){
+                 Toast.makeText(this@OrderDetailsActivity, "successfully updated", Toast.LENGTH_SHORT).show()
              }
          }
 

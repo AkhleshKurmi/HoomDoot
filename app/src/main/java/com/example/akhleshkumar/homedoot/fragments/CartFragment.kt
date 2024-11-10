@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.akhleshkumar.homedoot.R
+import com.example.akhleshkumar.homedoot.activities.MainActivity
 import com.example.akhleshkumar.homedoot.activities.PaymentMethodActivity
 import com.example.akhleshkumar.homedoot.adapters.CartAdapter
 import com.example.akhleshkumar.homedoot.adapters.DateSlotAdapter
@@ -68,22 +69,19 @@ class CartFragment : Fragment() {
             AppCompatActivity.MODE_PRIVATE
         )
 
+            listTime.add(TimeDataModel("09:00 am","09"))
+            listTime.add(TimeDataModel("10:00 am","10"))
+            listTime.add(TimeDataModel("11:00 am","11"))
+            listTime.add(TimeDataModel("12:00 pm","12"))
+            listTime.add(TimeDataModel("01:00 pm","13"))
+            listTime.add(TimeDataModel("02:00 pm","14"))
+            listTime.add(TimeDataModel("03:00 pm","15"))
+            listTime.add(TimeDataModel("04:00 pm","16"))
+            listTime.add(TimeDataModel("05:00 pm","17"))
+            listTime.add(TimeDataModel("06:00 pm","18"))
+            listTime.add(TimeDataModel("07:00 pm","19"))
+            listTime.add(TimeDataModel("08:00 pm","20"))
 
-        // Add Time Slots
-        listTime.apply {
-            add(TimeDataModel("09:00 am"))
-            add(TimeDataModel("10:00 am"))
-            add(TimeDataModel("11:00 am"))
-            add(TimeDataModel("12:00 pm"))
-            add(TimeDataModel("01:00 pm"))
-            add(TimeDataModel("02:00 pm"))
-            add(TimeDataModel("03:00 pm"))
-            add(TimeDataModel("04:00 pm"))
-            add(TimeDataModel("05:00 pm"))
-            add(TimeDataModel("06:00 pm"))
-            add(TimeDataModel("07:00 pm"))
-            add(TimeDataModel("08:00 pm"))
-        }
 
 
         return binding.root
@@ -345,16 +343,55 @@ class CartFragment : Fragment() {
     }
 
     private fun showConfirmDialog() {
-//        val dialog = Dialog(this@CartActivity)
-//        dialog.setContentView(R.layout.address_time_bottom_sheet)
-//        val window = dialog.window
-//        window?.setLayout(
-//            WindowManager.LayoutParams.MATCH_PARENT,
-//            WindowManager.LayoutParams.WRAP_CONTENT
-//        )
-//        val address =
 
-        proceedToCheckout()
+        val bottomSheetDialog = BottomSheetDialog(requireContext())
+        val bottomSheetView = layoutInflater.inflate(R.layout.botton_sheet_payment,null)
+        val rgPaymentOption= bottomSheetView.findViewById<RadioGroup>(R.id.rgPaymentOptions)
+        bottomSheetDialog.setContentView(bottomSheetView)
+        val checkOutButton = bottomSheetView.findViewById<Button>(R.id.btnPlaceOrder)
+
+//        val payOnline= bottomSheetView.findViewById<RadioButton>(R.id.rbPayOnline)
+//        val payOnlineAfterService=bottomSheetView.findViewById<RadioButton>(R.id.rbPayOnlineAfterService)
+//        val payCashAfterService = bottomSheetView.findViewById<RadioButton>(R.id.rbPayCashAfterService)
+        var isPaymentSelected = false
+        var paymentMethod =false
+        rgPaymentOption.setOnCheckedChangeListener{group, checkedId ->
+            if (checkedId == R.id.rbPayOnline){
+                paymentMethod =  true
+                isPaymentSelected = true
+            }
+            else if (checkedId==R.id.rbPayCashAfterService){
+                isPaymentSelected = true
+                paymentMethod = false
+            }
+            else if (checkedId == R.id.rbPayOnlineAfterService){
+                isPaymentSelected=true
+                paymentMethod = false
+
+            }else{
+                isPaymentSelected = false
+            }
+
+            checkOutButton.setOnClickListener {
+
+                if (isPaymentSelected) {
+                    if (!paymentMethod) {
+                        proceedToCheckout()
+                        bottomSheetDialog.dismiss()
+                    }else{
+                        startActivity(Intent(requireContext(),PaymentMethodActivity::class.java))
+                    }
+                } else {
+                    Toast.makeText(requireContext(), "please select a option", Toast.LENGTH_SHORT)
+                        .show()
+
+                }
+            }
+
+        }
+
+
+        bottomSheetDialog.show()
     }
 
     fun proceedToCheckout(){
@@ -368,8 +405,9 @@ class CartFragment : Fragment() {
             ) {
                 if (response.isSuccessful){
                     if (response.body()!!.success){
+                        startActivity(Intent(requireContext(), MainActivity::class.java).putExtra("fragment","orderPlaced"))
                         Toast.makeText(requireContext(), response.body()!!.message, Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(requireContext(), PaymentMethodActivity::class.java))
+                        requireActivity().finish()
                     }else{
                         Toast.makeText(requireContext(), response.body()!!.message, Toast.LENGTH_SHORT).show()
                     }

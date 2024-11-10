@@ -1,3 +1,3 @@
 package com.example.akhleshkumar.homedoot.models
 
-data class TimeDataModel(val time:String)
+data class TimeDataModel(val time:String, val time24:String)

@@ -40,7 +40,7 @@ class TimeSlotAdapter(val list:List<TimeDataModel>, private val onTimeSelectList
         holder.tvTime.text = list[position].time
 
         holder.itemView.setOnClickListener {
-         onTimeSelectListener.onTimeSelected(list[position].time)
+         onTimeSelectListener.onTimeSelected(list[position].time24)
             selectedPosition = holder.position
             notifyDataSetChanged()
 
