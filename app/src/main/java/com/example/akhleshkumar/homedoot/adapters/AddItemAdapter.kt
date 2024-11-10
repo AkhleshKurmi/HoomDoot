@@ -85,6 +85,7 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
                     holder.totalItem.visibility = View.VISIBLE
                     holder.btnAdd.visibility = View.INVISIBLE
                     holder.totalItem.text = quantity.toString()
+                    holder.totalPrice.text= totalPrice.toString()
                     holder.totalPrice.text = totalPrice.toString()
 
                 }else{
