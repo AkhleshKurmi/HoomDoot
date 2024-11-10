@@ -41,7 +41,7 @@ class ProductListAdapter (val context: Context, private val items: List<ProductD
 
         holder.tvTitle.text = item.service_name
 //        holder.tvRating.text = item.reviews.get(0).count.toString()
-        holder.tvPrice.text = "₹ "+item.price.toFloat().toString()
+        holder.tvPrice.text = "₹ "+item.price
 
         holder.tvDescription.text = item.description
         Picasso.get().load(path+"/${item.id}/"+item.main_image).into(holder.ivThumbnail)
