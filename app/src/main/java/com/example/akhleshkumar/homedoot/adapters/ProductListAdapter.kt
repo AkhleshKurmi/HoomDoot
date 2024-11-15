@@ -2,6 +2,7 @@ package com.example.akhleshkumar.homedoot.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +25,7 @@ class ProductListAdapter (val context: Context, private val items: List<ProductD
         val tvReviews: TextView = itemView.findViewById(R.id.tvReviews)
         val tvPrice: TextView = itemView.findViewById(R.id.tvPrice)
       //  val tvTime: TextView = itemView.findViewById(R.id.tvTime)
-     //   val tvOffer: TextView = itemView.findViewById(R.id.tvOffer)
+        val tvOffer: TextView = itemView.findViewById(R.id.tvOffer)
         val tvDescription: TextView = itemView.findViewById(R.id.tvDescription)
         val ivThumbnail: ImageView = itemView.findViewById(R.id.ivThumbnail)
         val btnAdd: Button = itemView.findViewById(R.id.btnAdd)
@@ -39,9 +40,14 @@ class ProductListAdapter (val context: Context, private val items: List<ProductD
     override fun onBindViewHolder(holder: ServiceViewHolder, position: Int) {
         val item = items[position]
 
+        holder.tvPrice.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+
+
         holder.tvTitle.text = item.service_name
 //        holder.tvRating.text = item.reviews.get(0).count.toString()
-        holder.tvPrice.text = "₹ "+item.price
+        holder.tvPrice.text = "₹ "+item.items.get(0).mrp_price
+        holder.tvOffer.text= "₹ "+item.items.get(0).offer_price
+
 
         holder.tvDescription.text = item.description
         Picasso.get().load(path+"/${item.id}/"+item.main_image).into(holder.ivThumbnail)

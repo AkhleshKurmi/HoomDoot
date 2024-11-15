@@ -34,7 +34,10 @@ data class ProductData(
     val status: String,
     val created_at: String,
     val updated_at: String,
-    val reviews: List<Review>
+    val reviews: List<Review>,
+    val items : ArrayList<Items>
 )
 
 data class Review(val count:Int)
+
+data class Items(val mrp_price: Int, val offer_price: Int)
