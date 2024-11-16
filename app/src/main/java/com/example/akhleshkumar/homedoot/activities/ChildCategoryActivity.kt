@@ -13,6 +13,7 @@ import com.example.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.adapters.ChildItemAdapter
 import com.example.akhleshkumar.homedoot.adapters.ProductListAdapter
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
+import com.example.akhleshkumar.homedoot.interfaces.OnChildItemClickListner
 import com.example.akhleshkumar.homedoot.models.ChildSubCategoryResponse
 import com.example.akhleshkumar.homedoot.models.ProductListResponse
 import retrofit2.Call
@@ -54,7 +55,8 @@ class ChildCategoryActivity : AppCompatActivity() {
 
     private fun getChildSubCatList(id:Int){
         progressDialog.show()
-        RetrofitClient.instance.fetchChildSubCategory(id).enqueue(object : Callback<ChildSubCategoryResponse>{
+        RetrofitClient.instance.fetchChildSubCategory(id).enqueue(object : Callback<ChildSubCategoryResponse>,
+            OnChildItemClickListner {
             override fun onResponse(
                 call: Call<ChildSubCategoryResponse>,
                 response: Response<ChildSubCategoryResponse>
@@ -62,9 +64,8 @@ class ChildCategoryActivity : AppCompatActivity() {
                 if (response.isSuccessful){
                     progressDialog.dismiss()
                     if (response.body()!!.success){
-                        val childItemAdapter = ChildItemAdapter(this@ChildCategoryActivity,response.body()!!.data.childSubCategories,response.body()!!.data.path,userId)
+                        val childItemAdapter = ChildItemAdapter(this@ChildCategoryActivity,response.body()!!.data.childSubCategories,response.body()!!.data.path,userId,this)
                         rvChildSubCat.adapter = childItemAdapter
-                        getChildSubCatListC(response.body()!!.data.childSubCategories.get(0).id)
                     }else{
                         Toast.makeText(this@ChildCategoryActivity, "No data", Toast.LENGTH_SHORT).show()
                     }
@@ -77,6 +78,10 @@ class ChildCategoryActivity : AppCompatActivity() {
             override fun onFailure(call: Call<ChildSubCategoryResponse>, t: Throwable) {
                 progressDialog.dismiss()
                 Toast.makeText(this@ChildCategoryActivity, t.localizedMessage, Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onChildItemClick(id: String) {
+                getChildSubCatListC(id.toInt())
             }
 
         })

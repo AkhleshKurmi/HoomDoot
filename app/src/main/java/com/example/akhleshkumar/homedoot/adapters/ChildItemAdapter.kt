@@ -11,9 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.akhleshkumar.homedoot.models.ChildSubCategory
 import com.example.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.activities.ProductListActivity
+import com.example.akhleshkumar.homedoot.interfaces.OnChildItemClickListner
 import com.squareup.picasso.Picasso
 
-class ChildItemAdapter(val context: Context, private val items: List<ChildSubCategory>, val path :String, val userId:String) :
+class ChildItemAdapter(val context: Context, private val items: List<ChildSubCategory>, val path :String, val userId:String, val onChildItemClickListner: OnChildItemClickListner) :
     RecyclerView.Adapter<ChildItemAdapter.CleaningViewHolder>() {
 
     class CleaningViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -31,13 +32,14 @@ class ChildItemAdapter(val context: Context, private val items: List<ChildSubCat
         val item = items[position]
         Picasso.get().load(path+"/"+item.image).into(holder.imageView)
         holder.textView.text = item.name
-
+        onChildItemClickListner.onChildItemClick(items.get(0).id.toString())
         holder.itemView.setOnClickListener {
-            val intent = Intent(context, ProductListActivity::class.java)
-            intent.putExtra("id",item.id)
-            intent.putExtra("catName", item.name)
-            intent.putExtra("userId",userId)
-            context.startActivity(intent)
+//            val intent = Intent(context, ProductListActivity::class.java)
+//            intent.putExtra("id",item.id)
+//            intent.putExtra("catName", item.name)
+//            intent.putExtra("userId",userId)
+//            context.startActivity(intent)
+            onChildItemClickListner.onChildItemClick(item.id.toString())
         }
     }
 

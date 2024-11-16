@@ -114,7 +114,7 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
             ) {
                 if (response.isSuccessful){
                     if (response.body()!!.success){
-                      addCart = true
+                      showBottomCart()
                     }
                 }
             }
@@ -124,7 +124,11 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
             }
 
         })
-        if (addCart){
+
+
+    }
+
+    fun showBottomCart(){
 
             val bottomSheetView =
                 LayoutInflater.from(context).inflate(R.layout.bottom_view_cart, null)
@@ -141,11 +145,8 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
                 )
             }
             bottomSheetDialog.show()
-        }
 
     }
-
-
     override fun getItemCount(): Int = acList.size
 
     class ACViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
