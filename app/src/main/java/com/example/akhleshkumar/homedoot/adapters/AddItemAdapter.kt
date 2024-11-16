@@ -39,7 +39,7 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
         holder.priceOrignal.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
         holder.priceDiscount.text = acItem.offerPrice.toFloat().toString()
         holder.productName.text = acItem.itemName.toString()
-        var quantity = 1
+        var quantity = 0
         var totalPrice = 0.0f
         holder.btnPlus.setOnClickListener {
             if (quantity >= 0) {
@@ -79,7 +79,7 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
 
         holder.btnAdd.setOnClickListener {
             if (userId>0){
-                if (quantity>0) {
+                if (quantity>=0) {
                     holder.btnMinus.visibility = View.VISIBLE
                     holder.btnPlus.visibility = View.VISIBLE
                     holder.totalItem.visibility = View.VISIBLE

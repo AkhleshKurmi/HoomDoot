@@ -127,7 +127,7 @@ class OrderDetailsActivity : AppCompatActivity() {
         }
 
     private fun updateTimeAndDate(orderId: String) {
-     RetrofitClient.instance.updateSchedule(orderId,"date",time,date).enqueue(object : Callback<RemoveCartItemRes>{
+     RetrofitClient.instance.updateSchedule(orderId,"time",time,date).enqueue(object : Callback<RemoveCartItemRes>{
          override fun onResponse(
              call: Call<RemoveCartItemRes>,
              response: Response<RemoveCartItemRes>
