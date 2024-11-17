@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="#F9F9F9"
+    tools:context=".activities.AcitivityRating">
+
+    <LinearLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Add Review to Product Section -->
+        <TextView
+            android:id="@+id/tvAddReviewTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Review to Product"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:padding="8dp" />
+
+        <!-- Order Number -->
+
+
+        <!-- Rating Bar -->
+        <TextView
+            android:id="@+id/tvRatingLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rate the Product:"
+            android:layout_marginTop="16dp"
+            android:textSize="16sp" />
+
+        <RatingBar
+            android:id="@+id/ratingBarProduct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:stepSize="1.0"
+            android:max="5"
+            android:numStars="5"
+            android:layout_marginVertical="8dp" />
+
+        <!-- Review Input -->
+        <TextView
+            android:id="@+id/tvReviewLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Write a Review:"
+            android:layout_marginTop="16dp"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/etReview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Write your review here"
+            android:background="#FFFFFF"
+            android:minHeight="100dp"
+            android:padding="8dp"
+            android:gravity="top"
+            android:layout_marginTop="8dp"
+            android:inputType="textMultiLine" />
+
+        <!-- Submit Button -->
+        <Button
+            android:id="@+id/btnSubmitProductReview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#FF5722"
+            android:text="Submit Review"
+            android:textColor="#FFFFFF"
+            android:padding="12dp" />
+
+        <!-- Add Review to Vendor Section -->
+        <TextView
+            android:id="@+id/tvAddVendorReviewTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Review to Vendor"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:padding="8dp"
+            android:layout_marginTop="24dp" />
+
+        <!-- Order Number -->
+
+
+        <!-- Vendor ID -->
+
+
+        <!-- Rating Bar -->
+        <TextView
+            android:id="@+id/tvVendorRatingLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rate the Vendor:"
+            android:layout_marginTop="16dp"
+            android:textSize="16sp" />
+
+        <RatingBar
+            android:id="@+id/ratingBarVendor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:max="5"
+            android:stepSize="1.0"
+            android:numStars="5"
+            android:layout_marginVertical="8dp" />
+
+        <!-- Review Input -->
+        <TextView
+            android:id="@+id/tvVendorReviewLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Write a Review:"
+            android:layout_marginTop="16dp"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/etVendorReview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Write your review here"
+            android:background="#FFFFFF"
+            android:minHeight="100dp"
+            android:padding="8dp"
+            android:gravity="top"
+            android:layout_marginTop="8dp"
+            android:inputType="textMultiLine" />
+
+        <!-- Submit Button -->
+        <Button
+            android:id="@+id/btnSubmitVendorReview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#4CAF50"
+            android:text="Submit Review"
+            android:textColor="#FFFFFF"
+            android:padding="12dp" />
+
+    </LinearLayout>
+</ScrollView>

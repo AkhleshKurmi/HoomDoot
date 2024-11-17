@@ -78,7 +78,12 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
 
 
         holder.btnAdd.setOnClickListener {
+
             if (userId>0){
+                quantity = 1
+                totalPrice = (quantity * acItem.offerPrice).toFloat()
+                addItemToList(acItem.productId, acItem.id, quantity, acItem.offerPrice)
+
                 if (quantity>=0) {
                     holder.btnMinus.visibility = View.VISIBLE
                     holder.btnPlus.visibility = View.VISIBLE
@@ -87,6 +92,7 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
                     holder.totalItem.text = quantity.toString()
                     holder.totalPrice.text= totalPrice.toString()
                     holder.totalPrice.text = totalPrice.toString()
+
 
                 }else{
                     holder.btnMinus.visibility = View.INVISIBLE

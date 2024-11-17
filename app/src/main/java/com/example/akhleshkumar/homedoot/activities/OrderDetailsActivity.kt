@@ -31,11 +31,13 @@ import java.util.Locale
 class OrderDetailsActivity : AppCompatActivity() {
     lateinit var cancelOrderButton: Button
     lateinit var tvOrderStatus :TextView
+    lateinit var tvRateUs :TextView
+
     var orderStatus : String? = null
     var time= ""
     var date = ""
     private val listTime : ArrayList<TimeDataModel> =  ArrayList()
-        @SuppressLint("InflateParams", "SetTextI18n")
+        @SuppressLint("InflateParams", "SetTextI18n", "MissingInflatedId")
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setContentView(R.layout.activity_order_details)
@@ -59,6 +61,8 @@ class OrderDetailsActivity : AppCompatActivity() {
              tvOrderStatus = findViewById(R.id.orderStatus)
             tvOrderStatus.text = orderStatus
             cancelOrderButton = findViewById(R.id.cancelOrderButtonDetail)
+            tvRateUs= findViewById(R.id.tvRate)
+
 
             // Set data in views
             productNameTextView.text = productName

@@ -147,4 +147,13 @@ interface ApiService {
     @POST("update-schedule")
     fun updateSchedule(@Query("order_no") orderNo:String, @Query("type") type:String = "date", @Query("time")
     time:String, @Query("date") date:String) : Call<RemoveCartItemRes>
+
+    fun productReview(){
+
+    }
+
+    fun vendorReview(){
+
+    }
+
 }
