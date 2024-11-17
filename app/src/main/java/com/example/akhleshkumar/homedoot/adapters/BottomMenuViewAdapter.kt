@@ -17,7 +17,7 @@ class BottomMenuViewAdapter (private val context: Context, private val categoryL
     RecyclerView.Adapter<BottomMenuViewAdapter.BottomOptionViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BottomOptionViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.category_item, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.service_items, parent, false)
         return BottomOptionViewHolder(view)
     }
 

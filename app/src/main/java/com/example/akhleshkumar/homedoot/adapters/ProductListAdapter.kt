@@ -6,14 +6,29 @@ import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.akhleshkumar.homedoot.R
+import com.example.akhleshkumar.homedoot.SliderAdapter
 import com.example.akhleshkumar.homedoot.activities.ProductDescriptionActivity
+import com.example.akhleshkumar.homedoot.api.RetrofitClient
+import com.example.akhleshkumar.homedoot.models.ImageItem
 import com.example.akhleshkumar.homedoot.models.ProductData
+import com.example.akhleshkumar.homedoot.models.ProductDetailsResponse
+import com.example.akhleshkumar.homedoot.models.ProductItem
+import com.example.akhleshkumar.homedoot.models.SubCategoryResponse
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.picasso.Picasso
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ProductListAdapter (val context: Context, private val items: List<ProductData>, val path:String,val id: Int,val userId:String) :
     RecyclerView.Adapter<ProductListAdapter.ServiceViewHolder>() {
@@ -24,11 +39,12 @@ class ProductListAdapter (val context: Context, private val items: List<ProductD
         val tvRating: TextView = itemView.findViewById(R.id.tvRating)
         val tvReviews: TextView = itemView.findViewById(R.id.tvReviews)
         val tvPrice: TextView = itemView.findViewById(R.id.tvPrice)
-      //  val tvTime: TextView = itemView.findViewById(R.id.tvTime)
+        //  val tvTime: TextView = itemView.findViewById(R.id.tvTime)
         val tvOffer: TextView = itemView.findViewById(R.id.tvOffer)
         val tvDescription: TextView = itemView.findViewById(R.id.tvDescription)
         val ivThumbnail: ImageView = itemView.findViewById(R.id.ivThumbnail)
         val btnAdd: Button = itemView.findViewById(R.id.btnAdd)
+        val tvOption:TextView = itemView.findViewById<TextView?>(R.id.tvOption)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ServiceViewHolder {
@@ -50,6 +66,7 @@ class ProductListAdapter (val context: Context, private val items: List<ProductD
 
 
         holder.tvDescription.text = item.description
+        holder.tvOption.text=item.items.size.toString()+" options"
         Picasso.get().load(path+"/${item.id}/"+item.main_image).into(holder.ivThumbnail)
         holder.btnAdd.setOnClickListener {
             val intent = Intent(context, ProductDescriptionActivity::class.java)
@@ -58,7 +75,82 @@ class ProductListAdapter (val context: Context, private val items: List<ProductD
             intent.putExtra("catName", item.service_name)
             context.startActivity(intent)
         }
+
+        holder.tvOption.setOnClickListener {
+            showBottomView(item.id)
+        }
     }
+
+    private fun showBottomView(p_id:Int){
+        val bottomSheetDialog = BottomSheetDialog(context)
+        val bottomSheetView = LayoutInflater.from(context).inflate(R.layout.bottom_menu_view,null)
+        val rvSubCat = bottomSheetView.findViewById<RecyclerView>(R.id.rv_sub_cat)
+        val tvServiceName = bottomSheetView.findViewById<TextView>(R.id.tv_service_name)
+
+        bottomSheetDialog.setContentView(bottomSheetView)
+
+
+        rvSubCat.layoutManager = LinearLayoutManager(context)
+        RetrofitClient.instance.fetchProductDetails(p_id).enqueue(object :
+            Callback<ProductDetailsResponse> {
+            override fun onResponse(
+                call: Call<ProductDetailsResponse>,
+                response: Response<ProductDetailsResponse>
+            ) {
+                if (response.isSuccessful) {
+                    if (response.body()!!.success) {
+                        if (response.body()!!.data.productItems.size>6){
+                            var list = response.body()!!.data.productItems
+                            val itemList = ArrayList<ProductItem>()
+                            itemList.clear()
+                            for(items in list){
+                                itemList.add(items)
+                            }
+                          val subItemList = itemList.subList(0,6)
+                            val addItemAdapter = AddItemAdapter(
+                                context,
+                               subItemList ,
+                                response.body()!!.data.product.home, userId.toInt()
+                            )
+                            rvSubCat.adapter = addItemAdapter
+                        }else {
+                            val addItemAdapter = AddItemAdapter(
+                                context,
+                                response.body()!!.data.productItems,
+                                response.body()!!.data.product.home, userId.toInt()
+                            )
+                            rvSubCat.adapter = addItemAdapter
+                        }
+                    } else {
+                        Toast.makeText(
+                            context,
+                            "No data",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } else {
+                    Toast.makeText(
+                        context,
+                        "Something went wrong ",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ProductDetailsResponse>, t: Throwable) {
+                Toast.makeText(
+                    context,
+                    t.localizedMessage,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+        })
+
+
+        bottomSheetDialog.show()
+    }
+
 
     override fun getItemCount(): Int = items.size
 }
