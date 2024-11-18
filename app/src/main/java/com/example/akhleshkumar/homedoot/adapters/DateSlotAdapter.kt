@@ -10,7 +10,9 @@ import com.example.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.interfaces.OnDateSelectListener
 import com.example.akhleshkumar.homedoot.models.DateDataModel
 import com.example.akhleshkumar.homedoot.models.TimeDataModel
+import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 
 class DateSlotAdapter (val list:List<Date>, private val onDateSelectListener: OnDateSelectListener) : RecyclerView.Adapter<DateSlotAdapter.DateViewHolder>() {
     private var selectedPosition: Int = RecyclerView.NO_POSITION
@@ -31,7 +33,9 @@ class DateSlotAdapter (val list:List<Date>, private val onDateSelectListener: On
 
     override fun onBindViewHolder(holder: DateViewHolder, position: Int) {
         val date = list[position]
-        holder.tvTime.text = date.toString()
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val mainDate = dateFormat.format(date)
+        holder.tvTime.text = mainDate.toString()
         holder.itemView.setOnClickListener {
 
             onDateSelectListener.onDateSelected(date)

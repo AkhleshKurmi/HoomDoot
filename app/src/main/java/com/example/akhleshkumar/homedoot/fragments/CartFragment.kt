@@ -34,8 +34,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 class CartFragment : Fragment() {
@@ -51,7 +54,8 @@ class CartFragment : Fragment() {
     var discountPerc = 0
     private lateinit var cartAdapter: CartAdapter
     private var vendorList = ArrayList<CartItems>()
-
+    lateinit var timeSlotAdapter : TimeSlotAdapter
+    lateinit var filteredTimesList :MutableList<TimeDataModel>
     private val listTime: ArrayList<TimeDataModel> = ArrayList()
     private var cartItemList = ArrayList<CartItems>()
     private lateinit var sharedPreferences: SharedPreferences
@@ -81,7 +85,7 @@ class CartFragment : Fragment() {
             listTime.add(TimeDataModel("06:00 pm","18"))
             listTime.add(TimeDataModel("07:00 pm","19"))
             listTime.add(TimeDataModel("08:00 pm","20"))
-
+            filteredTimesList = listTime.toMutableList()
 
 
         return binding.root
@@ -101,6 +105,19 @@ class CartFragment : Fragment() {
                 applyCoupon(binding.editTextCouponCode.text.toString())
             }
         }
+    }
+    fun generateDateList(): List<Date> {
+        val dates = mutableListOf<Date>()
+        val calendar = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+        // Add dates for the next 7 days
+        for (i in 0..6) {
+            dates.add(calendar.time)
+            calendar.add(Calendar.DAY_OF_YEAR, 1)
+        }
+
+        return dates
     }
     private fun applyCoupon(couponCode: String) {
         RetrofitClient.instance.applyCouponCode(couponCode).enqueue(object : Callback<CouponResponse>{
@@ -133,17 +150,18 @@ class CartFragment : Fragment() {
         val btnCheckOut = bottomSheetView.findViewById<Button>(R.id.btn_proceed)
 
         rvDate.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
-        rvDate.adapter = DateSlotAdapter(getNext30Days(), object : OnDateSelectListener {
-            override fun onDateSelected(date: String) {
-                this@CartFragment.date = date
+        rvDate.adapter= DateSlotAdapter(generateDateList(), object : OnDateSelectListener {
+            override fun onDateSelected(date: Date) {
+                updateTimeAdapter(date)
             }
         })
+        rvTime.layoutManager = GridLayoutManager(requireContext(),3)
 
-        rvTime.layoutManager = GridLayoutManager(requireContext(), 3)
-        val timeSlotAdapter = TimeSlotAdapter(listTime, object : OnTimeSelectListener {
+        timeSlotAdapter = TimeSlotAdapter(listTime, object :OnTimeSelectListener{
             override fun onTimeSelected(time: String) {
                 this@CartFragment.time = time
             }
+
         })
         rvTime.adapter = timeSlotAdapter
 
@@ -159,7 +177,29 @@ class CartFragment : Fragment() {
 
         bottomSheetDialog.show()
     }
+    fun updateTimeAdapter(date:Date){
+        val today = Calendar.getInstance()
+        val selectedCalendar = Calendar.getInstance().apply { time = date }
 
+        // Check if the selected date is today
+        if (selectedCalendar.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
+            selectedCalendar.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR)) {
+
+            // Filter times to only allow future times
+            val currentHour = today.get(Calendar.HOUR_OF_DAY)
+            filteredTimesList = listTime.filter {timeDataModel: TimeDataModel ->
+                val hour = timeDataModel.time24
+                hour > currentHour.toString()
+            }.toMutableList()
+
+        } else {
+            // For future dates, allow all times
+            filteredTimesList = listTime.toMutableList()
+        }
+
+        // Update the time adapter
+        timeSlotAdapter.updateData(filteredTimesList)
+    }
     private fun itemList() {
         RetrofitClient.instance.getCartList(id.toInt()).enqueue(object : Callback<CartListResponse> {
             @SuppressLint("NotifyDataSetChanged")

@@ -66,7 +66,7 @@ class ProductListAdapter (val context: Context, private val items: List<ProductD
         holder.tvOffer.text= "₹ "+item.items.get(0).offer_price
 
 
-        holder.tvDescription.text = Html.fromHtml(item.included, Html.FROM_HTML_MODE_LEGACY).subSequence(0,50).toString()
+        holder.tvDescription.text = Html.fromHtml(item.included, Html.FROM_HTML_MODE_LEGACY).subSequence(0,80).toString()
         holder.tvOption.text=item.items.size.toString()+" options"
         Picasso.get().load(path+"/${item.id}/"+item.main_image).into(holder.ivThumbnail)
         holder.btnAdd.setOnClickListener {

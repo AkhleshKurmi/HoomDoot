@@ -24,14 +24,19 @@ import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 class OrderDetailsActivity : AppCompatActivity() {
     lateinit var cancelOrderButton: Button
     lateinit var tvOrderStatus :TextView
     lateinit var tvRateUs :TextView
+    lateinit var timeSlotAdapter : TimeSlotAdapter
+    lateinit var filteredTimesList :MutableList<TimeDataModel> // Mutable list for dynamic filtering
 
     var orderStatus : String? = null
     var time= ""
@@ -48,9 +53,9 @@ class OrderDetailsActivity : AppCompatActivity() {
             val productPrice = intent.getIntExtra("PRODUCT_PRICE", 0)
             val orderDetails = intent.getStringExtra("ORDER_DETAILS")
             val orderId = intent.getStringExtra("ORDER_ID")
-             orderStatus = intent.getStringExtra("OrderStatus")
+            orderStatus = intent.getStringExtra("OrderStatus")
             val sharedPreferences = getSharedPreferences("HomeDoot", MODE_PRIVATE)
-            val mobile = sharedPreferences.getString("mobile","")!!
+            val mobile = sharedPreferences.getString("mobile", "")!!
 
             // Find views
             val productNameTextView: TextView = findViewById(R.id.productNameDetail)
@@ -58,10 +63,10 @@ class OrderDetailsActivity : AppCompatActivity() {
             val productPriceTextView: TextView = findViewById(R.id.productPriceDetail)
             val detailsTextView: TextView = findViewById(R.id.orderDetailsTextView)
             val updateTimeDate = findViewById<Button>(R.id.btnUpdateTimeDate)
-             tvOrderStatus = findViewById(R.id.orderStatus)
+            tvOrderStatus = findViewById(R.id.orderStatus)
             tvOrderStatus.text = orderStatus
             cancelOrderButton = findViewById(R.id.cancelOrderButtonDetail)
-            tvRateUs= findViewById(R.id.tvRate)
+            tvRateUs = findViewById(R.id.tvRate)
 
 
             // Set data in views
@@ -73,44 +78,48 @@ class OrderDetailsActivity : AppCompatActivity() {
             Picasso.get()
                 .load(productImageUrl)
                 .into(productImageView)
-               cancelOrderButton.text = if (orderStatus == "cancelled")  orderStatus else "cancel order"
+            cancelOrderButton.text = if (orderStatus == "cancelled") orderStatus else "cancel order"
             // Handle cancel order button click
 
-                cancelOrderButton.setOnClickListener {
-                    if (orderStatus != "cancelled") {
-                        cancelOrder(orderId, mobile)
-                    }
+            cancelOrderButton.setOnClickListener {
+                if (orderStatus != "cancelled") {
+                    cancelOrder(orderId, mobile)
+                }
             }
-            listTime.add(TimeDataModel("09:00 am","09"))
-            listTime.add(TimeDataModel("10:00 am","10"))
-            listTime.add(TimeDataModel("11:00 am","11"))
-            listTime.add(TimeDataModel("12:00 pm","12"))
-            listTime.add(TimeDataModel("01:00 pm","13"))
-            listTime.add(TimeDataModel("02:00 pm","14"))
-            listTime.add(TimeDataModel("03:00 pm","15"))
-            listTime.add(TimeDataModel("04:00 pm","16"))
-            listTime.add(TimeDataModel("05:00 pm","17"))
-            listTime.add(TimeDataModel("06:00 pm","18"))
-            listTime.add(TimeDataModel("07:00 pm","19"))
-            listTime.add(TimeDataModel("08:00 pm","20"))
-
+            listTime.add(TimeDataModel("09:00 am", "09"))
+            listTime.add(TimeDataModel("10:00 am", "10"))
+            listTime.add(TimeDataModel("11:00 am", "11"))
+            listTime.add(TimeDataModel("12:00 pm", "12"))
+            listTime.add(TimeDataModel("01:00 pm", "13"))
+            listTime.add(TimeDataModel("02:00 pm", "14"))
+            listTime.add(TimeDataModel("03:00 pm", "15"))
+            listTime.add(TimeDataModel("04:00 pm", "16"))
+            listTime.add(TimeDataModel("05:00 pm", "17"))
+            listTime.add(TimeDataModel("06:00 pm", "18"))
+            listTime.add(TimeDataModel("07:00 pm", "19"))
+            listTime.add(TimeDataModel("08:00 pm", "20"))
+            filteredTimesList = listTime.toMutableList()
 
             updateTimeDate.setOnClickListener {
                 val bottomSheetDialog = BottomSheetDialog(this@OrderDetailsActivity)
-                val bottomSheetView = layoutInflater.inflate(R.layout.bottom_sheet_slot_layout, null)
+                val bottomSheetView =
+                    layoutInflater.inflate(R.layout.bottom_sheet_slot_layout, null)
                 bottomSheetDialog.setContentView(bottomSheetView)
                 val rvDate = bottomSheetView.findViewById<RecyclerView>(R.id.rvDay)
                 val rvTime = bottomSheetView.findViewById<RecyclerView>(R.id.rv_time_slots)
                 val btnCheckOut = bottomSheetView.findViewById<Button>(R.id.btn_proceed)
-                rvDate.layoutManager = LinearLayoutManager(this@OrderDetailsActivity,
-                    RecyclerView.HORIZONTAL,false)
-                rvDate.adapter= DateSlotAdapter(getNext30Days(), object : OnDateSelectListener {
-                    override fun onDateSelected(date: String) {
-                        this@OrderDetailsActivity.date = date
+                rvDate.layoutManager = LinearLayoutManager(
+                    this@OrderDetailsActivity,
+                    RecyclerView.HORIZONTAL, false
+                )
+                rvDate.adapter= DateSlotAdapter(generateDateList(), object : OnDateSelectListener {
+                    override fun onDateSelected(date: Date) {
+                        updateTimeAdapter(date)
                     }
                 })
                 rvTime.layoutManager = GridLayoutManager(this@OrderDetailsActivity,3)
-                val timeSlotAdapter = TimeSlotAdapter(listTime, object : OnTimeSelectListener {
+
+                timeSlotAdapter = TimeSlotAdapter(listTime, object :OnTimeSelectListener{
                     override fun onTimeSelected(time: String) {
                         this@OrderDetailsActivity.time = time
                     }
@@ -119,7 +128,11 @@ class OrderDetailsActivity : AppCompatActivity() {
                 rvTime.adapter = timeSlotAdapter
                 btnCheckOut.setOnClickListener {
                     if (time.isEmpty() && date.isEmpty()) {
-                        Toast.makeText(this@OrderDetailsActivity, "please Select Date And Time", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@OrderDetailsActivity,
+                            "please Select Date And Time",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     } else {
                         updateTimeAndDate(orderId!!)
                     }
@@ -129,7 +142,29 @@ class OrderDetailsActivity : AppCompatActivity() {
                 bottomSheetDialog.show()
             }
         }
+    fun updateTimeAdapter(date:Date){
+        val today = Calendar.getInstance()
+        val selectedCalendar = Calendar.getInstance().apply { time = date }
 
+        // Check if the selected date is today
+        if (selectedCalendar.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
+            selectedCalendar.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR)) {
+
+            // Filter times to only allow future times
+            val currentHour = today.get(Calendar.HOUR_OF_DAY)
+            filteredTimesList = listTime.filter {timeDataModel: TimeDataModel ->
+                val hour = timeDataModel.time24
+                hour > currentHour.toString()
+            }.toMutableList()
+
+        } else {
+            // For future dates, allow all times
+            filteredTimesList = listTime.toMutableList()
+        }
+
+        // Update the time adapter
+        timeSlotAdapter.updateData(filteredTimesList)
+    }
     private fun updateTimeAndDate(orderId: String) {
      RetrofitClient.instance.updateSchedule(orderId,"time",time,date).enqueue(object : Callback<RemoveCartItemRes>{
          override fun onResponse(
@@ -154,17 +189,18 @@ class OrderDetailsActivity : AppCompatActivity() {
      })
     }
 
-    private fun getNext30Days(): List<String> {
-        val dateList = mutableListOf<String>()
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
+    fun generateDateList(): List<Date> {
+        val dates = mutableListOf<Date>()
+        val calendar = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
-        for (i in 0 until 4) {
-            val date = LocalDate.now().plusDays(i.toLong())
-            dateList.add(date.format(formatter)) // Format to include day name
+        // Add dates for the next 7 days
+        for (i in 0..6) {
+            dates.add(calendar.time)
+            calendar.add(Calendar.DAY_OF_YEAR, 1)
         }
 
-        return dateList
-
+        return dates
     }
         private fun cancelOrder(orderId: String?, mobile:String) {
             // You can call your API to cancel the order here
