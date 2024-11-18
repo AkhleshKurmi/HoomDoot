@@ -1,6 +1,7 @@
 package com.example.akhleshkumar.homedoot.activities
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
@@ -68,7 +69,9 @@ class OrderDetailsActivity : AppCompatActivity() {
             cancelOrderButton = findViewById(R.id.cancelOrderButtonDetail)
             tvRateUs = findViewById(R.id.tvRate)
 
-
+            tvRateUs.setOnClickListener {
+                startActivity(Intent(this,AcitivityRating::class.java))
+            }
             // Set data in views
             productNameTextView.text = productName
             productPriceTextView.text = "₹ $productPrice"
