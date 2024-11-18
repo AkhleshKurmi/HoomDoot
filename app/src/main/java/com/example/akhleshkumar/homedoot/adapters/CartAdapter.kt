@@ -25,7 +25,6 @@ class CartAdapter(
     fun clearList(){
         cartList.clear()
     }
-    // ViewHolder class to hold references to the UI components
     class CartViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val productImage: ImageView = view.findViewById(R.id.image_product)
         val productTitle: TextView = view.findViewById(R.id.text_product_title)

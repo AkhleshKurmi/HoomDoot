@@ -3,6 +3,7 @@ package com.example.akhleshkumar.homedoot.adapters
 import android.content.Context
 import android.content.Intent
 import android.graphics.Paint
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -65,7 +66,7 @@ class ProductListAdapter (val context: Context, private val items: List<ProductD
         holder.tvOffer.text= "₹ "+item.items.get(0).offer_price
 
 
-        holder.tvDescription.text = item.description
+        holder.tvDescription.text = Html.fromHtml(item.included, Html.FROM_HTML_MODE_LEGACY).subSequence(0,50).toString()
         holder.tvOption.text=item.items.size.toString()+" options"
         Picasso.get().load(path+"/${item.id}/"+item.main_image).into(holder.ivThumbnail)
         holder.btnAdd.setOnClickListener {

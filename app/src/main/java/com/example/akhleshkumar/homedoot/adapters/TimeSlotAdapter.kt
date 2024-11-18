@@ -13,7 +13,7 @@ import com.example.akhleshkumar.homedoot.interfaces.OnTimeSelectListener
 import com.example.akhleshkumar.homedoot.models.TimeDataModel
 
 
-class TimeSlotAdapter(val list:List<TimeDataModel>, private val onTimeSelectListener: OnTimeSelectListener) : Adapter<TimeSlotAdapter.TimeViewHolder>() {
+class TimeSlotAdapter(var list:List<TimeDataModel>, private val onTimeSelectListener: OnTimeSelectListener) : Adapter<TimeSlotAdapter.TimeViewHolder>() {
     private var selectedPosition: Int = RecyclerView.NO_POSITION
     inner class TimeViewHolder(view : View):ViewHolder(view){
         val tvTime = view.findViewById<TextView>(R.id.btn_time_slot)
@@ -26,7 +26,10 @@ class TimeSlotAdapter(val list:List<TimeDataModel>, private val onTimeSelectList
             }
         }
     }
-
+    fun updateData(newTimes: List<TimeDataModel>) {
+        this.list = newTimes
+        notifyDataSetChanged()
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimeViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_time_slot,parent,false)
         return TimeViewHolder(view)

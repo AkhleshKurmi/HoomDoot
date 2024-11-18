@@ -39,8 +39,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 class CartActivity : AppCompatActivity() {
@@ -66,6 +69,8 @@ class CartActivity : AppCompatActivity() {
     lateinit var editorSP : SharedPreferences.Editor
     lateinit var binding:ActivityCartBinding
     lateinit var progressDialog: ProgressDialog
+    lateinit var timeSlotAdapter : TimeSlotAdapter
+    lateinit var filteredTimesList :MutableList<TimeDataModel> // Mutable list for dynamic filtering
 
     var cartData = ArrayList<Cart>()
     @SuppressLint("InflateParams")
@@ -106,6 +111,8 @@ class CartActivity : AppCompatActivity() {
         listTime.add(TimeDataModel("07:00 pm","19"))
         listTime.add(TimeDataModel("08:00 pm","20"))
 
+        filteredTimesList = listTime.toMutableList()
+
         checkOutBtn.setOnClickListener {
             val bottomSheetDialog = BottomSheetDialog(this@CartActivity)
             val bottomSheetView = layoutInflater.inflate(R.layout.bottom_sheet_slot_layout, null)
@@ -114,18 +121,19 @@ class CartActivity : AppCompatActivity() {
             val rvTime = bottomSheetView.findViewById<RecyclerView>(R.id.rv_time_slots)
             val btnCheckOut = bottomSheetView.findViewById<Button>(R.id.btn_proceed)
             rvDate.layoutManager = LinearLayoutManager(this@CartActivity,RecyclerView.HORIZONTAL,false)
-            rvDate.adapter= DateSlotAdapter(getNext30Days(), object : OnDateSelectListener {
-                override fun onDateSelected(date: String) {
-                    this@CartActivity.date = date
+            rvDate.adapter= DateSlotAdapter(generateDateList(), object : OnDateSelectListener {
+                override fun onDateSelected(date: Date) {
+                    updateTimeAdapter(date)
                 }
             })
             rvTime.layoutManager = GridLayoutManager(this@CartActivity,3)
-            val timeSlotAdapter = TimeSlotAdapter(listTime, object : OnTimeSelectListener{
-                override fun onTimeSelected(time: String) {
-                    this@CartActivity.time = time
-                }
 
-            })
+           timeSlotAdapter = TimeSlotAdapter(listTime, object :OnTimeSelectListener{
+               override fun onTimeSelected(time: String) {
+                   this@CartActivity.time = time
+               }
+
+           })
             rvTime.adapter = timeSlotAdapter
             btnCheckOut.setOnClickListener {
                 if (time.isEmpty() && date.isEmpty()) {
@@ -212,6 +220,29 @@ class CartActivity : AppCompatActivity() {
 
 
     }
+    fun updateTimeAdapter(date:Date){
+        val today = Calendar.getInstance()
+        val selectedCalendar = Calendar.getInstance().apply { time = date }
+
+        // Check if the selected date is today
+        if (selectedCalendar.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
+            selectedCalendar.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR)) {
+
+            // Filter times to only allow future times
+            val currentHour = today.get(Calendar.HOUR_OF_DAY)
+            filteredTimesList = listTime.filter {timeDataModel: TimeDataModel ->
+                val hour = timeDataModel.time24
+                hour > currentHour.toString()
+            }.toMutableList()
+
+        } else {
+            // For future dates, allow all times
+            filteredTimesList = listTime.toMutableList()
+        }
+
+        // Update the time adapter
+        timeSlotAdapter.updateData(filteredTimesList)
+    }
 
     fun totalAmount(){
         var amount:Long = 0
@@ -252,17 +283,18 @@ class CartActivity : AppCompatActivity() {
 
 
 
-    private fun getNext30Days(): List<String> {
-        val dateList = mutableListOf<String>()
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
+    fun generateDateList(): List<Date> {
+        val dates = mutableListOf<Date>()
+        val calendar = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
-        for (i in 0 until 4) {
-            val date = LocalDate.now().plusDays(i.toLong())
-            dateList.add(date.format(formatter)) // Format to include day name
+        // Add dates for the next 7 days
+        for (i in 0..6) {
+            dates.add(calendar.time)
+            calendar.add(Calendar.DAY_OF_YEAR, 1)
         }
 
-        return dateList
-
+        return dates
     }
     fun itemDelete(itemId: Int, userId: Int){
         RetrofitClient.instance.removeAnItem(itemId,userId).enqueue(object :Callback<RemoveCartItemRes>{
