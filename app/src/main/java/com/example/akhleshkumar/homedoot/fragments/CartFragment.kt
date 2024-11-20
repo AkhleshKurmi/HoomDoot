@@ -29,7 +29,16 @@ import com.example.akhleshkumar.homedoot.interfaces.OnDateSelectListener
 import com.example.akhleshkumar.homedoot.interfaces.OnItemDelete
 import com.example.akhleshkumar.homedoot.interfaces.OnItenUpdateCart
 import com.example.akhleshkumar.homedoot.interfaces.OnTimeSelectListener
-import com.example.akhleshkumar.homedoot.models.*
+import com.example.akhleshkumar.homedoot.models.Cart
+import com.example.akhleshkumar.homedoot.models.CartItems
+import com.example.akhleshkumar.homedoot.models.CartListResponse
+import com.example.akhleshkumar.homedoot.models.CouponResponse
+import com.example.akhleshkumar.homedoot.models.OrderCheckoutRequest
+import com.example.akhleshkumar.homedoot.models.OrderCheckoutRes
+import com.example.akhleshkumar.homedoot.models.RemoveCartItemRes
+import com.example.akhleshkumar.homedoot.models.TimeDataModel
+import com.example.akhleshkumar.homedoot.models.VendorAvailabilityRequest
+import com.example.akhleshkumar.homedoot.models.VendorAvailabilityResponse
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import retrofit2.Call
 import retrofit2.Callback
@@ -153,6 +162,9 @@ class CartFragment : Fragment() {
         rvDate.adapter= DateSlotAdapter(generateDateList(), object : OnDateSelectListener {
             override fun onDateSelected(date: Date) {
                 updateTimeAdapter(date)
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                val mainDate = dateFormat.format(date)
+                this@CartFragment.date = mainDate
             }
         })
         rvTime.layoutManager = GridLayoutManager(requireContext(),3)

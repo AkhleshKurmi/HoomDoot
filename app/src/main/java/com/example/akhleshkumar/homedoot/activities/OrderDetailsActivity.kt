@@ -26,8 +26,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -118,6 +116,9 @@ class OrderDetailsActivity : AppCompatActivity() {
                 rvDate.adapter= DateSlotAdapter(generateDateList(), object : OnDateSelectListener {
                     override fun onDateSelected(date: Date) {
                         updateTimeAdapter(date)
+                        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                        val mainDate = dateFormat.format(date)
+                        this@OrderDetailsActivity.date = mainDate
                     }
                 })
                 rvTime.layoutManager = GridLayoutManager(this@OrderDetailsActivity,3)

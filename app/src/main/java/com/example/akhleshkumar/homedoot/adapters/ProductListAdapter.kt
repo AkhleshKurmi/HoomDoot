@@ -7,25 +7,19 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.akhleshkumar.homedoot.R
-import com.example.akhleshkumar.homedoot.SliderAdapter
 import com.example.akhleshkumar.homedoot.activities.ProductDescriptionActivity
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
-import com.example.akhleshkumar.homedoot.models.ImageItem
 import com.example.akhleshkumar.homedoot.models.ProductData
 import com.example.akhleshkumar.homedoot.models.ProductDetailsResponse
 import com.example.akhleshkumar.homedoot.models.ProductItem
-import com.example.akhleshkumar.homedoot.models.SubCategoryResponse
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
@@ -64,9 +58,9 @@ class ProductListAdapter (val context: Context, private val items: List<ProductD
 //        holder.tvRating.text = item.reviews.get(0).count.toString()
         holder.tvPrice.text = "₹ "+item.items.get(0).mrp_price
         holder.tvOffer.text= "₹ "+item.items.get(0).offer_price
+        val include = Html.fromHtml(item.included, Html.FROM_HTML_MODE_LEGACY)
 
-
-        holder.tvDescription.text = Html.fromHtml(item.included, Html.FROM_HTML_MODE_LEGACY).subSequence(0,80).toString()
+        holder.tvDescription.text = if (include.toString().length<=80) {include} else {include.substring(0,80)}
         holder.tvOption.text=item.items.size.toString()+" options"
         Picasso.get().load(path+"/${item.id}/"+item.main_image).into(holder.ivThumbnail)
         holder.btnAdd.setOnClickListener {

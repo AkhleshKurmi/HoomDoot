@@ -124,6 +124,9 @@ class CartActivity : AppCompatActivity() {
             rvDate.adapter= DateSlotAdapter(generateDateList(), object : OnDateSelectListener {
                 override fun onDateSelected(date: Date) {
                     updateTimeAdapter(date)
+                    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    val mainDate = dateFormat.format(date)
+                    this@CartActivity.date = mainDate
                 }
             })
             rvTime.layoutManager = GridLayoutManager(this@CartActivity,3)
@@ -286,9 +289,6 @@ class CartActivity : AppCompatActivity() {
     fun generateDateList(): List<Date> {
         val dates = mutableListOf<Date>()
         val calendar = Calendar.getInstance()
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-
-        // Add dates for the next 7 days
         for (i in 0..6) {
             dates.add(calendar.time)
             calendar.add(Calendar.DAY_OF_YEAR, 1)

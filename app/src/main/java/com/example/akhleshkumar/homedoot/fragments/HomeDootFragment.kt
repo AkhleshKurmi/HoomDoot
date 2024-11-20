@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.akhleshkumar.homedoot.activities.CartActivity
-import com.example.akhleshkumar.homedoot.activities.ProductDescriptionActivity
 import com.example.akhleshkumar.homedoot.activities.ProductListActivity
 import com.example.akhleshkumar.homedoot.adapters.BottomMenuViewAdapter
 import com.example.akhleshkumar.homedoot.adapters.CategoryAdapter
@@ -30,8 +29,6 @@ import com.example.akhleshkumar.homedoot.api.RetrofitClient
 import com.example.akhleshkumar.homedoot.interfaces.OnCategoryClickListener
 import com.example.akhleshkumar.homedoot.models.ApiResponseCategory
 import com.example.akhleshkumar.homedoot.models.CartListResponse
-import com.example.akhleshkumar.homedoot.models.ProductDetailsResponse
-import com.example.akhleshkumar.homedoot.models.ProductListResponse
 import com.example.akhleshkumar.homedoot.models.ProductResponse
 import com.example.akhleshkumar.homedoot.models.SubCategoryResponse
 import com.example.akhleshkumar.homedoot.models.homeresponse.HomePageResponse
