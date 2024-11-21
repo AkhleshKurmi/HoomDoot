@@ -55,6 +55,7 @@ class LoginWithOtpActivity : AppCompatActivity() {
                    if (response.body()!!.success){
                        if (response.body()!!.data.verificationCode.toString().isNotEmpty()){
                            otpLoginDialog(email,mobile,name,response.body()!!.data.verificationCode)
+                           Toast.makeText(this@LoginWithOtpActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
                        }  
                    }
                }
@@ -115,6 +116,8 @@ class LoginWithOtpActivity : AppCompatActivity() {
                                 editorSP.putString("mobile",response.body()!!.data.mobile)
                                 editorSP.putString("name",data.name)
                                 editorSP.commit()
+                                Toast.makeText(this@LoginWithOtpActivity, response.body()!!.message, Toast.LENGTH_SHORT)
+                                    .show()
                                 startActivity(
                                     Intent(this@LoginWithOtpActivity, MainActivity::class.java).putExtra("fragment","h"))
                                 finish()

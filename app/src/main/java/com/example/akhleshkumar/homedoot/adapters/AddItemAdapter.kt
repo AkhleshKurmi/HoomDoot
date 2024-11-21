@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -45,9 +46,7 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
             if (quantity >= 0) {
                 quantity += 1
                 totalPrice = (quantity * acItem.offerPrice).toFloat()
-                holder.btnMinus.visibility = View.VISIBLE
-                holder.btnPlus.visibility = View.VISIBLE
-                holder.totalItem.visibility = View.VISIBLE
+                holder.llButtonAddCart.visibility = View.VISIBLE
                 holder.totalItem.text = quantity.toString()
                 holder.totalPrice.text = totalPrice.toString()
                 addItemToList(acItem.productId, acItem.id, quantity, acItem.offerPrice)
@@ -60,20 +59,15 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
 
                 holder.totalItem.text = quantity.toString()
                 holder.totalPrice.text = totalPrice.toString()
-                holder.btnMinus.visibility = View.VISIBLE
-                holder.btnPlus.visibility = View.VISIBLE
-                holder.totalItem.visibility = View.VISIBLE
+                holder.llButtonAddCart.visibility = View.VISIBLE
                 addItemToList(acItem.productId, acItem.id, quantity, acItem.offerPrice)
-            }else{
+            }
+            if (quantity==0){
                 holder.btnAdd.visibility = View.VISIBLE
-                holder.btnMinus.visibility = View.INVISIBLE
-                holder.btnPlus.visibility = View.INVISIBLE
-                holder.totalItem.visibility = View.INVISIBLE
+                holder.llButtonAddCart.visibility = View.INVISIBLE
             }
         }
-        holder.btnMinus.visibility = View.INVISIBLE
-        holder.btnPlus.visibility = View.INVISIBLE
-        holder.totalItem.visibility = View.INVISIBLE
+        holder.llButtonAddCart.visibility = View.INVISIBLE
         holder.btnAdd.visibility = View.VISIBLE
 
 
@@ -85,9 +79,7 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
                 addItemToList(acItem.productId, acItem.id, quantity, acItem.offerPrice)
 
                 if (quantity>=0) {
-                    holder.btnMinus.visibility = View.VISIBLE
-                    holder.btnPlus.visibility = View.VISIBLE
-                    holder.totalItem.visibility = View.VISIBLE
+                    holder.llButtonAddCart.visibility = View.VISIBLE
                     holder.btnAdd.visibility = View.INVISIBLE
                     holder.totalItem.text = quantity.toString()
                     holder.totalPrice.text= totalPrice.toString()
@@ -95,9 +87,7 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
 
 
                 }else{
-                    holder.btnMinus.visibility = View.INVISIBLE
-                    holder.btnPlus.visibility = View.INVISIBLE
-                    holder.totalItem.visibility = View.INVISIBLE
+                    holder.llButtonAddCart.visibility = View.INVISIBLE
                     holder.btnAdd.visibility = View.VISIBLE
                     holder.totalItem.text = quantity.toString()
                     holder.totalPrice.text = totalPrice.toString()
@@ -164,6 +154,7 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
         val priceDiscount = itemView.findViewById<TextView>(R.id.tvDiscountedPrice)
         val totalPrice = itemView.findViewById<TextView>(R.id.tvTotalPrice)
         val totalItem = itemView.findViewById<TextView>(R.id.tvQuantity)
+        val llButtonAddCart  =  itemView.findViewById<LinearLayout>(R.id.ll_add_cart)
 
     }
 
