@@ -63,7 +63,7 @@ class LoginWithOtpActivity : AppCompatActivity() {
                    if (response.body()!!.success){
                        if (response.body()!!.data.verificationCode.toString().isNotEmpty()){
                            otpLoginDialog(email,mobile,name,response.body()!!.data.verificationCode)
-                           Toast.makeText(this@LoginWithOtpActivity, response.body()!!.message, Toast.LENGTH_SHORT).show()
+                           Toast.makeText(this@LoginWithOtpActivity, "Otp send email or mobile", Toast.LENGTH_SHORT).show()
                        }  
                    }
                }
