@@ -126,8 +126,7 @@ class AddItemAdapter ( val context: Context,private val acList: List<ProductItem
 
     fun showBottomCart(){
 
-            val bottomSheetView =
-                LayoutInflater.from(context).inflate(R.layout.bottom_view_cart, null)
+            val bottomSheetView = LayoutInflater.from(context).inflate(R.layout.bottom_view_cart, null)
             val tvCartPrice = bottomSheetView.findViewById<TextView>(R.id.tv_cart_price)
             val btnViewCart = bottomSheetView.findViewById<Button>(R.id.btn_view_cart)
             bottomSheetDialog.setContentView(bottomSheetView)

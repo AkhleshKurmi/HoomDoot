@@ -1,6 +1,7 @@
 package com.example.akhleshkumar.homedoot.activities
 
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -23,12 +24,17 @@ class LoginWithOtpActivity : AppCompatActivity() {
     lateinit var binding: ActivityLoginWithOtpBinding
     lateinit var sharedPreferences: SharedPreferences
     lateinit var editorSP : SharedPreferences.Editor
+    lateinit var progressDialog: ProgressDialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginWithOtpBinding.inflate(layoutInflater)
         setContentView(binding.root)
         sharedPreferences = getSharedPreferences("HomeDoot", MODE_PRIVATE)
         editorSP = sharedPreferences.edit()
+        progressDialog = ProgressDialog(this).apply {
+            setMessage("Loading...")
+            setCancelable(false)
+        }
         binding.loginButton.setOnClickListener {
            if (validation()){
                sendOtp(binding.userEmailInput.text.toString(),binding.userMobileInput.text.toString(),
@@ -46,12 +52,14 @@ class LoginWithOtpActivity : AppCompatActivity() {
     }
 
     private fun sendOtp(email: String, mobile: String, name: String) {
+        progressDialog.show()
         RetrofitClient.instance.registerUserOtp(2,name,mobile,email,true).enqueue(object : Callback<LoginWithOtpRes>{
             override fun onResponse(
                 call: Call<LoginWithOtpRes>,
                 response: Response<LoginWithOtpRes>
             ) {
                if (response.isSuccessful){
+                   progressDialog.dismiss()
                    if (response.body()!!.success){
                        if (response.body()!!.data.verificationCode.toString().isNotEmpty()){
                            otpLoginDialog(email,mobile,name,response.body()!!.data.verificationCode)
@@ -62,6 +70,7 @@ class LoginWithOtpActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<LoginWithOtpRes>, t: Throwable) {
+                progressDialog.dismiss()
                 Toast.makeText(this@LoginWithOtpActivity, t.message, Toast.LENGTH_SHORT).show()
             }
         })
@@ -86,6 +95,7 @@ class LoginWithOtpActivity : AppCompatActivity() {
     }
 
     fun otpLoginDialog(email: String, mobile: String, name: String, verificationCode:Int){
+
         val dialog = Dialog(this@LoginWithOtpActivity)
         dialog.setContentView(R.layout.dialog_otp)
         val window = dialog.window
@@ -102,12 +112,14 @@ class LoginWithOtpActivity : AppCompatActivity() {
                 Toast.makeText(this@LoginWithOtpActivity, "Enter full otp", Toast.LENGTH_SHORT).show()
             }
             else{
+                progressDialog.show()
                 RetrofitClient.instance.registerUser(2,name,mobile,email,true, verificationCode, registerOtp = etOtp.text.toString().toInt()).enqueue(object : Callback<RegisterWithOtpLoginRes>{
                     override fun onResponse(
                         call: Call<RegisterWithOtpLoginRes>,
                         response: Response<RegisterWithOtpLoginRes>
                     ) {
                         if (response.isSuccessful){
+                            progressDialog.show()
                             if (response.body()!!.success){
                                 val data = response.body()!!.data
                                 editorSP.putInt("userId",data.id)
@@ -125,7 +137,7 @@ class LoginWithOtpActivity : AppCompatActivity() {
                         }
                     }
                     override fun onFailure(call: Call<RegisterWithOtpLoginRes>, t: Throwable) {
-
+                      progressDialog.dismiss()
                         Toast.makeText(this@LoginWithOtpActivity, "Something went wrong", Toast.LENGTH_SHORT).show()
                         dialog.dismiss()
                     }
