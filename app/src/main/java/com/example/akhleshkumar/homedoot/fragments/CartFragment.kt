@@ -32,6 +32,7 @@ import com.example.akhleshkumar.homedoot.interfaces.OnTimeSelectListener
 import com.example.akhleshkumar.homedoot.models.Cart
 import com.example.akhleshkumar.homedoot.models.CartItems
 import com.example.akhleshkumar.homedoot.models.CartListResponse
+import com.example.akhleshkumar.homedoot.models.CouponData
 import com.example.akhleshkumar.homedoot.models.CouponResponse
 import com.example.akhleshkumar.homedoot.models.OrderCheckoutRequest
 import com.example.akhleshkumar.homedoot.models.OrderCheckoutRes
@@ -133,17 +134,23 @@ class CartFragment : Fragment() {
             override fun onResponse(call: Call<CouponResponse>, response: Response<CouponResponse>) {
                 if (response.isSuccessful){
                     if (response.body()!!.success){
-                        discountPerc = response.body()!!.data.discount
+                        val data = response.body()!!.data as CouponData
+                        discountPerc = data.discount
                         totalAmount()
                         cartAdapter.clearList()
                         vendorList.clear()
                         cartItemList.clear()
                         itemList()
+                        Toast.makeText(requireContext(), "Coupon code applied", Toast.LENGTH_SHORT).show()
+                    }
+                    else{
+                        Toast.makeText(requireContext(), response.body()!!.message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
 
             override fun onFailure(call: Call<CouponResponse>, t: Throwable) {
+                Toast.makeText(requireContext(), "failed", Toast.LENGTH_SHORT).show()
 
             }
 

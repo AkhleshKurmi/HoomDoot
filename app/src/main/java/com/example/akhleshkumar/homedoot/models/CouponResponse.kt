@@ -3,7 +3,7 @@ package com.example.akhleshkumar.homedoot.models
 data class CouponResponse(
     val success: Boolean,
     val message: String,
-    val data: CouponData
+    val data:Any
 )
 
 data class CouponData(
