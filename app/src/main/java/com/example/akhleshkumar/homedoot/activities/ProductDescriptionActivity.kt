@@ -117,7 +117,7 @@ class ProductDescriptionActivity : AppCompatActivity() {
                             tab.text = when (position) {
                                 0 -> "Include"
                                 1 -> "Exclude"
-                                2 -> "Other"
+                                2 -> "Provided by customer"
                                 else -> null
                             }
                         }.attach()

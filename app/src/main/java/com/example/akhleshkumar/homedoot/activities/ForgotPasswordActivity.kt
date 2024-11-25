@@ -9,6 +9,7 @@ import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -83,6 +84,12 @@ class ForgotPasswordActivity : AppCompatActivity() {
         val etOtp = dialog.findViewById<PinView>(R.id.pinview)
 
         val btnValidate= dialog.findViewById<Button>(R.id.btnSubmitOtp)
+        val cross = dialog.findViewById<ImageView>(R.id.otpFinish)
+
+        cross.setOnClickListener {
+            dialog.dismiss()
+        }
+
         btnValidate.setOnClickListener {
             if(etOtp.text.toString().isEmpty()){
                 Toast.makeText(this@ForgotPasswordActivity, "Enter full otp", Toast.LENGTH_SHORT).show()

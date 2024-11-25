@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.chaos.view.PinView
@@ -105,6 +106,12 @@ class LoginWithOtpActivity : AppCompatActivity() {
         )
         val etOtp = dialog.findViewById<PinView>(R.id.pinview)
         val btnValidate= dialog.findViewById<Button>(R.id.btnSubmitOtp)
+
+        val cross = dialog.findViewById<ImageView>(R.id.otpFinish)
+
+        cross.setOnClickListener {
+            dialog.dismiss()
+        }
 
         dialog.setCancelable(false)
         btnValidate.setOnClickListener {
