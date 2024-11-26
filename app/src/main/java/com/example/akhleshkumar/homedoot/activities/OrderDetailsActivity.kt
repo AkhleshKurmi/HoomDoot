@@ -33,6 +33,8 @@ import java.util.Locale
 class OrderDetailsActivity : AppCompatActivity() {
     lateinit var cancelOrderButton: Button
     lateinit var tvOrderStatus :TextView
+    var itemId =""
+   var  productId = ""
     lateinit var tvRateUs :TextView
     lateinit var timeSlotAdapter : TimeSlotAdapter
     lateinit var filteredTimesList :MutableList<TimeDataModel> // Mutable list for dynamic filtering
@@ -52,6 +54,8 @@ class OrderDetailsActivity : AppCompatActivity() {
             val productPrice = intent.getIntExtra("PRODUCT_PRICE", 0)
             val orderDetails = intent.getStringExtra("ORDER_DETAILS")
             val orderId = intent.getStringExtra("ORDER_ID")
+            productId= intent.getStringExtra("productId").toString()
+            itemId = intent.getStringExtra("itemId").toString()
             orderStatus = intent.getStringExtra("OrderStatus")
             val sharedPreferences = getSharedPreferences("HomeDoot", MODE_PRIVATE)
             val mobile = sharedPreferences.getString("mobile", "")!!
@@ -68,7 +72,11 @@ class OrderDetailsActivity : AppCompatActivity() {
             tvRateUs = findViewById(R.id.tvRate)
 
             tvRateUs.setOnClickListener {
-                startActivity(Intent(this,AcitivityRating::class.java))
+                startActivity(Intent(this,AcitivityRating::class.java)
+                    .putExtra("orderId", orderId)
+                    .putExtra("productId", productId)
+                    .putExtra("itemId", itemId))
+
             }
             // Set data in views
             productNameTextView.text = productName
