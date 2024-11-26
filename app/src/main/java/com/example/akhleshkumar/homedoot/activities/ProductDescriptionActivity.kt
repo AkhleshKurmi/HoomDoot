@@ -134,6 +134,7 @@ class ProductDescriptionActivity : AppCompatActivity() {
                             response.body()!!.data.productItems,
                             response.body()!!.data.product.home,userId.toInt())
                         rvAddItem.adapter = addItemAdapter
+
 //                        viewPagerAdapter = ViewPagerAdapter(
 //                            this@ProductDescriptionActivity,
 //                            response.body()!!.data.product.included,
@@ -160,6 +161,23 @@ class ProductDescriptionActivity : AppCompatActivity() {
 //                                else -> null
 //                            }
 //                        }.attach()
+
+//                        viewPagerAdapter = ViewPagerAdapter(
+//                            this@ProductDescriptionActivity,
+//                            response.body()!!.data.product.included,
+//                            response.body()!!.data.product.excluded,
+//                            response.body()!!.data.product.otherDetails1 + "\n" + response.body()!!.data.product.otherDetails2
+//                        )
+//                        bottomContainer.adapter = viewPagerAdapter
+//                        TabLayoutMediator(tabLayoutBottom, bottomContainer) { tab, position ->
+//                            tab.text = when (position) {
+//                                0 -> "Include"
+//                                1 -> "Exclude"
+//                                2 -> "Provided by customer"
+//                                else -> null
+//                            }
+//                        }.attach()
+
                     } else {
                         Toast.makeText(
                             this@ProductDescriptionActivity,
