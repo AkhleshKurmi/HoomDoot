@@ -49,6 +49,8 @@ class AcitivityRating : AppCompatActivity() {
             ) {
                 if (response.isSuccessful){
                     Toast.makeText(this@AcitivityRating, response.body()?.message, Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(this@AcitivityRating, "response code = " + response.code(), Toast.LENGTH_SHORT).show()
                 }
             }
 
