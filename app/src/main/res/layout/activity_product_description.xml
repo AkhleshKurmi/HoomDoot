@@ -108,15 +108,203 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:id="@+id/rv_items_toAdd"/>
-            <com.google.android.material.tabs.TabLayout
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:id="@+id/tabLayoutBottom"/>
-            <androidx.viewpager2.widget.ViewPager2
+<!--            <com.google.android.material.tabs.TabLayout-->
+<!--                android:layout_width="300dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:id="@+id/tabLayoutBottom"/>-->
+<!--            <androidx.viewpager2.widget.ViewPager2-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:id="@+id/view_pager_include"/>-->
+
+            <!-- Accordion Item 1 -->
+            <LinearLayout
+                android:id="@+id/accordion_item_include"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/view_pager_include"/>
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_margin="5dp"
+
+                >
+
+                <!-- Header -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:orientation="horizontal"
+                    android:backgroundTint="#B41F3F"
+                    android:id="@+id/ll_include"
+                    android:background="@drawable/bg_accordion_item"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="center"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:id="@+id/accordion_include"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:gravity="center_vertical"
+                        android:layout_margin="2dp"
+                        android:padding="2dp"
+                        android:background="#B41F3F"
+                        android:text="Include"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black" />
+
+                    <ImageView
+                        android:id="@+id/icon_toggle_include"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_arrow_down"
+                        android:contentDescription="Toggle" />
+                </LinearLayout>
+
+                <!-- Content -->
+                <LinearLayout
+                    android:id="@+id/content_include_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:paddingTop="8dp">
+
+                    <TextView
+                        android:id="@+id/content_include"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="This is the content for accordion item 1."
+                        android:textSize="14sp"
+                        android:textColor="@android:color/darker_gray" />
+                </LinearLayout>
+            </LinearLayout>
+            <!-- Accordion Item 1 -->
+            <LinearLayout
+                android:backgroundTint="#B41F3F"
+                android:id="@+id/accordion_item_exclude"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_margin="5dp">
+
+                <!-- Header -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:orientation="horizontal"
+                    android:id="@+id/ll_exclude"
+                    android:backgroundTint="#B41F3F"
+                    android:background="@drawable/bg_accordion_item"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="center"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Exclude"
+                        android:layout_gravity="center"
+                        android:gravity="center_vertical"
+                        android:layout_margin="2dp"
+                        android:padding="2dp"
+                        android:background="#B41F3F"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black" />
+
+                    <ImageView
+                        android:id="@+id/icon_toggle_exclude"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_arrow_down"
+                        android:contentDescription="Toggle" />
+                </LinearLayout>
+
+                <!-- Content -->
+                <LinearLayout
+                    android:id="@+id/content_exclude_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:paddingTop="8dp">
+
+                    <TextView
+                        android:id="@+id/content_exclude"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="This is the content for accordion item 1."
+                        android:textSize="14sp"
+                        android:textColor="@android:color/darker_gray" />
+                </LinearLayout>
+            </LinearLayout>
+            <!-- Accordion Item 1 -->
+            <LinearLayout
+                android:id="@+id/accordion_item_other"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_margin="5dp">
+
+                <!-- Header -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:orientation="horizontal"
+                    android:backgroundTint="#B41F3F"
+                    android:id="@+id/ll_other"
+                    android:background="@drawable/bg_accordion_item"
+                    android:layout_gravity="center"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:gravity="center_vertical"
+                        android:layout_margin="2dp"
+                        android:padding="2dp"
+                        android:background="#B41F3F"
+                        android:text="Other"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black" />
+
+                    <ImageView
+                        android:id="@+id/icon_toggle_other"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_arrow_down"
+                        android:contentDescription="Toggle" />
+                </LinearLayout>
+
+                <!-- Content -->
+                <LinearLayout
+                    android:id="@+id/content_other_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:paddingTop="8dp">
+
+                    <TextView
+                        android:id="@+id/content_other"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="This is the content for accordion item 1."
+                        android:textSize="14sp"
+                        android:textColor="@android:color/darker_gray" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

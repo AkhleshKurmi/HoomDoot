@@ -3,6 +3,8 @@ package com.example.akhleshkumar.homedoot.activities
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
+import android.text.Html
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -15,6 +17,7 @@ import com.example.akhleshkumar.homedoot.SliderAdapter
 import com.example.akhleshkumar.homedoot.adapters.AddItemAdapter
 import com.example.akhleshkumar.homedoot.adapters.ViewPagerAdapter
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
+import com.example.akhleshkumar.homedoot.databinding.ActivityProductDescriptionBinding
 import com.example.akhleshkumar.homedoot.models.ImageItem
 import com.example.akhleshkumar.homedoot.models.ProductDetailsResponse
 import com.google.android.material.tabs.TabLayout
@@ -35,21 +38,24 @@ class ProductDescriptionActivity : AppCompatActivity() {
     lateinit var tabLayoutBottom: TabLayout
     lateinit var sharedPreferences: SharedPreferences
     lateinit var editorSP : SharedPreferences.Editor
+    lateinit var  binding: ActivityProductDescriptionBinding
     var id = ""
     var userId = ""
+    var include = ""
+    var exclude = ""
+    var other = ""
     val sliderHandler: Handler = Handler()
     lateinit var viewPagerAdapter: ViewPagerAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_product_description)
+        binding = ActivityProductDescriptionBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         sharedPreferences = getSharedPreferences("HomeDoot", MODE_PRIVATE)
         editorSP = sharedPreferences.edit()
         title = findViewById(R.id.title)
         rvAddItem = findViewById(R.id.rv_items_toAdd)
         viewPager = findViewById(R.id.viewPager)
         tableLayout = findViewById(R.id.tabLayout)
-        bottomContainer = findViewById(R.id.view_pager_include)
-        tabLayoutBottom = findViewById(R.id.tabLayoutBottom)
          id = intent.getIntExtra("id", 1).toString()
         userId = sharedPreferences.getInt("userId",0).toString()
         val subChildCatName = intent.getStringExtra("catName")
@@ -60,6 +66,28 @@ class ProductDescriptionActivity : AppCompatActivity() {
             finish()
         }
         getProductDetail(id.toInt())
+
+        binding.llInclude.setOnClickListener {
+            if (binding.contentIncludeLl.visibility == View.VISIBLE){
+                showInclude(false)
+            }else{
+                showInclude(true)
+            }
+        }
+        binding.llExclude.setOnClickListener {
+            if (binding.contentExcludeLl.visibility == View.VISIBLE){
+                showExclude(false)
+            }else{
+                showExclude(true)
+            }
+        }
+        binding.llOther.setOnClickListener {
+            if (binding.contentOtherLl.visibility == View.VISIBLE){
+                showOther(false)
+            }else{
+                showOther(true)
+            }
+        }
 
     }
 
@@ -106,21 +134,32 @@ class ProductDescriptionActivity : AppCompatActivity() {
                             response.body()!!.data.productItems,
                             response.body()!!.data.product.home,userId.toInt())
                         rvAddItem.adapter = addItemAdapter
-                        viewPagerAdapter = ViewPagerAdapter(
-                            this@ProductDescriptionActivity,
-                            response.body()!!.data.product.included,
-                            response.body()!!.data.product.excluded,
-                            response.body()!!.data.product.otherDetails1 + "\n" + response.body()!!.data.product.otherDetails2
-                        )
-                        bottomContainer.adapter = viewPagerAdapter
-                        TabLayoutMediator(tabLayoutBottom, bottomContainer) { tab, position ->
-                            tab.text = when (position) {
-                                0 -> "Include"
-                                1 -> "Exclude"
-                                2 -> "Other"
-                                else -> null
-                            }
-                        }.attach()
+//                        viewPagerAdapter = ViewPagerAdapter(
+//                            this@ProductDescriptionActivity,
+//                            response.body()!!.data.product.included,
+//                            response.body()!!.data.product.excluded,
+//                            response.body()!!.data.product.otherDetails1 + "\n" + response.body()!!.data.product.otherDetails2
+//                        )
+
+                        exclude = Html.fromHtml(response.body()!!.data.product.excluded, Html.FROM_HTML_MODE_LEGACY)
+                            .toString()
+                        include = Html.fromHtml(response.body()!!.data.product.included, Html.FROM_HTML_MODE_LEGACY)
+                            .toString()
+                        other = Html.fromHtml(response.body()!!.data.product.otherDetails1+"</br>"+response.body()!!.data.product.otherDetails2, Html.FROM_HTML_MODE_LEGACY)
+                            .toString()
+                        binding.contentInclude.text = include
+                        binding.contentExclude.text= exclude
+                        binding.contentOther.text=  other
+
+//                        bottomContainer.adapter = viewPagerAdapter
+//                        TabLayoutMediator(tabLayoutBottom, bottomContainer) { tab, position ->
+//                            tab.text = when (position) {
+//                                0 -> "Include"
+//                                1 -> "Exclude"
+//                                2 -> "Other"
+//                                else -> null
+//                            }
+//                        }.attach()
                     } else {
                         Toast.makeText(
                             this@ProductDescriptionActivity,
@@ -149,6 +188,52 @@ class ProductDescriptionActivity : AppCompatActivity() {
 
 
     }
+   fun showInclude(shown:Boolean){
+       if (shown){
+           binding.iconToggleOther.setImageResource(R.drawable.ic_arrow_down)
+           binding.iconToggleExclude.setImageResource(R.drawable.ic_arrow_down)
+           binding.contentIncludeLl.visibility = View.VISIBLE
+           binding.iconToggleInclude.setImageResource(R.drawable.arrow_up)
+       binding.contentExcludeLl.visibility = View.GONE
+       binding.contentOtherLl.visibility = View.GONE
+   }
+       else {
+           binding.iconToggleInclude.setImageResource(R.drawable.ic_arrow_down)
+           binding.contentIncludeLl.visibility = View.GONE
 
+       }
+   }
+
+    fun showExclude(shown:Boolean){
+        if (shown) {
+            binding.iconToggleOther.setImageResource(R.drawable.ic_arrow_down)
+            binding.iconToggleInclude.setImageResource(R.drawable.ic_arrow_down)
+            binding.iconToggleExclude.setImageResource(R.drawable.arrow_up)
+            binding.contentExcludeLl.visibility = View.VISIBLE
+            binding.contentIncludeLl.visibility = View.GONE
+            binding.contentOtherLl.visibility = View.GONE
+        }
+        else {
+            binding.iconToggleExclude.setImageResource(R.drawable.ic_arrow_down)
+            binding.contentExcludeLl.visibility = View.GONE
+
+        }
+    }
+
+    fun showOther(shown:Boolean) {
+        if (shown){
+            binding.iconToggleInclude.setImageResource(R.drawable.ic_arrow_down)
+            binding.iconToggleOther.setImageResource(R.drawable.arrow_up)
+            binding.iconToggleExclude.setImageResource(R.drawable.ic_arrow_down)
+            binding.contentOtherLl.visibility = View.VISIBLE
+        binding.contentExcludeLl.visibility = View.GONE
+        binding.contentIncludeLl.visibility = View.GONE
+    }
+        else {
+            binding.iconToggleOther.setImageResource(R.drawable.ic_arrow_down)
+            binding.contentOtherLl.visibility = View.GONE
+
+        }
+    }
 
 }
