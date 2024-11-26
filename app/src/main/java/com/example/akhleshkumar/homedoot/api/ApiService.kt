@@ -150,7 +150,7 @@ interface ApiService {
 
     @POST("add_review")
     fun addReview(@Query("user_id")userId:String,
-                  @Query("order_id") orderId:String,
+                  @Query("order_no") orderId:String,
                   @Query("item_id") itemId:String,
                   @Query("product_id") productId:String,
                   @Query("review") review:String,
