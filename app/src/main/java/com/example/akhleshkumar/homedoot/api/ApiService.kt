@@ -148,12 +148,15 @@ interface ApiService {
     fun updateSchedule(@Query("order_no") orderNo:String, @Query("type") type:String = "date", @Query("time")
     time:String, @Query("date") date:String) : Call<RemoveCartItemRes>
 
-    fun productReview(){
+    @POST("add_review")
+    fun addReview(@Query("user_id")userId:String,
+                  @Query("order_id") orderId:String,
+                  @Query("item_id") itemId:String,
+                  @Query("product_id") productId:String,
+                  @Query("review") review:String,
+                  @Query("rating") rating:Int,
+                  @Query("type") type:String):Call<CancelOrderResponse>
 
-    }
 
-    fun vendorReview(){
-
-    }
 
 }

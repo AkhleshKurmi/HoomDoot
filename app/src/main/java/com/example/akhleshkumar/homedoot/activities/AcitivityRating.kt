@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.akhleshkumar.homedoot.R
+import com.example.akhleshkumar.homedoot.api.RetrofitClient
 import com.example.akhleshkumar.homedoot.databinding.ActivityAcitivityRatingBinding
 
 class AcitivityRating : AppCompatActivity() {
@@ -16,6 +17,14 @@ class AcitivityRating : AppCompatActivity() {
         setContentView(binding.root)
 
 
+
+    }
+    fun addReviewToProduct(){
+
+
+
+    }
+    fun addReviewToVendor(){
 
     }
 }
