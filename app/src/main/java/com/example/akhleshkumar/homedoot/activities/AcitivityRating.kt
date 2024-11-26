@@ -25,7 +25,7 @@ class AcitivityRating : AppCompatActivity() {
         binding = ActivityAcitivityRatingBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val sharedPreferences = getSharedPreferences("HomeDoot", MODE_PRIVATE)
-        userId = sharedPreferences.getString("userId", "").toString()
+        userId = sharedPreferences.getInt("userId", 0).toString()
         productId= intent.getStringExtra("productId").toString()
         itemId = intent.getStringExtra("itemId").toString()
         orderId = intent.getStringExtra("orderId").toString()
