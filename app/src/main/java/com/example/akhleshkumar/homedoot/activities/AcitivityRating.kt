@@ -29,12 +29,13 @@ class AcitivityRating : AppCompatActivity() {
         productId= intent.getStringExtra("productId").toString()
         itemId = intent.getStringExtra("itemId").toString()
         orderId = intent.getStringExtra("orderId").toString()
+        val vendorId = intent.getStringExtra("vendorId").toString()
         binding.btnSubmitProductReview.setOnClickListener {
             addReview(userId,productId,itemId,orderId,binding.etReview.text.toString(),binding.ratingBarProduct.rating.toInt(),"user")
         }
 
         binding.btnSubmitVendorReview.setOnClickListener {
-            addReview(userId,productId,itemId,orderId,binding.etVendorReview.text.toString(),binding.ratingBarVendor.rating.toInt(),"vendor")
+            addReviewVendor(userId,vendorId,orderId,binding.etVendorReview.text.toString(),binding.ratingBarVendor.rating.toInt(),"vendor")
 
         }
 
@@ -43,6 +44,29 @@ class AcitivityRating : AppCompatActivity() {
     fun addReview(userId: String, productId : String, itemId :String, orderId:String, review:String, rating:Int,type:String){
 
         RetrofitClient.instance.addReview(userId, orderId, itemId, productId, review, rating, type).enqueue(object : Callback<CancelOrderResponse>{
+            override fun onResponse(
+                call: Call<CancelOrderResponse>,
+                response: Response<CancelOrderResponse>
+            ) {
+                if (response.isSuccessful){
+                    Toast.makeText(this@AcitivityRating, response.body()?.message, Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(this@AcitivityRating, "response code = " + response.code(), Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<CancelOrderResponse>, t: Throwable) {
+                Toast.makeText(this@AcitivityRating, "something went wrong", Toast.LENGTH_SHORT).show()
+            }
+
+        })
+
+
+    }
+
+    fun addReviewVendor(userId: String,  vendorId :String, orderId:String, review:String, rating:Int,type:String){
+
+        RetrofitClient.instance.addReviewVendor(userId, orderId, vendorId, review, rating,type).enqueue(object : Callback<CancelOrderResponse>{
             override fun onResponse(
                 call: Call<CancelOrderResponse>,
                 response: Response<CancelOrderResponse>
