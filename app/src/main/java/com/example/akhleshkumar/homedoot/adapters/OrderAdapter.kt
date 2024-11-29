@@ -50,6 +50,7 @@ class OrderAdapter(val context: Context, private val orders: List<DataX>, val pa
                 .putExtra("PRODUCT_NAME",order.items[0].products.service_name)
                 .putExtra("OrderStatus",order.order_status)
                 .putExtra("PRODUCT_IMAGE_URL", imageUrl)
+                .putExtra("vendorId",order.assigned_order?.vendor_ids)
                 .putExtra("productId", order.items[0].product_id.toString())
                 .putExtra("itemId", order.items[0].item_id.toString()))
         }

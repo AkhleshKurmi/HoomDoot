@@ -57,6 +57,7 @@ class OrderDetailsActivity : AppCompatActivity() {
             productId= intent.getStringExtra("productId").toString()
             itemId = intent.getStringExtra("itemId").toString()
             orderStatus = intent.getStringExtra("OrderStatus")
+            val vendorId = intent.getIntExtra("vendorId",0)
             val sharedPreferences = getSharedPreferences("HomeDoot", MODE_PRIVATE)
             val mobile = sharedPreferences.getString("mobile", "")!!
 
@@ -75,7 +76,8 @@ class OrderDetailsActivity : AppCompatActivity() {
                 startActivity(Intent(this,AcitivityRating::class.java)
                     .putExtra("orderId", orderId)
                     .putExtra("productId", productId)
-                    .putExtra("itemId", itemId))
+                    .putExtra("itemId", itemId)
+                    .putExtra("vendorId",vendorId))
 
             }
             // Set data in views

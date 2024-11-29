@@ -3,7 +3,7 @@ package com.example.akhleshkumar.homedoot.models
 data class DataX(
     val address: String,
     val alloted_times: AllotedTimes,
-    val assigned_order: Any,
+    val assigned_order: IsAssignedOrder? = null,
     val cash_accepted: Int,
     val coupan_code: String,
     val created_at: String,
@@ -28,4 +28,12 @@ data class DataX(
     val sub_total: Int,
     val updated_at: String,
     val user_id: Int
+)
+
+data class IsAssignedOrder( val id: Int,
+                          val order_no:String,
+                          val order_id:Int,
+                          val vendor_ids:Int,
+                          val vendor_accepted:Int,
+                          val vendor:String?= null
 )

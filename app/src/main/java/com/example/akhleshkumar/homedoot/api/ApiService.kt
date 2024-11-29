@@ -154,13 +154,14 @@ interface ApiService {
                   @Query("item_id") itemId:String,
                   @Query("product_id") productId:String,
                   @Query("message") message:String,
+                  @Query("review")review:String,
                   @Query("rating") rating:Int,
                   @Query("type") type:String):Call<CancelOrderResponse>
 
     @POST("add_review")
     fun addReviewVendor(@Query("user_id")userId:String,
                   @Query("order_no") orderId:String,
-                  @Query("vendor_id") vendorId:String,
+                  @Query("vendor_id") vendorId:Int,
                   @Query("review") review:String,
                   @Query("rating") rating:Int,
                   @Query("type") type:String):Call<CancelOrderResponse>

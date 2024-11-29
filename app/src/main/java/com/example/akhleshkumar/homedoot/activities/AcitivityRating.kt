@@ -29,21 +29,31 @@ class AcitivityRating : AppCompatActivity() {
         productId= intent.getStringExtra("productId").toString()
         itemId = intent.getStringExtra("itemId").toString()
         orderId = intent.getStringExtra("orderId").toString()
-        val vendorId = intent.getStringExtra("vendorId").toString()
+        val vendorId = intent.getIntExtra("vendorId",0)
         binding.btnSubmitProductReview.setOnClickListener {
             addReview(userId,productId,itemId,orderId,binding.etReview.text.toString(),binding.ratingBarProduct.rating.toInt(),"user")
         }
 
         binding.btnSubmitVendorReview.setOnClickListener {
-            addReviewVendor(userId,vendorId,orderId,binding.etVendorReview.text.toString(),binding.ratingBarVendor.rating.toInt(),"vendor")
-
+            if (vendorId > 0) {
+                addReviewVendor(
+                    userId,
+                    vendorId,
+                    orderId,
+                    binding.etVendorReview.text.toString(),
+                    binding.ratingBarVendor.rating.toInt(),
+                    "vendor"
+                )
+            } else {
+                Toast.makeText(this, "Order not assigned to vendor", Toast.LENGTH_SHORT).show()
+            }
         }
 
 
     }
     fun addReview(userId: String, productId : String, itemId :String, orderId:String, review:String, rating:Int,type:String){
 
-        RetrofitClient.instance.addReview(userId, orderId, itemId, productId, review, rating, type).enqueue(object : Callback<CancelOrderResponse>{
+        RetrofitClient.instance.addReview(userId, orderId, itemId, productId, review,"hello", rating, type).enqueue(object : Callback<CancelOrderResponse>{
             override fun onResponse(
                 call: Call<CancelOrderResponse>,
                 response: Response<CancelOrderResponse>
@@ -64,7 +74,7 @@ class AcitivityRating : AppCompatActivity() {
 
     }
 
-    fun addReviewVendor(userId: String,  vendorId :String, orderId:String, review:String, rating:Int,type:String){
+    fun addReviewVendor(userId: String,  vendorId :Int, orderId:String, review:String, rating:Int,type:String){
 
         RetrofitClient.instance.addReviewVendor(userId, orderId, vendorId, review, rating,type).enqueue(object : Callback<CancelOrderResponse>{
             override fun onResponse(
