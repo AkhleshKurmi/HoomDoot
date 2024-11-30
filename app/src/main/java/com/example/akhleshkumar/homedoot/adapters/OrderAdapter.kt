@@ -38,8 +38,8 @@ class OrderAdapter(val context: Context, private val orders: List<DataX>, val pa
     @SuppressLint("SuspiciousIndentation")
     override fun onBindViewHolder(holder: OrderViewHolder, position: Int) {
         val order = orders[position]
-        holder.ProductName.text = order.items[0].products.service_name
-        holder.orderStatus.text= order.order_status
+        holder.ProductName.text = order.items[0].products.service_name?:" "
+        holder.orderStatus.text= order.order_status?:" "
         holder.grandTotal.text= "₹ ${order.sub_total.toString()}"
         holder.tvServiceDate.text = order.service_date
         holder.tvServiceTime.text = order.service_time
@@ -49,6 +49,7 @@ class OrderAdapter(val context: Context, private val orders: List<DataX>, val pa
             val intent = Intent(context,OrderDetailsActivity::class.java)
 
                 intent.putExtra("ORDER", order)
+            intent.putExtra("position",position)
                 intent.putExtra("PRODUCT_IMAGE_URL", imageUrl)
             context.startActivity(intent)
         }

@@ -2,8 +2,9 @@ package com.example.akhleshkumar.homedoot.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import java.io.Serializable
 
-@Parcelize
+
 data class ProductsData(
     val assign_to_menu: String,
     val category_id: Int,
@@ -28,4 +29,4 @@ data class ProductsData(
     val sub_category_id: String,
     val updated_at: String,
     val url: String
-) : Parcelable
+) : Serializable

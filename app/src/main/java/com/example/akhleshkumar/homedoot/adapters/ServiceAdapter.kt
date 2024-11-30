@@ -34,6 +34,7 @@ class ServiceAdapter (private val context: Context, private val categoryList: Li
         holder.itemView.setOnClickListener {
             context.startActivity(Intent(context,ProductDescriptionActivity::class.java).putExtra("id",category.id)
                 .putExtra("userId",userId)
+                .putExtra("reviews", category.reviews)
                 .putExtra("catName",category.service_name))
 //            Toast.makeText(context, "item clicked", Toast.LENGTH_SHORT).show()
         }

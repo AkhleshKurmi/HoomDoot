@@ -1,5 +1,7 @@
 package com.example.akhleshkumar.homedoot.models.homeresponse
 
+import com.example.akhleshkumar.homedoot.models.Feedback
+
 data class X4(
     val assign_to_menu: String,
     val category_id: Int,
@@ -18,7 +20,7 @@ data class X4(
     val other2: String,
     val price: Int,
     val product_token: String,
-    val reviews: List<Any>,
+    val reviews: ArrayList<Feedback>,
     val service_name: String,
     val status: String,
     val sub_category_id: String,

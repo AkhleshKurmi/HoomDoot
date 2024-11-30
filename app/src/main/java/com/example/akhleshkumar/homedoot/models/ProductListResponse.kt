@@ -1,5 +1,6 @@
 package com.example.akhleshkumar.homedoot.models
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class ProductListResponse(
     val success: Boolean,
@@ -35,7 +36,7 @@ data class ProductData(
     val status: String,
     val created_at: String,
     val updated_at: String,
-    val reviews: List<Feedback>?=null,
+    val reviews: ArrayList<Feedback>?=null,
     val items : ArrayList<Items>
 )
 
@@ -58,4 +59,4 @@ data class Feedback(
     @SerializedName("is_approved") val isApproved: Int,
     @SerializedName("created_at") val createdAt: String,
     @SerializedName("updated_at") val updatedAt: String
-)
+) :Serializable

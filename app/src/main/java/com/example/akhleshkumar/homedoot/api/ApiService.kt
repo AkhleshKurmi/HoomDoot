@@ -89,7 +89,7 @@ interface ApiService {
     fun checkSlots(@Query("category_id") categoryId:Int): Call<CheckSlotsResponse>
 
     @POST("customer-orders")
-    fun customerOrders(@Query("user_id")userId:Int) : Call<UserOrderResponse>
+    fun customerOrders(@Query("user_id")userId:Int,@Query("page")pageNo :Int) : Call<UserOrderResponse>
     @POST("login")
     fun userLogin(@Query("username") userName:String, @Query("guard") userType:String, @Query("login_password") password:String) :Call<LoginUserResponse>
 

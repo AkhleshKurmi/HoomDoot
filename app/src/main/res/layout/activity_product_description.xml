@@ -272,6 +272,10 @@
                         android:textColor="@android:color/darker_gray" />
                 </LinearLayout>
             </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rvReviews"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

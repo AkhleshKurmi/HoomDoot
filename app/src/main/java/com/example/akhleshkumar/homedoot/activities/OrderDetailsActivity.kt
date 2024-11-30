@@ -2,11 +2,15 @@ package com.example.akhleshkumar.homedoot.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.os.Parcelable
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.GridLayoutManager
@@ -16,6 +20,7 @@ import com.example.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.adapters.DateSlotAdapter
 import com.example.akhleshkumar.homedoot.adapters.TimeSlotAdapter
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
+import com.example.akhleshkumar.homedoot.databinding.ActivityOrderDetailsBinding
 import com.example.akhleshkumar.homedoot.interfaces.OnDateSelectListener
 import com.example.akhleshkumar.homedoot.interfaces.OnTimeSelectListener
 import com.example.akhleshkumar.homedoot.models.CancelOrderResponse
@@ -35,6 +40,7 @@ import java.util.Locale
 class OrderDetailsActivity : AppCompatActivity() {
     lateinit var cancelOrderButton: Button
     lateinit var tvOrderStatus :TextView
+    lateinit var binding: ActivityOrderDetailsBinding
     var itemId =""
    var  productId = ""
     lateinit var tvRateUs :TextView
@@ -44,31 +50,61 @@ class OrderDetailsActivity : AppCompatActivity() {
     var orderStatus : String? = null
     var time= ""
     var date = ""
-    var vendorId = ""
+    var vendorId =0
     var productName = ""
     var productPrice = ""
     var orderDetails = ""
     private val listTime : ArrayList<TimeDataModel> =  ArrayList()
+        @RequiresApi(Build.VERSION_CODES.TIRAMISU)
         @SuppressLint("InflateParams", "SetTextI18n", "MissingInflatedId")
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
-            setContentView(R.layout.activity_order_details)
+            binding = ActivityOrderDetailsBinding.inflate(layoutInflater)
+            setContentView(binding.root)
 
             // Get the data passed from the previous activity
-            val product = intent.getParcelableExtra<DataX>("ORDER")
+            val product = intent.getSerializableExtra("ORDER") as? DataX
+            val position = intent.getIntExtra("position",0)
             product?.let {
-                orderId = it.order_no.toString()
-                productId = it.items[0].product_id.toString()
-                vendorId = it.assigned_order?.vendor?.id.toString()
-                productName = it.items[0].products.service_name.toString()
-                productPrice = it.items[0].total_amount.toString()
-                orderDetails = it.items[0].products.description.toString()
+                orderId = it.order_no.toString()?:" "
+                productId = it.items[0].product_id.toString()?:" "
+                productName = it.items[0].products.service_name.toString()?:" "
+                productPrice = it.items[0].total_amount.toString()?:" "
+                orderDetails = it.items[0].products.description.toString()?:" "
 
             }
+            if (product?.assigned_order!=null) {
+                if (product?.assigned_order.vendor.id ?: 0 > 0) {
+                    vendorId = product?.assigned_order.vendor.id ?: 0
+                }
+            }
+              if (product!!.status_from_vendor.toString()== "completed"){
+                  binding.cardVenderReview.visibility= View.VISIBLE
+                  binding.tvRate.visibility = View.VISIBLE
+              }else{
+                  binding.cardVenderReview.visibility= View.INVISIBLE
+                  binding.tvRate.visibility = View.INVISIBLE
+
+
+              }
             val productImageUrl = intent.getStringExtra("PRODUCT_IMAGE_URL")
             val sharedPreferences = getSharedPreferences("HomeDoot", MODE_PRIVATE)
             val mobile = sharedPreferences.getString("mobile", "")!!
+            val intentRating = Intent(this,VenderReviewActivity::class.java)
+            if (product?.assigned_order!=null) {
+                if (product?.assigned_order?.vendor?.email?.isNotEmpty()!!) {
+                    binding.tvVenderName.text = product!!.assigned_order.vendor.name
+                    binding.venderEmail.text = product.assigned_order.vendor.email
+                    binding.tvVenderNumber.text = product.assigned_order.vendor.mobile
+                    binding.venderTotalRating.text = product.customer_review.size.toString()
+                    intentRating.putExtra("vendorName", product!!.assigned_order.vendor.name)
+                    intentRating.putExtra("vendorEmail", product.assigned_order.vendor.email)
+                    intentRating.putExtra("vendorNumber", product.assigned_order.vendor.mobile)
 
+
+
+                }
+            }
             // Find views
             val productNameTextView: TextView = findViewById(R.id.productNameDetail)
             val productImageView: ImageView = findViewById(R.id.productImageDetail)
@@ -77,8 +113,15 @@ class OrderDetailsActivity : AppCompatActivity() {
             val updateTimeDate = findViewById<Button>(R.id.btnUpdateTimeDate)
             val cardVenderRating = findViewById<CardView>(R.id.cardVenderReview)
             cardVenderRating.setOnClickListener {
-                startActivity(Intent(this@OrderDetailsActivity, VenderReviewActivity::class.java))
+                if ((product?.customer_review?.size ?: 0) > 0) {
 
+
+                            intentRating.putExtra("reviews", product?.customer_review)
+
+                    startActivity(intentRating)
+                } else {
+                    Toast.makeText(this, "No review", Toast.LENGTH_SHORT).show()
+                }
             }
             tvOrderStatus = findViewById(R.id.orderStatus)
 
@@ -170,6 +213,8 @@ class OrderDetailsActivity : AppCompatActivity() {
 
                 bottomSheetDialog.show()
             }
+
+
         }
     fun updateTimeAdapter(date:Date){
         val today = Calendar.getInstance()

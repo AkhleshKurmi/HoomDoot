@@ -15,9 +15,11 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.SliderAdapter
 import com.example.akhleshkumar.homedoot.adapters.AddItemAdapter
+import com.example.akhleshkumar.homedoot.adapters.ProductReviewsAdapter
 import com.example.akhleshkumar.homedoot.adapters.ViewPagerAdapter
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
 import com.example.akhleshkumar.homedoot.databinding.ActivityProductDescriptionBinding
+import com.example.akhleshkumar.homedoot.models.Feedback
 import com.example.akhleshkumar.homedoot.models.ImageItem
 import com.example.akhleshkumar.homedoot.models.ProductDetailsResponse
 import com.google.android.material.tabs.TabLayout
@@ -56,6 +58,9 @@ class ProductDescriptionActivity : AppCompatActivity() {
         rvAddItem = findViewById(R.id.rv_items_toAdd)
         viewPager = findViewById(R.id.viewPager)
         tableLayout = findViewById(R.id.tabLayout)
+        binding.rvReviews.layoutManager = LinearLayoutManager(this)
+        val reviewsList = intent.getSerializableExtra("reviews") as? ArrayList<Feedback>
+
          id = intent.getIntExtra("id", 1).toString()
         userId = sharedPreferences.getInt("userId",0).toString()
         val subChildCatName = intent.getStringExtra("catName")
@@ -88,6 +93,8 @@ class ProductDescriptionActivity : AppCompatActivity() {
                 showOther(true)
             }
         }
+
+        showReviews(reviewsList!!)
 
     }
 
@@ -252,6 +259,10 @@ class ProductDescriptionActivity : AppCompatActivity() {
             binding.contentOtherLl.visibility = View.GONE
 
         }
+    }
+
+    fun showReviews(listReview:ArrayList<Feedback>){
+        binding.rvReviews.adapter = ProductReviewsAdapter(listReview)
     }
 
 }

@@ -53,7 +53,7 @@
                     android:id="@+id/tvRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4.5"
+                    android:text="0.0"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="14sp"
                     android:layout_marginStart="4dp" />
@@ -61,11 +61,11 @@
                 <TextView
                     android:id="@+id/tvReviewsNum"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="(10k"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:text="(0"
                     android:textColor="#7E1390"
-                    android:textSize="14sp"
-                    android:layout_marginStart="8dp" />
+                    android:textSize="14sp" />
                 <TextView
                     android:id="@+id/tvReviews"
                     android:layout_width="wrap_content"

@@ -84,6 +84,7 @@ class ProductListAdapter (val context: Context, private val items: List<ProductD
             val intent = Intent(context, ProductDescriptionActivity::class.java)
             intent.putExtra("id",item.id)
             intent.putExtra("userId",userId)
+                .putExtra("reviews",item.reviews)
             intent.putExtra("catName", item.service_name)
             context.startActivity(intent)
         }
