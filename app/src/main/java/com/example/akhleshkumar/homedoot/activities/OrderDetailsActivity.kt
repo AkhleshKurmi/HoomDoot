@@ -18,6 +18,7 @@ import com.example.akhleshkumar.homedoot.api.RetrofitClient
 import com.example.akhleshkumar.homedoot.interfaces.OnDateSelectListener
 import com.example.akhleshkumar.homedoot.interfaces.OnTimeSelectListener
 import com.example.akhleshkumar.homedoot.models.CancelOrderResponse
+import com.example.akhleshkumar.homedoot.models.DataX
 import com.example.akhleshkumar.homedoot.models.RemoveCartItemRes
 import com.example.akhleshkumar.homedoot.models.TimeDataModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -38,10 +39,14 @@ class OrderDetailsActivity : AppCompatActivity() {
     lateinit var tvRateUs :TextView
     lateinit var timeSlotAdapter : TimeSlotAdapter
     lateinit var filteredTimesList :MutableList<TimeDataModel> // Mutable list for dynamic filtering
-
+    var orderId = ""
     var orderStatus : String? = null
     var time= ""
     var date = ""
+    var vendorId = ""
+    var productName = ""
+    var productPrice = ""
+    var orderDetails = ""
     private val listTime : ArrayList<TimeDataModel> =  ArrayList()
         @SuppressLint("InflateParams", "SetTextI18n", "MissingInflatedId")
         override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,15 +54,17 @@ class OrderDetailsActivity : AppCompatActivity() {
             setContentView(R.layout.activity_order_details)
 
             // Get the data passed from the previous activity
-            val productName = intent.getStringExtra("PRODUCT_NAME")
+            val product = intent.getParcelableExtra<DataX>("ORDER")
+            product?.let {
+                orderId = it.order_no.toString()
+                productId = it.items[0].product_id.toString()
+                vendorId = it.assigned_order?.vendor?.id.toString()
+                productName = it.items[0].products.service_name.toString()
+                productPrice = it.items[0].total_amount.toString()
+                orderDetails = it.items[0].products.description.toString()
+
+            }
             val productImageUrl = intent.getStringExtra("PRODUCT_IMAGE_URL")
-            val productPrice = intent.getIntExtra("PRODUCT_PRICE", 0)
-            val orderDetails = intent.getStringExtra("ORDER_DETAILS")
-            val orderId = intent.getStringExtra("ORDER_ID")
-            productId= intent.getStringExtra("productId").toString()
-            itemId = intent.getStringExtra("itemId").toString()
-            orderStatus = intent.getStringExtra("OrderStatus")
-            val vendorId = intent.getIntExtra("vendorId",0)
             val sharedPreferences = getSharedPreferences("HomeDoot", MODE_PRIVATE)
             val mobile = sharedPreferences.getString("mobile", "")!!
 
@@ -82,6 +89,7 @@ class OrderDetailsActivity : AppCompatActivity() {
             }
             // Set data in views
             productNameTextView.text = productName
+
             productPriceTextView.text = "₹ $productPrice"
             detailsTextView.text = orderDetails
 

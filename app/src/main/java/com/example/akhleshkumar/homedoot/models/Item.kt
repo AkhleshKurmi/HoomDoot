@@ -1,5 +1,9 @@
 package com.example.akhleshkumar.homedoot.models
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Item(
     val created_at: String,
     val id: Int,
@@ -12,4 +16,4 @@ data class Item(
     val quantity: Int,
     val total_amount: Int,
     val updated_at: String
-)
+) :Parcelable

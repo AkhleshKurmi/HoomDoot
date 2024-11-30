@@ -1,5 +1,6 @@
 package com.example.akhleshkumar.homedoot.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -34,6 +35,7 @@ class OrderAdapter(val context: Context, private val orders: List<DataX>, val pa
         return OrderViewHolder(view)
     }
 
+    @SuppressLint("SuspiciousIndentation")
     override fun onBindViewHolder(holder: OrderViewHolder, position: Int) {
         val order = orders[position]
         holder.ProductName.text = order.items[0].products.service_name
@@ -44,15 +46,11 @@ class OrderAdapter(val context: Context, private val orders: List<DataX>, val pa
         val imageUrl = "$path/${order.items[0].product_id}/${order.items[0].products.main_image}"
         Picasso.get().load(imageUrl).into(holder.ivProduct)
         holder.itemView.setOnClickListener {
-            context.startActivity(Intent(context,OrderDetailsActivity::class.java).putExtra("ORDER_ID", order.order_no)
-                .putExtra("ORDER_DETAILS",order.items[0].products.description )
-                .putExtra("PRODUCT_PRICE", order.items[0].total_amount)
-                .putExtra("PRODUCT_NAME",order.items[0].products.service_name)
-                .putExtra("OrderStatus",order.order_status)
-                .putExtra("PRODUCT_IMAGE_URL", imageUrl)
-                .putExtra("vendorId",order.assigned_order?.vendor_ids)
-                .putExtra("productId", order.items[0].product_id.toString())
-                .putExtra("itemId", order.items[0].item_id.toString()))
+            val intent = Intent(context,OrderDetailsActivity::class.java)
+
+                intent.putExtra("ORDER", order)
+                intent.putExtra("PRODUCT_IMAGE_URL", imageUrl)
+            context.startActivity(intent)
         }
     }
 
