@@ -86,7 +86,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="reviews)"
-                    android:textColor="@android:color/darker_gray"
+                    android:textColor="#5425A9"
+
                     android:textSize="14sp"
                     android:layout_marginStart="8dp" />
             </LinearLayout>

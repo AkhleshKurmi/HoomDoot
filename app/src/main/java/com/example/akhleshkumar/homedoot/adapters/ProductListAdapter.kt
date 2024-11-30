@@ -1,5 +1,6 @@
 package com.example.akhleshkumar.homedoot.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Paint
@@ -32,7 +33,7 @@ class ProductListAdapter (val context: Context, private val items: List<ProductD
        // val tvWarranty: TextView = itemView.findViewById(R.id.tvWarranty)
         val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
         val tvRating: TextView = itemView.findViewById(R.id.tvRating)
-        val tvReviews: TextView = itemView.findViewById(R.id.tvReviews)
+        val tvReviews: TextView = itemView.findViewById(R.id.tvReviewsNum)
         val tvPrice: TextView = itemView.findViewById(R.id.tvPrice)
         //  val tvTime: TextView = itemView.findViewById(R.id.tvTime)
         val tvOffer: TextView = itemView.findViewById(R.id.tvOffer)
@@ -48,16 +49,32 @@ class ProductListAdapter (val context: Context, private val items: List<ProductD
         return ServiceViewHolder(view)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ServiceViewHolder, position: Int) {
         val item = items[position]
 
         holder.tvPrice.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+        if (item.reviews!!.size>0) {
 
+            val reviews = if (item.reviews.size >= 1000) {
+                (item.reviews.size / 1000).toString() + "k"
+            } else {
+                item.reviews.size.toString()
+            }
 
+            var rating = 0
+
+            for (rates in item.reviews) {
+                rating += rates.rate
+            }
+            val rate = rating / item.reviews.size
+
+            holder.tvRating.text = rate.toString()
+            holder.tvReviews.text = "("+reviews
+        }
         holder.tvTitle.text = item.service_name
-//        holder.tvRating.text = item.reviews.get(0).count.toString()
-        holder.tvPrice.text = "₹ "+item.items.get(0).mrp_price
-        holder.tvOffer.text= "₹ "+item.items.get(0).offer_price
+        holder.tvPrice.text = "₹ "+ item.items[0].mrp_price
+        holder.tvOffer.text= "₹ "+ item.items[0].offer_price
         val include = Html.fromHtml(item.included, Html.FROM_HTML_MODE_LEGACY)
 
         holder.tvDescription.text = if (include.toString().length<=80) {include} else {include.substring(0,80)}
