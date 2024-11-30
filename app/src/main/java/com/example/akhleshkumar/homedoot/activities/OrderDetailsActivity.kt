@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -74,7 +75,13 @@ class OrderDetailsActivity : AppCompatActivity() {
             val productPriceTextView: TextView = findViewById(R.id.productPriceDetail)
             val detailsTextView: TextView = findViewById(R.id.orderDetailsTextView)
             val updateTimeDate = findViewById<Button>(R.id.btnUpdateTimeDate)
+            val cardVenderRating = findViewById<CardView>(R.id.cardVenderReview)
+            cardVenderRating.setOnClickListener {
+                startActivity(Intent(this@OrderDetailsActivity, VenderReviewActivity::class.java))
+
+            }
             tvOrderStatus = findViewById(R.id.orderStatus)
+
             tvOrderStatus.text = orderStatus
             cancelOrderButton = findViewById(R.id.cancelOrderButtonDetail)
             tvRateUs = findViewById(R.id.tvRate)
