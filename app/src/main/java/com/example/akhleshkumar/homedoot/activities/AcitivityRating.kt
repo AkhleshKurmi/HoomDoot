@@ -26,12 +26,14 @@ class AcitivityRating : AppCompatActivity() {
         setContentView(binding.root)
         val sharedPreferences = getSharedPreferences("HomeDoot", MODE_PRIVATE)
         userId = sharedPreferences.getInt("userId", 0).toString()
+        val name = sharedPreferences.getString("name"," ").toString()
+        val email = sharedPreferences.getString("userName","").toString()
         productId= intent.getStringExtra("productId").toString()
         itemId = intent.getStringExtra("itemId").toString()
         orderId = intent.getStringExtra("orderId").toString()
         val vendorId = intent.getIntExtra("vendorId",0)
         binding.btnSubmitProductReview.setOnClickListener {
-            addReview(userId,productId,itemId,orderId,binding.etReview.text.toString(),binding.ratingBar.rating.toInt(),"user")
+            addReview(userId,name,email,productId,itemId,orderId,binding.etReview.text.toString(),binding.ratingBar.rating.toInt(),"user")
         }
 
         binding.btnSubmitVendorReview.setOnClickListener {
@@ -51,9 +53,9 @@ class AcitivityRating : AppCompatActivity() {
 
 
     }
-    fun addReview(userId: String, productId : String, itemId :String, orderId:String, review:String, rating:Int,type:String){
+    fun addReview(userId: String,name:String,email:String, productId : String, itemId :String, orderId:String, review:String, rating:Int,type:String){
 
-        RetrofitClient.instance.addReview(userId, orderId, itemId, productId, review,"hello", rating, type).enqueue(object : Callback<CancelOrderResponse>{
+        RetrofitClient.instance.addReview(userId,name,email, orderId, itemId, productId, review,"hello", rating, type).enqueue(object : Callback<CancelOrderResponse>{
             override fun onResponse(
                 call: Call<CancelOrderResponse>,
                 response: Response<CancelOrderResponse>

@@ -1,6 +1,7 @@
 package com.example.akhleshkumar.homedoot.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
@@ -27,6 +28,7 @@ class ProductReviewsAdapter(val reviewList : ArrayList<Feedback>) : Adapter<Prod
         holder.binding.ratingBar.rating = review.rate.toFloat()
         holder.binding.nameTextView.text = review.name
         holder.binding.emailTextView.text = review.email
+        holder.binding.emailTextView.visibility = View.VISIBLE
         holder.binding.mobileTextView.text= review.createdAt
 
     }

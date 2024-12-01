@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:textColor="#41B204"
         android:id="@+id/orderStatusVendor"
-       
+
         android:text="status Vendor"/>
 
 
@@ -84,6 +84,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Vender Name"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 android:id="@+id/tvVenderName"/>
 
             <TextView
