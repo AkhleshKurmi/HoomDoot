@@ -25,6 +25,7 @@ class OrderAdapter(val context: Context, private val orders: List<DataX>, val pa
         val ivProduct: ImageView = view.findViewById(R.id.productImage)
         val grandTotal: TextView = view.findViewById(R.id.productPrice)
         val orderStatus: TextView = view.findViewById(R.id.orderStatus)
+        val orderStatusVendor:TextView = view.findViewById(R.id.orderStatusVendor)
         val tvServiceTime : TextView = view.findViewById(R.id.serviceTime)
         val tvServiceDate: TextView = view.findViewById(R.id.serviceDate)
     }
@@ -41,6 +42,7 @@ class OrderAdapter(val context: Context, private val orders: List<DataX>, val pa
         holder.ProductName.text = order.items[0].products.service_name?:" "
         holder.orderStatus.text= order.order_status?:" "
         holder.grandTotal.text= "₹ ${order.sub_total.toString()}"
+        holder.orderStatusVendor.text = order.status_from_vendor?:" "
         holder.tvServiceDate.text = order.service_date
         holder.tvServiceTime.text = order.service_time
         val imageUrl = "$path/${order.items[0].product_id}/${order.items[0].products.main_image}"

@@ -39,13 +39,14 @@
             android:textSize="16sp" />
 
         <RatingBar
-            android:id="@+id/ratingBarProduct"
+            android:id="@+id/ratingBar"
+            android:indeterminateDrawable="@drawable/baseline_star_rate_24"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:stepSize="1.0"
-            android:max="5"
             android:numStars="5"
-            android:layout_marginVertical="8dp" />
+            android:stepSize="0.5"
+            />
+
 
         <!-- Review Input -->
         <TextView

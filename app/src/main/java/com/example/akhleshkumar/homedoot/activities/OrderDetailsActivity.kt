@@ -71,6 +71,8 @@ class OrderDetailsActivity : AppCompatActivity() {
                 productName = it.items[0].products.service_name.toString()?:" "
                 productPrice = it.items[0].total_amount.toString()?:" "
                 orderDetails = it.items[0].products.description.toString()?:" "
+                orderStatus = it.order_status
+                binding.orderStatusVendor.text = "Status from Vendor: " + it.status_from_vendor?:" "
 
             }
             if (product?.assigned_order!=null) {
@@ -93,18 +95,24 @@ class OrderDetailsActivity : AppCompatActivity() {
             val intentRating = Intent(this,VenderReviewActivity::class.java)
             if (product?.assigned_order!=null) {
                 if (product?.assigned_order?.vendor?.email?.isNotEmpty()!!) {
-                    binding.tvVenderName.text = product!!.assigned_order.vendor.name
-                    binding.venderEmail.text = product.assigned_order.vendor.email
-                    binding.tvVenderNumber.text = product.assigned_order.vendor.mobile
-                    binding.venderTotalRating.text = product.customer_review.size.toString()
+                    var rating = 0.0f
+                    for (rate in product.customer_review){
+                        rating+=rate.rating
+                    }
+                    binding.cancelOrderButtonDetail.visibility = View.GONE
+                    binding.btnUpdateTimeDate.visibility = View.GONE
+                    rating /= product.customer_review.size
+                    binding.tvVenderName.text = "Vendor Name: "+product!!.assigned_order.vendor.name
+                    binding.venderEmail.text = "Vendor email: "+product.assigned_order.vendor.email
+                    binding.tvVenderNumber.text = "Vendor Mobile: "+product.assigned_order.vendor.mobile
+                    binding.tvRating.text = rating.toString()
+                    binding.venderTotalRating.text = "("+product.customer_review.size.toString()+" reviews)"
                     intentRating.putExtra("vendorName", product!!.assigned_order.vendor.name)
                     intentRating.putExtra("vendorEmail", product.assigned_order.vendor.email)
                     intentRating.putExtra("vendorNumber", product.assigned_order.vendor.mobile)
-
-
-
                 }
             }
+
             // Find views
             val productNameTextView: TextView = findViewById(R.id.productNameDetail)
             val productImageView: ImageView = findViewById(R.id.productImageDetail)
@@ -125,7 +133,7 @@ class OrderDetailsActivity : AppCompatActivity() {
             }
             tvOrderStatus = findViewById(R.id.orderStatus)
 
-            tvOrderStatus.text = orderStatus
+            tvOrderStatus.text = "Order Status: "+orderStatus
             cancelOrderButton = findViewById(R.id.cancelOrderButtonDetail)
             tvRateUs = findViewById(R.id.tvRate)
 
@@ -291,7 +299,7 @@ class OrderDetailsActivity : AppCompatActivity() {
                               cancelOrderButton.text = "Cancelled"
 
                               orderStatus = "cancelled"
-                              tvOrderStatus.text = orderStatus
+                              tvOrderStatus.text = "Order status: "+orderStatus
                               Toast.makeText(this@OrderDetailsActivity, response.body()!!.message, Toast.LENGTH_SHORT)
                                   .show()
                           }else

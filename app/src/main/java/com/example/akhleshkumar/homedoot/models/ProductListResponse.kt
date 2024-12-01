@@ -48,7 +48,7 @@ data class Items(val mrp_price: Int, val offer_price: Int)
 
 data class Feedback(
     val id: Int,
-    val rate: Int,
+    val rate: Float,
     @SerializedName("order_no") val orderNo: String,
     @SerializedName("p_id") val pId: Int,
     @SerializedName("item_id") val itemId: Int,

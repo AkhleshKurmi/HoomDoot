@@ -28,11 +28,22 @@
         android:textSize="16sp"
         android:paddingTop="4dp"
         android:text="Price" />
+
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/orderStatus"
+        android:textColor="#EA0303"
         android:text="status"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#41B204"
+        android:id="@+id/orderStatusVendor"
+       
+        android:text="status Vendor"/>
+
+
 
     <TextView
         android:id="@+id/orderDetailsTextView"
@@ -86,12 +97,30 @@
                 android:layout_height="wrap_content"
                 android:text="Mobile number"
                 android:id="@+id/tvVenderNumber"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="16dp"
+                android:src="@drawable/baseline_star_rate_24" />
 
+            <TextView
+                android:id="@+id/tvRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0.0"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp"
+                android:layout_marginStart="4dp" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/venderTotalRating"
+                android:layout_marginStart="10dp"
                 android:text="total rating"/>
+        </LinearLayout>
 
         </LinearLayout>
 
@@ -106,7 +135,7 @@
         android:textColor="@color/purple_500"
         android:textSize="20sp"
         android:layout_marginTop="20dp"
-        android:text="Rate us"/>
+        android:text="Rate to Service And Vendor"/>
 
 
 

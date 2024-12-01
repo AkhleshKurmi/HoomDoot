@@ -31,7 +31,7 @@ class AcitivityRating : AppCompatActivity() {
         orderId = intent.getStringExtra("orderId").toString()
         val vendorId = intent.getIntExtra("vendorId",0)
         binding.btnSubmitProductReview.setOnClickListener {
-            addReview(userId,productId,itemId,orderId,binding.etReview.text.toString(),binding.ratingBarProduct.rating.toInt(),"user")
+            addReview(userId,productId,itemId,orderId,binding.etReview.text.toString(),binding.ratingBar.rating.toInt(),"user")
         }
 
         binding.btnSubmitVendorReview.setOnClickListener {

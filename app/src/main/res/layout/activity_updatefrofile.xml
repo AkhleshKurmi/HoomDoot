@@ -99,7 +99,7 @@
         android:id="@+id/etedressName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Adress"
+        android:text="Address"
         android:textSize="18sp"
         android:textColor="#000000"
         android:background="@android:color/transparent"

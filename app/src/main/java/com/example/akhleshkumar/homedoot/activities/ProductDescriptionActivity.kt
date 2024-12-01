@@ -60,7 +60,7 @@ class ProductDescriptionActivity : AppCompatActivity() {
         tableLayout = findViewById(R.id.tabLayout)
         binding.rvReviews.layoutManager = LinearLayoutManager(this)
         val reviewsList = intent.getSerializableExtra("reviews") as? ArrayList<Feedback>
-
+        showInclude(true)
          id = intent.getIntExtra("id", 1).toString()
         userId = sharedPreferences.getInt("userId",0).toString()
         val subChildCatName = intent.getStringExtra("catName")

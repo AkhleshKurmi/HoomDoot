@@ -62,12 +62,12 @@ class ProductListAdapter (val context: Context, private val items: List<ProductD
                 item.reviews.size.toString()
             }
 
-            var rating = 0
+            var rating = 0.0f
 
             for (rates in item.reviews) {
                 rating += rates.rate
             }
-            val rate = rating / item.reviews.size
+            val rate = rating / item.reviews.size.toFloat()
 
             holder.tvRating.text = rate.toString()
             holder.tvReviews.text = "("+reviews

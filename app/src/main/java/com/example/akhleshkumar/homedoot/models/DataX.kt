@@ -50,7 +50,7 @@ data class CustomerReview(
     @SerializedName("vendor_id") val vendorId: Int=0,
     @SerializedName("order_no") val orderNumber: String="",
     @SerializedName("review") val review: String="",
-    @SerializedName("rating") val rating: Int=0,
+    @SerializedName("rating") val rating: Float=0.0f,
     @SerializedName("created_at") val createdAt: String="",
     @SerializedName("updated_at") val updatedAt: String=""
 ) : Serializable
@@ -58,7 +58,7 @@ data class CustomerReview(
 
 
 data class Vendor(
-    val id: Int=0,
+    val id: Int?=0,
     val user_token: String="",
     val wallet: Int=0,
     val name: String="",
