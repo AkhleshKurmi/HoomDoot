@@ -40,11 +40,12 @@
 
         <RatingBar
             android:id="@+id/ratingBar"
-            android:indeterminateDrawable="@drawable/baseline_star_rate_24"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:progressTint="#028F02"
             android:numStars="5"
             android:stepSize="0.5"
+
             />
 
 
@@ -75,7 +76,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:backgroundTint="#FF5722"
+            android:backgroundTint="#11A201"
             android:text="Submit Review"
             android:textColor="#FFFFFF"
             android:padding="12dp" />
@@ -112,6 +113,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:max="5"
+            android:progressTint="#028F02"
             android:stepSize="1.0"
             android:numStars="5"
             android:layout_marginVertical="8dp" />
@@ -122,6 +124,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Write a Review:"
+
             android:layout_marginTop="16dp"
             android:textSize="16sp" />
 
