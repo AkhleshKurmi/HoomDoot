@@ -28,7 +28,7 @@ class ProductReviewsAdapter(val reviewList : ArrayList<Feedback>) : Adapter<Prod
         holder.binding.ratingBar.rating = review.rate.toFloat()
         holder.binding.nameTextView.text = review.name
         holder.binding.emailTextView.text = review.email
-        holder.binding.emailTextView.visibility = View.VISIBLE
+//        holder.binding.emailTextView.visibility = View.VISIBLE
         holder.binding.mobileTextView.text= review.createdAt
 
     }

@@ -70,6 +70,25 @@ class ProductDescriptionActivity : AppCompatActivity() {
         backButton.setOnClickListener {
             finish()
         }
+
+        if (reviewsList!!.size>0) {
+
+            val reviews = if (reviewsList.size >= 1000) {
+                (reviewsList.size / 1000).toString() + "k"
+            } else {
+                reviewsList.size.toString()
+            }
+
+            var rating = 0.0f
+
+            for (rates in reviewsList) {
+                rating += rates.rate
+            }
+            val rate = rating / reviewsList.size.toFloat()
+
+            binding.tvRating.text = rate.toString()
+            binding.venderTotalRating.text = "("+reviews+" reviews)"
+        }
         getProductDetail(id.toInt())
 
         binding.llInclude.setOnClickListener {

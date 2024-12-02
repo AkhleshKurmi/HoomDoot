@@ -2,6 +2,7 @@ package com.example.akhleshkumar.homedoot.fragments
 
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +24,10 @@ class ProfileFragment : Fragment() {
     private lateinit var phoneTextView: TextView
     private lateinit var editProfileButton: Button
     private lateinit var myOrdersButton: Button
+    private lateinit var myPrivacyAndPolicy: Button
+    private lateinit var refundPolicyButton: Button
+
+
     private lateinit var logoutButton: Button
     private lateinit var profileImage: ImageView
     var userId = " "
@@ -51,6 +56,19 @@ class ProfileFragment : Fragment() {
         myOrdersButton = view.findViewById(R.id.myOrdersButton)
         logoutButton = view.findViewById(R.id.logoutButton)
         profileImage = view.findViewById(R.id.profileImage)
+        refundPolicyButton= view.findViewById(R.id.tvRefundPolicy)
+        myPrivacyAndPolicy = view.findViewById(R.id.tvPrivacyandPolicy)
+
+        refundPolicyButton.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://homedoot.com/refund-policy")))
+        }
+        myPrivacyAndPolicy.setOnClickListener {
+
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://homedoot.com/privacy-policy")))
+
+
+        }
+
 
         if (!sharedPreferences.getBoolean("isLogin",false)){
             startActivity(Intent(requireContext(),LoginActivity::class.java).putExtra("from","")
