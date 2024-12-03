@@ -3,6 +3,7 @@ package com.example.akhleshkumar.homedoot.activities
 import android.app.ProgressDialog
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -32,6 +33,8 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         etUserName = findViewById(R.id.username_input)
         etPassword = findViewById(R.id.password_input)
         tvNewUser = findViewById(R.id.not_registered_signup)

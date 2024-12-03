@@ -1,5 +1,6 @@
 package com.example.akhleshkumar.homedoot.activities
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -24,6 +25,8 @@ class AcitivityRating : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAcitivityRatingBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         val sharedPreferences = getSharedPreferences("HomeDoot", MODE_PRIVATE)
         userId = sharedPreferences.getInt("userId", 0).toString()
         val name = sharedPreferences.getString("name"," ").toString()

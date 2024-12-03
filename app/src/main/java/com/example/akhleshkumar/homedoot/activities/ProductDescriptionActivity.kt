@@ -1,6 +1,7 @@
 package com.example.akhleshkumar.homedoot.activities
 
 import android.content.SharedPreferences
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Handler
 import android.text.Html
@@ -52,6 +53,9 @@ class ProductDescriptionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityProductDescriptionBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         sharedPreferences = getSharedPreferences("HomeDoot", MODE_PRIVATE)
         editorSP = sharedPreferences.edit()
         title = findViewById(R.id.title)

@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Button
@@ -30,6 +31,9 @@ class LoginWithOtpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginWithOtpBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         sharedPreferences = getSharedPreferences("HomeDoot", MODE_PRIVATE)
         editorSP = sharedPreferences.edit()
         progressDialog = ProgressDialog(this).apply {

@@ -1,6 +1,7 @@
 package com.example.akhleshkumar.homedoot.activities
 
 import android.app.Dialog
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -36,6 +37,9 @@ class ForgotPasswordActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityForgotPasswordBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         binding.btnSendOtp.setOnClickListener {
             if (validation()){
                 RetrofitClient.instance.forgotPassword(binding.usernameInput.text.toString(), "user").enqueue(object : Callback<ForgotPasswordResponse>{

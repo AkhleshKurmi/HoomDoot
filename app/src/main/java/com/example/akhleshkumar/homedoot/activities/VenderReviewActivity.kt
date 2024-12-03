@@ -1,5 +1,6 @@
 package com.example.akhleshkumar.homedoot.activities
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,9 @@ class VenderReviewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityVenderReviewBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
 
         binding.rvVenderRating.layoutManager = LinearLayoutManager(this)
         val reviewsList = intent.getSerializableExtra("reviews") as? ArrayList<CustomerReview>

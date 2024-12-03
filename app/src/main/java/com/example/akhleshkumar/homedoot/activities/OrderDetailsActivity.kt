@@ -2,6 +2,7 @@ package com.example.akhleshkumar.homedoot.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
@@ -61,6 +62,9 @@ class OrderDetailsActivity : AppCompatActivity() {
             super.onCreate(savedInstanceState)
             binding = ActivityOrderDetailsBinding.inflate(layoutInflater)
             setContentView(binding.root)
+
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
 
             // Get the data passed from the previous activity
             val product = intent.getSerializableExtra("ORDER") as? DataX

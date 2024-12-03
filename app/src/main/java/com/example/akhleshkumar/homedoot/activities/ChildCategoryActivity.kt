@@ -1,6 +1,7 @@
 package com.example.akhleshkumar.homedoot.activities
 
 import android.app.ProgressDialog
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
@@ -30,6 +31,9 @@ class ChildCategoryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_child_category)
+
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         tvChiledSubName = findViewById(R.id.title)
         rvProductList = findViewById(R.id.recyclerViewProduct)
         rvChildSubCat = findViewById(R.id.recyclerViewChiled)
