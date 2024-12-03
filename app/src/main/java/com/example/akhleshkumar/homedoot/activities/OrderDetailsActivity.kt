@@ -55,6 +55,8 @@ class OrderDetailsActivity : AppCompatActivity() {
     var productName = ""
     var productPrice = ""
     var orderDetails = ""
+   lateinit var updateTimeDate:Button
+
     private val listTime : ArrayList<TimeDataModel> =  ArrayList()
         @RequiresApi(Build.VERSION_CODES.TIRAMISU)
         @SuppressLint("InflateParams", "SetTextI18n", "MissingInflatedId")
@@ -122,7 +124,7 @@ class OrderDetailsActivity : AppCompatActivity() {
             val productImageView: ImageView = findViewById(R.id.productImageDetail)
             val productPriceTextView: TextView = findViewById(R.id.productPriceDetail)
             val detailsTextView: TextView = findViewById(R.id.orderDetailsTextView)
-            val updateTimeDate = findViewById<Button>(R.id.btnUpdateTimeDate)
+            updateTimeDate = findViewById<Button>(R.id.btnUpdateTimeDate)
             val cardVenderRating = findViewById<CardView>(R.id.cardVenderReview)
             cardVenderRating.setOnClickListener {
                 if ((product?.customer_review?.size ?: 0) > 0) {
@@ -161,7 +163,12 @@ class OrderDetailsActivity : AppCompatActivity() {
                 .into(productImageView)
             cancelOrderButton.text = if (orderStatus == "cancelled") orderStatus else "cancel order"
             // Handle cancel order button click
+            if (orderStatus != "cancelled") {
+                updateTimeDate.visibility = View.INVISIBLE
+            }else{
+                updateTimeDate.visibility = View.VISIBLE
 
+            }
             cancelOrderButton.setOnClickListener {
                 if (orderStatus != "cancelled") {
                     cancelOrder(orderId, mobile)
@@ -300,7 +307,8 @@ class OrderDetailsActivity : AppCompatActivity() {
                       if (response.isSuccessful){
 
                           if (response.body()!!.success){
-                              cancelOrderButton.text = "Cancelled"
+                              cancelOrderButton.text = "cancelled"
+                              updateTimeDate.visibility = View.INVISIBLE
 
                               orderStatus = "cancelled"
                               tvOrderStatus.text = "Order status: "+orderStatus
