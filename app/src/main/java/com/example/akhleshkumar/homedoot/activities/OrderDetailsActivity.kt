@@ -1,6 +1,7 @@
 package com.example.akhleshkumar.homedoot.activities
 
 import android.annotation.SuppressLint
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Build
@@ -12,6 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.GridLayoutManager
@@ -57,6 +59,7 @@ class OrderDetailsActivity : AppCompatActivity() {
     var orderDetails = ""
    lateinit var updateTimeDate:Button
 
+
     private val listTime : ArrayList<TimeDataModel> =  ArrayList()
         @RequiresApi(Build.VERSION_CODES.TIRAMISU)
         @SuppressLint("InflateParams", "SetTextI18n", "MissingInflatedId")
@@ -82,8 +85,10 @@ class OrderDetailsActivity : AppCompatActivity() {
 
             }
             if (product?.assigned_order!=null) {
-                if (product?.assigned_order.vendor.id ?: 0 > 0) {
-                    vendorId = product?.assigned_order.vendor.id ?: 0
+                if (product.assigned_order.vendor != null) {
+                    if (product?.assigned_order.vendor.id ?: 0 > 0) {
+                        vendorId = product?.assigned_order.vendor.id ?: 0
+                    }
                 }
             }
               if (product!!.status_from_vendor.toString()== "completed"){
@@ -100,22 +105,28 @@ class OrderDetailsActivity : AppCompatActivity() {
             val mobile = sharedPreferences.getString("mobile", "")!!
             val intentRating = Intent(this,VenderReviewActivity::class.java)
             if (product?.assigned_order!=null) {
-                if (product?.assigned_order?.vendor?.email?.isNotEmpty()!!) {
-                    var rating = 0.0f
-                    for (rate in product.customer_review){
-                        rating+=rate.rating
+                if (product.assigned_order.vendor != null) {
+                    if (product?.assigned_order?.vendor?.email?.isNotEmpty()!!) {
+                        var rating = 0.0f
+                        for (rate in product.customer_review) {
+                            rating += rate.rating
+                        }
+                        binding.cancelOrderButtonDetail.visibility = View.GONE
+                        binding.btnUpdateTimeDate.visibility = View.GONE
+                        rating /= product.customer_review.size
+                        binding.tvVenderName.text =
+                            "Vendor Name: " + product!!.assigned_order.vendor.name
+                        binding.venderEmail.text =
+                            "Vendor email: " + product.assigned_order.vendor.email
+                        binding.tvVenderNumber.text =
+                            "Vendor Mobile: " + product.assigned_order.vendor.mobile
+                        binding.tvRating.text = rating.toString()
+                        binding.venderTotalRating.text =
+                            "(" + product.customer_review.size.toString() + " reviews)"
+                        intentRating.putExtra("vendorName", product!!.assigned_order.vendor.name)
+                        intentRating.putExtra("vendorEmail", product.assigned_order.vendor.email)
+                        intentRating.putExtra("vendorNumber", product.assigned_order.vendor.mobile)
                     }
-                    binding.cancelOrderButtonDetail.visibility = View.GONE
-                    binding.btnUpdateTimeDate.visibility = View.GONE
-                    rating /= product.customer_review.size
-                    binding.tvVenderName.text = "Vendor Name: "+product!!.assigned_order.vendor.name
-                    binding.venderEmail.text = "Vendor email: "+product.assigned_order.vendor.email
-                    binding.tvVenderNumber.text = "Vendor Mobile: "+product.assigned_order.vendor.mobile
-                    binding.tvRating.text = rating.toString()
-                    binding.venderTotalRating.text = "("+product.customer_review.size.toString()+" reviews)"
-                    intentRating.putExtra("vendorName", product!!.assigned_order.vendor.name)
-                    intentRating.putExtra("vendorEmail", product.assigned_order.vendor.email)
-                    intentRating.putExtra("vendorNumber", product.assigned_order.vendor.mobile)
                 }
             }
 
@@ -161,17 +172,42 @@ class OrderDetailsActivity : AppCompatActivity() {
             Picasso.get()
                 .load(productImageUrl)
                 .into(productImageView)
-            cancelOrderButton.text = if (orderStatus == "cancelled") orderStatus else "cancel order"
+            cancelOrderButton.text = if (orderStatus == "cancelled" || orderStatus == "completed") orderStatus else "cancel order"
             // Handle cancel order button click
-            if (orderStatus != "cancelled") {
-                updateTimeDate.visibility = View.INVISIBLE
-            }else{
+            if (orderStatus != "cancelled" || orderStatus != "completed") {
                 updateTimeDate.visibility = View.VISIBLE
+            }else{
+                updateTimeDate.visibility = View.INVISIBLE
 
             }
             cancelOrderButton.setOnClickListener {
-                if (orderStatus != "cancelled") {
-                    cancelOrder(orderId, mobile)
+                if (orderStatus != "cancelled" || orderStatus != "completed") {
+                    val alertDialog = AlertDialog.Builder(this)
+                    alertDialog.setMessage("Are you want to cancel order")
+                    alertDialog.setPositiveButton("Yes", object : DialogInterface.OnClickListener{
+                        override fun onClick(dialog: DialogInterface?, which: Int) {
+
+                            cancelOrder(orderId, mobile)
+
+
+                        }
+
+
+                    })
+
+                    alertDialog.setNeutralButton("No", object : DialogInterface.OnClickListener{
+                        override fun onClick(dialog: DialogInterface?, which: Int) {
+                            if (dialog != null) {
+                                dialog.dismiss()
+                            }
+
+
+                        }
+
+                    })
+                    alertDialog.create().show()
+                   // alertDialog.show()
+
                 }
             }
             listTime.add(TimeDataModel("09:00 am", "09"))
