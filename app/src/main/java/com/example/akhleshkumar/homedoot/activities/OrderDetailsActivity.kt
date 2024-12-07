@@ -69,8 +69,8 @@ class OrderDetailsActivity : AppCompatActivity() {
             setContentView(binding.root)
 
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-
-
+            binding.llReviews.visibility = View.INVISIBLE
+            binding.btnUpdateTimeDate.visibility = View.INVISIBLE
             // Get the data passed from the previous activity
             val product = intent.getSerializableExtra("ORDER") as? DataX
             val position = intent.getIntExtra("position",0)
@@ -88,6 +88,7 @@ class OrderDetailsActivity : AppCompatActivity() {
                 if (product.assigned_order.vendor != null) {
                     if (product?.assigned_order.vendor.id ?: 0 > 0) {
                         vendorId = product?.assigned_order.vendor.id ?: 0
+                        binding.llReviews.visibility = View.VISIBLE
                     }
                 }
             }

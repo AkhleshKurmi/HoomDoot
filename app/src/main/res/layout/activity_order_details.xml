@@ -105,11 +105,16 @@
 
 
     </androidx.cardview.widget.CardView>
-
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/ll_reviews"
+    android:orientation="vertical">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
+
         android:textSize="20dp"
         android:text="Total Rating"/>
 
@@ -141,7 +146,7 @@
             android:layout_marginStart="10dp"
             android:text="total rating"/>
     </LinearLayout>
-
+</LinearLayout>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
