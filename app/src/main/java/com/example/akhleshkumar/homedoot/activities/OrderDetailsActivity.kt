@@ -95,9 +95,13 @@ class OrderDetailsActivity : AppCompatActivity() {
               if (product!!.status_from_vendor.toString()== "completed"){
                   binding.cardVenderReview.visibility= View.VISIBLE
                   binding.tvRate.visibility = View.VISIBLE
+                  binding.llReviews.visibility = View.VISIBLE
+
+
               }else{
                   binding.cardVenderReview.visibility= View.INVISIBLE
                   binding.tvRate.visibility = View.INVISIBLE
+                  binding.llReviews.visibility = View.INVISIBLE
 
 
               }
@@ -175,7 +179,7 @@ class OrderDetailsActivity : AppCompatActivity() {
                 .into(productImageView)
             cancelOrderButton.text = if (orderStatus == "cancelled" || orderStatus == "completed") orderStatus else "cancel order"
             // Handle cancel order button click
-            if (orderStatus != "cancelled" || orderStatus != "completed") {
+            if (orderStatus != "cancelled") {
                 updateTimeDate.visibility = View.VISIBLE
             }else{
                 updateTimeDate.visibility = View.INVISIBLE
