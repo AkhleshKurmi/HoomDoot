@@ -41,6 +41,8 @@ import com.example.akhleshkumar.homedoot.models.TimeDataModel
 import com.example.akhleshkumar.homedoot.models.VendorAvailabilityRequest
 import com.example.akhleshkumar.homedoot.models.VendorAvailabilityResponse
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.razorpay.Checkout
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -61,6 +63,7 @@ class CartFragment : Fragment() {
     private var city = ""
     private var state = ""
     private var pincode = ""
+    var discountPrice = 0L
     var discountPerc = 0
     private lateinit var cartAdapter: CartAdapter
     private var vendorList = ArrayList<CartItems>()
@@ -73,6 +76,7 @@ class CartFragment : Fragment() {
     lateinit var binding : FragmentCartBinding
     var cartData = ArrayList<Cart>()
 
+    @SuppressLint("SuspiciousIndentation")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -98,6 +102,11 @@ class CartFragment : Fragment() {
             filteredTimesList = listTime.toMutableList()
 
 
+        Checkout.preload(requireContext().applicationContext)
+        val co = Checkout()
+//        co.setKeyID("rzp_test_vNW8R8FeHAqIzA")rzp_test_vNW8R8FeHAqIzA
+
+        co.setKeyID("rzp_live_HeICphb9DMsZH5")
         return binding.root
     }
 
@@ -257,11 +266,14 @@ class CartFragment : Fragment() {
     }
     fun totalAmount(){
         var amount:Long = 0
-        var discountPrice = 0L
+
         for (items in cartData){
             amount+= items.total_amount
             if (discountPerc>0){
                 discountPrice += (items.total_amount*discountPerc)/100
+            }
+            else{
+                discountPrice+= items.total_amount
             }
 
         }
@@ -438,7 +450,7 @@ class CartFragment : Fragment() {
                         proceedToCheckout()
                         bottomSheetDialog.dismiss()
                     }else{
-                        startActivity(Intent(requireContext(),PaymentMethodActivity::class.java))
+                        initPayment()
                     }
                 } else {
                     Toast.makeText(requireContext(), "please select a option", Toast.LENGTH_SHORT)
@@ -478,5 +490,42 @@ class CartFragment : Fragment() {
             }
 
         })
+    }
+
+    private fun initPayment() {
+
+        startPayment()
+    }
+
+    private fun startPayment() {
+        val activity = requireActivity()
+        val co = Checkout()
+
+        try {
+            val options = JSONObject()
+            options.put("name","HomeDoot")
+            options.put("description","Service Charges Payment")
+            //You can omit the image option to fetch the image from the dashboard
+            options.put("image","http://example.com/image/rzp.jpg")
+            options.put("theme.color", "#E91E63");
+            options.put("currency","INR");
+//            options.put("order_id", "order_DBJOWzybf0sJbb");
+            options.put("amount",discountPrice*100)//pass amount in currency subunits
+
+            val retryObj = JSONObject();
+            retryObj.put("enabled", true);
+            retryObj.put("max_count", 3);
+            options.put("retry", retryObj);
+
+            val prefill = JSONObject()
+            prefill.put("email",sharedPreferences.getString("userName","").toString())
+            prefill.put("contact",sharedPreferences.getString("mobile","").toString())
+
+            options.put("prefill",prefill)
+            co.open(activity,options)
+        }catch (e: Exception){
+            Toast.makeText(activity,"Error in payment: "+ e.message,Toast.LENGTH_LONG).show()
+            e.printStackTrace()
+        }
     }
 }

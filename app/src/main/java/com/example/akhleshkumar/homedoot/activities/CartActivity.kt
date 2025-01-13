@@ -17,11 +17,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.akhleshkumar.homedoot.R
+import com.akhleshkumar.homedoot.databinding.ActivityCartBinding
 import com.example.akhleshkumar.homedoot.adapters.CartAdapter
 import com.example.akhleshkumar.homedoot.adapters.DateSlotAdapter
 import com.example.akhleshkumar.homedoot.adapters.TimeSlotAdapter
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
-import com.akhleshkumar.homedoot.databinding.ActivityCartBinding
 import com.example.akhleshkumar.homedoot.interfaces.OnDateSelectListener
 import com.example.akhleshkumar.homedoot.interfaces.OnItemDelete
 import com.example.akhleshkumar.homedoot.interfaces.OnItenUpdateCart
@@ -38,17 +38,22 @@ import com.example.akhleshkumar.homedoot.models.TimeDataModel
 import com.example.akhleshkumar.homedoot.models.VendorAvailabilityRequest
 import com.example.akhleshkumar.homedoot.models.VendorAvailabilityResponse
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.razorpay.Checkout
+import com.razorpay.PayloadHelper
+import com.razorpay.PaymentData
+import com.razorpay.PaymentResultWithDataListener
+import okhttp3.internal.Internal.instance
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class CartActivity : AppCompatActivity() {
+
+class CartActivity<Activity> : AppCompatActivity(), PaymentResultWithDataListener {
     var id = ""
     var time= ""
     var date = ""
@@ -65,6 +70,7 @@ class CartActivity : AppCompatActivity() {
     private lateinit var checkOutBtn: Button
     lateinit var tvCouponCode:TextView
     lateinit var btnApplyCoupon:Button
+    var discountPrice = 0L
     private val listTime : ArrayList<TimeDataModel> =  ArrayList()
     var cartItemList = ArrayList<CartItems>()
     lateinit var sharedPreferences: SharedPreferences
@@ -90,7 +96,11 @@ class CartActivity : AppCompatActivity() {
             setMessage("Loading...")
             setCancelable(false)
         }
-        
+
+        Checkout.preload(applicationContext)
+        val co = Checkout()
+//        co.setKeyID("rzp_test_vNW8R8FeHAqIzA")
+        co.setKeyID("rzp_live_HeICphb9DMsZH5")
         btnApplyCoupon.setOnClickListener {
             if (tvCouponCode.text.toString().isNotEmpty()) {
              applyCoupon(tvCouponCode.text.toString())
@@ -258,11 +268,14 @@ class CartActivity : AppCompatActivity() {
 
     fun totalAmount(){
         var amount:Long = 0
-        var discountPrice = 0L
+
         for (items in cartData){
             amount+= items.total_amount
             if (discountPerc>0){
                 discountPrice += (items.total_amount*discountPerc)/100
+            }
+            else{
+                discountPrice += items.total_amount
             }
 
         }
@@ -483,7 +496,7 @@ class CartActivity : AppCompatActivity() {
                         proceedToCheckout()
                         bottomSheetDialog.dismiss()
                     }else{
-                        startActivity(Intent(this,PaymentMethodActivity::class.java))
+                       initPayment()
                     }
                 } else {
                     Toast.makeText(this@CartActivity, "please select a option", Toast.LENGTH_SHORT)
@@ -497,6 +510,45 @@ class CartActivity : AppCompatActivity() {
 
     bottomSheetDialog.show()
     }
+
+    private fun initPayment() {
+
+        startPayment()
+    }
+
+    private fun startPayment() {
+        val activity = this
+        val co = Checkout()
+
+        try {
+            val options = JSONObject()
+            options.put("name","HomeDoot")
+            options.put("description","Service Charges Payment")
+            //You can omit the image option to fetch the image from the dashboard
+            options.put("image","http://example.com/image/rzp.jpg")
+            options.put("theme.color", "#E91E63");
+            options.put("currency","INR");
+//            options.put("order_id", "order_DBJOWzybf0sJbb");
+            options.put("amount",discountPrice*100)//pass amount in currency subunits
+
+            val retryObj = JSONObject();
+            retryObj.put("enabled", true);
+            retryObj.put("max_count", 3);
+            options.put("retry", retryObj);
+
+            val prefill = JSONObject()
+            prefill.put("email",sharedPreferences.getString("userName","").toString())
+            prefill.put("contact",sharedPreferences.getString("mobile","").toString())
+
+            options.put("prefill",prefill)
+            co.open(activity,options)
+        }catch (e: Exception){
+            Toast.makeText(activity,"Error in payment: "+ e.message,Toast.LENGTH_LONG).show()
+            e.printStackTrace()
+        }
+    }
+
+
 
     fun proceedToCheckout(){
        val orderRequest = OrderCheckoutRequest(id.toInt(),email,mobile,address,12,date,time,"Test",11,
@@ -527,5 +579,13 @@ class CartActivity : AppCompatActivity() {
 
        })
    }
+
+    override fun onPaymentSuccess(p0: String?, p1: PaymentData?) {
+        proceedToCheckout()
+    }
+
+    override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
+        Toast.makeText(this, p1.toString(), Toast.LENGTH_SHORT).show()
+    }
 
 }

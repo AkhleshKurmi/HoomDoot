@@ -73,7 +73,14 @@
             android:exported="false" />
         <activity
             android:name="com.example.akhleshkumar.homedoot.activities.CartActivity"
-            android:exported="false" />
+            android:exported="false"
+            >
+
+        </activity>
+
+    <meta-data android:name="com.razorpay.ApiKey"
+        android:value="rzp_live_HeICphb9DMsZH5"/>
+
     </application>
 
 </manifest>
