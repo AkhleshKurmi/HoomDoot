@@ -18,9 +18,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.chaos.view.PinView
-import com.example.akhleshkumar.homedoot.R
+import com.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
-import com.example.akhleshkumar.homedoot.databinding.ActivityForgotPasswordBinding
+import com.akhleshkumar.homedoot.databinding.ActivityForgotPasswordBinding
 import com.example.akhleshkumar.homedoot.models.user.ForgotPasswordResponse
 import com.example.akhleshkumar.homedoot.models.user.RegistrationRequest
 import com.example.akhleshkumar.homedoot.models.user.RegistrationResponse

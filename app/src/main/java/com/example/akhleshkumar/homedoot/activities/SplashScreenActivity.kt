@@ -8,7 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.akhleshkumar.homedoot.R
+import com.akhleshkumar.homedoot.R
 
 class SplashScreenActivity : AppCompatActivity() {
     lateinit var sharedPreferences: SharedPreferences

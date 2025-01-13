@@ -17,14 +17,14 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.akhleshkumar.homedoot.R
+import com.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.activities.MainActivity
 import com.example.akhleshkumar.homedoot.activities.PaymentMethodActivity
 import com.example.akhleshkumar.homedoot.adapters.CartAdapter
 import com.example.akhleshkumar.homedoot.adapters.DateSlotAdapter
 import com.example.akhleshkumar.homedoot.adapters.TimeSlotAdapter
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
-import com.example.akhleshkumar.homedoot.databinding.FragmentCartBinding
+import com.akhleshkumar.homedoot.databinding.FragmentCartBinding
 import com.example.akhleshkumar.homedoot.interfaces.OnDateSelectListener
 import com.example.akhleshkumar.homedoot.interfaces.OnItemDelete
 import com.example.akhleshkumar.homedoot.interfaces.OnItenUpdateCart

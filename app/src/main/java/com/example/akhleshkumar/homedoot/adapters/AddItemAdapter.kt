@@ -12,7 +12,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.example.akhleshkumar.homedoot.R
+import com.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.activities.CartActivity
 import com.example.akhleshkumar.homedoot.activities.LoginActivity
 import com.example.akhleshkumar.homedoot.api.RetrofitClient

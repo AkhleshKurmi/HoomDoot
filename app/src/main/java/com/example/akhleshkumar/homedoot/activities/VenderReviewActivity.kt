@@ -7,9 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.akhleshkumar.homedoot.R
+import com.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.adapters.VendorReviewsAdapter
-import com.example.akhleshkumar.homedoot.databinding.ActivityVenderReviewBinding
+import com.akhleshkumar.homedoot.databinding.ActivityVenderReviewBinding
 import com.example.akhleshkumar.homedoot.models.CustomerReview
 
 class VenderReviewActivity : AppCompatActivity() {

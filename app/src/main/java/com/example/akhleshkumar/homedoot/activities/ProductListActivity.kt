@@ -12,7 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.akhleshkumar.homedoot.R
+import com.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.adapters.ChildItemAdapter
 import com.example.akhleshkumar.homedoot.adapters.ProductListAdapter
 import com.example.akhleshkumar.homedoot.api.RetrofitClient

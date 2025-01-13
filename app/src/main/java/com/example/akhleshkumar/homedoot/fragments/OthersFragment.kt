@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.example.akhleshkumar.homedoot.R
+import com.akhleshkumar.homedoot.R
 
 
 class OthersFragment : Fragment() {

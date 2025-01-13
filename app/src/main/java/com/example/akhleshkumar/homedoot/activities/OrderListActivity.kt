@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.akhleshkumar.homedoot.R
+import com.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.adapters.OrderAdapter
 import com.example.akhleshkumar.homedoot.adapters.PageAdapter
 import com.example.akhleshkumar.homedoot.api.RetrofitClient

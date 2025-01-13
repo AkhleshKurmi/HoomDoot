@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
-import com.example.akhleshkumar.homedoot.R
+import com.akhleshkumar.homedoot.R
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.akhleshkumar.homedoot.interfaces.OnTimeSelectListener
 import com.example.akhleshkumar.homedoot.models.TimeDataModel

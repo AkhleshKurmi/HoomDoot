@@ -13,9 +13,9 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.chaos.view.PinView
-import com.example.akhleshkumar.homedoot.R
+import com.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
-import com.example.akhleshkumar.homedoot.databinding.ActivityLoginWithOtpBinding
+import com.akhleshkumar.homedoot.databinding.ActivityLoginWithOtpBinding
 import com.example.akhleshkumar.homedoot.models.user.LoginWithOtpRes
 import com.example.akhleshkumar.homedoot.models.user.RegisterWithOtpLoginRes
 import retrofit2.Call

@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.akhleshkumar.homedoot.adapters.CitySpinnerAdapter
 import com.example.akhleshkumar.homedoot.adapters.StateSpinnerAdapter
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
-import com.example.akhleshkumar.homedoot.databinding.ActivityUpdatefrofileBinding
+import com.akhleshkumar.homedoot.databinding.ActivityUpdatefrofileBinding
 import com.example.akhleshkumar.homedoot.models.CancelOrderResponse
 import com.example.akhleshkumar.homedoot.models.CityResponse
 import com.example.akhleshkumar.homedoot.models.StateResponse

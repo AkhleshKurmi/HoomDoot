@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.akhleshkumar.homedoot.R
+import com.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.activities.OrderDetailsActivity
 import com.example.akhleshkumar.homedoot.models.DataX
 import com.example.akhleshkumar.homedoot.models.Item

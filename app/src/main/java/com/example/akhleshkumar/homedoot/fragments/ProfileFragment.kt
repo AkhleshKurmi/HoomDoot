@@ -12,7 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.akhleshkumar.homedoot.R
+import com.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.activities.LoginActivity
 import com.example.akhleshkumar.homedoot.activities.OrderListActivity
 import com.example.akhleshkumar.homedoot.activities.UpdatefrofileActivity

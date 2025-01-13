@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.akhleshkumar.homedoot.models.ChildSubCategory
-import com.example.akhleshkumar.homedoot.R
+import com.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.activities.ProductListActivity
 import com.example.akhleshkumar.homedoot.interfaces.OnChildItemClickListner
 import com.squareup.picasso.Picasso

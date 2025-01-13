@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.example.akhleshkumar.homedoot.databinding.ItemPageBinding
+import com.akhleshkumar.homedoot.databinding.ItemPageBinding
 import com.example.akhleshkumar.homedoot.interfaces.OnPageClickListner
 
 class PageAdapter(val list: List<Int>, val onPageClickListner: OnPageClickListner ):RecyclerView.Adapter<PageAdapter.PageViewHolder>() {

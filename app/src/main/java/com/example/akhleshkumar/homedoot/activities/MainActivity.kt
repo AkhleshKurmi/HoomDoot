@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.example.akhleshkumar.homedoot.HomeDootFragment
-import com.example.akhleshkumar.homedoot.R
+import com.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.fragments.CartFragment
 import com.example.akhleshkumar.homedoot.fragments.ProfileFragment
 import com.google.android.gms.location.FusedLocationProviderClient

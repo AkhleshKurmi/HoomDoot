@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:background="#F9F9F9"
-    tools:context=".activities.AcitivityRating">
+    tools:context="com.example.akhleshkumar.homedoot.activities.AcitivityRating">
 
     <LinearLayout
         android:id="@+id/main"

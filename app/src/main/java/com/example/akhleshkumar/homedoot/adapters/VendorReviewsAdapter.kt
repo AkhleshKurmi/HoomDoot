@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
-import com.example.akhleshkumar.homedoot.databinding.ItemViewReviewBinding
+import com.akhleshkumar.homedoot.databinding.ItemViewReviewBinding
 import com.example.akhleshkumar.homedoot.models.CustomerReview
 
 class VendorReviewsAdapter(val reviewList : ArrayList<CustomerReview>) : Adapter<VendorReviewsAdapter.ReviewsViewHolder>() {

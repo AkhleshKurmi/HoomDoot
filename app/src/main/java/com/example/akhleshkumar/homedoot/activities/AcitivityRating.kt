@@ -3,13 +3,9 @@ package com.example.akhleshkumar.homedoot.activities
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.akhleshkumar.homedoot.R
+import com.akhleshkumar.homedoot.databinding.ActivityAcitivityRatingBinding
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
-import com.example.akhleshkumar.homedoot.databinding.ActivityAcitivityRatingBinding
 import com.example.akhleshkumar.homedoot.models.CancelOrderResponse
 import retrofit2.Call
 import retrofit2.Callback

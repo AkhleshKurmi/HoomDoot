@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.akhleshkumar.homedoot.models.Category
 import com.example.akhleshkumar.homedoot.interfaces.OnCategoryClickListener
-import com.example.akhleshkumar.homedoot.R
+import com.akhleshkumar.homedoot.R
 import com.squareup.picasso.Picasso
 
 class CategoryAdapter(private val context: Context, private val categoryList: List<Category>, private val path : String, val onCategoryClickListener: OnCategoryClickListener, val userId:String) :

@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.akhleshkumar.homedoot"
+    namespace = "com.akhleshkumar.homedoot"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.akhleshkumar.homedoot"
+        applicationId = "com.akhleshkumar.homedoot"
         minSdk = 28
         targetSdk = 34
         versionCode = 1
@@ -36,6 +36,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        dataBinding = true
     }
     defaultConfig {
         vectorDrawables.useSupportLibrary = true

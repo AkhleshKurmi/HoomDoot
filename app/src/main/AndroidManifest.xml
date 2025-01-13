@@ -12,23 +12,22 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".activities.dasabledarkmode.MyApplication"
-
+        android:name="com.example.akhleshkumar.homedoot.activities.dasabledarkmode.MyApplication"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HomeDoot"
         tools:targetApi="31">
         <activity
-            android:name=".activities.VenderReviewActivity"
+            android:name="com.example.akhleshkumar.homedoot.activities.VenderReviewActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.ReviewsViewActivity"
+            android:name="com.example.akhleshkumar.homedoot.activities.ReviewsViewActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.AcitivityRating"
+            android:name="com.example.akhleshkumar.homedoot.activities.AcitivityRating"
             android:exported="false" />
         <activity
-            android:name=".activities.SplashScreenActivity"
+            android:name="com.example.akhleshkumar.homedoot.activities.SplashScreenActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,43 +36,43 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.UpdatefrofileActivity"
+            android:name="com.example.akhleshkumar.homedoot.activities.UpdatefrofileActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.OrderListActivity"
+            android:name="com.example.akhleshkumar.homedoot.activities.OrderListActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.OrderDetailsActivity"
+            android:name="com.example.akhleshkumar.homedoot.activities.OrderDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.PaymentMethodActivity"
+            android:name="com.example.akhleshkumar.homedoot.activities.PaymentMethodActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.LoginWithOtpActivity"
+            android:name="com.example.akhleshkumar.homedoot.activities.LoginWithOtpActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.ForgotPasswordActivity"
+            android:name="com.example.akhleshkumar.homedoot.activities.ForgotPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.RegisterActivity"
+            android:name="com.example.akhleshkumar.homedoot.activities.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.LoginActivity"
+            android:name="com.example.akhleshkumar.homedoot.activities.LoginActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.ChildCategoryActivity"
+            android:name="com.example.akhleshkumar.homedoot.activities.ChildCategoryActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.MainActivity"
+            android:name="com.example.akhleshkumar.homedoot.activities.MainActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.ProductListActivity"
+            android:name="com.example.akhleshkumar.homedoot.activities.ProductListActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.ProductDescriptionActivity"
+            android:name="com.example.akhleshkumar.homedoot.activities.ProductDescriptionActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.CartActivity"
+            android:name="com.example.akhleshkumar.homedoot.activities.CartActivity"
             android:exported="false" />
     </application>
 

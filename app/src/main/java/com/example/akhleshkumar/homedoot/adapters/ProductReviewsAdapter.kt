@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
-import com.example.akhleshkumar.homedoot.databinding.ItemViewReviewBinding
+import com.akhleshkumar.homedoot.databinding.ItemViewReviewBinding
 import com.example.akhleshkumar.homedoot.models.CustomerReview
 import com.example.akhleshkumar.homedoot.models.Feedback
 

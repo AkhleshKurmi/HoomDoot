@@ -13,13 +13,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.example.akhleshkumar.homedoot.R
+import com.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.SliderAdapter
 import com.example.akhleshkumar.homedoot.adapters.AddItemAdapter
 import com.example.akhleshkumar.homedoot.adapters.ProductReviewsAdapter
 import com.example.akhleshkumar.homedoot.adapters.ViewPagerAdapter
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
-import com.example.akhleshkumar.homedoot.databinding.ActivityProductDescriptionBinding
+import com.akhleshkumar.homedoot.databinding.ActivityProductDescriptionBinding
 import com.example.akhleshkumar.homedoot.models.Feedback
 import com.example.akhleshkumar.homedoot.models.ImageItem
 import com.example.akhleshkumar.homedoot.models.ProductDetailsResponse

@@ -14,11 +14,11 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.chaos.view.PinView
-import com.example.akhleshkumar.homedoot.R
+import com.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.adapters.CitySpinnerAdapter
 import com.example.akhleshkumar.homedoot.adapters.StateSpinnerAdapter
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
-import com.example.akhleshkumar.homedoot.databinding.ActivityRegisterBinding
+import com.akhleshkumar.homedoot.databinding.ActivityRegisterBinding
 import com.example.akhleshkumar.homedoot.models.CityResponse
 import com.example.akhleshkumar.homedoot.models.StateResponse
 import com.example.akhleshkumar.homedoot.models.user.OtpResponse
