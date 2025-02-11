@@ -22,10 +22,12 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
+import com.razorpay.PaymentData
+import com.razorpay.PaymentResultWithDataListener
 import java.util.Locale
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), PaymentResultWithDataListener {
     lateinit var sharedPreferences: SharedPreferences
     lateinit var editorSP : SharedPreferences.Editor
     lateinit var bottomNavigationView : BottomNavigationView
@@ -181,4 +183,15 @@ override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out
 companion object {
     private const val LOCATION_PERMISSION_REQUEST_CODE = 1
 }
+
+    override fun onPaymentSuccess(p0: String?, p1: PaymentData?) {
+        val fragment = supportFragmentManager.findFragmentById(R.id.container) as? CartFragment
+        fragment?.onPaymentSuccess(p0,p1)
+
+    }
+
+    override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
+        val fragment = supportFragmentManager.findFragmentById(R.id.container) as? CartFragment
+        fragment?.onPaymentError(p0,p1,p2)
+    }
 }

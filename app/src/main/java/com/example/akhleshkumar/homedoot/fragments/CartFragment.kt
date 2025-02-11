@@ -42,6 +42,7 @@ import com.example.akhleshkumar.homedoot.models.VendorAvailabilityRequest
 import com.example.akhleshkumar.homedoot.models.VendorAvailabilityResponse
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.razorpay.Checkout
+import com.razorpay.PaymentData
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -65,6 +66,7 @@ class CartFragment : Fragment() {
     private var pincode = ""
     var discountPrice = 0L
     var discountPerc = 0
+    var methodOfPayment = ""
     private lateinit var cartAdapter: CartAdapter
     private var vendorList = ArrayList<CartItems>()
     lateinit var timeSlotAdapter : TimeSlotAdapter
@@ -430,14 +432,17 @@ class CartFragment : Fragment() {
             if (checkedId == R.id.rbPayOnline){
                 paymentMethod =  true
                 isPaymentSelected = true
+                methodOfPayment = "pay_online"
             }
             else if (checkedId==R.id.rbPayCashAfterService){
                 isPaymentSelected = true
                 paymentMethod = false
+                methodOfPayment = "pay_after_cash_service"
             }
             else if (checkedId == R.id.rbPayOnlineAfterService){
                 isPaymentSelected=true
                 paymentMethod = false
+                methodOfPayment = "pay_online_after_service"
 
             }else{
                 isPaymentSelected = false
@@ -447,7 +452,7 @@ class CartFragment : Fragment() {
 
                 if (isPaymentSelected) {
                     if (!paymentMethod) {
-                        proceedToCheckout()
+                        proceedToCheckout(methodOfPayment)
                         bottomSheetDialog.dismiss()
                     }else{
                         initPayment()
@@ -465,10 +470,10 @@ class CartFragment : Fragment() {
         bottomSheetDialog.show()
     }
 
-    fun proceedToCheckout(){
+    fun proceedToCheckout(paymentMethod:String){
         val orderRequest = OrderCheckoutRequest(id.toInt(),email,mobile,address,12,date,time,"Test",11,
             pincode,"gdc","rre","rr","9899815159","rr","tyy","1",
-            5,164,564,cartItemList )
+            5,164,564,cartItemList, paymentMethod )
         RetrofitClient.instance.placeOrder(orderRequest).enqueue(object : Callback<OrderCheckoutRes> {
             override fun onResponse(
                 call: Call<OrderCheckoutRes>,
@@ -527,5 +532,14 @@ class CartFragment : Fragment() {
             Toast.makeText(activity,"Error in payment: "+ e.message,Toast.LENGTH_LONG).show()
             e.printStackTrace()
         }
+    }
+
+    fun onPaymentSuccess(p0: String?, p1: PaymentData?) {
+         proceedToCheckout(methodOfPayment)
+    }
+
+    fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
+        Toast.makeText(requireContext(), "Payment failed", Toast.LENGTH_SHORT).show()
+
     }
 }

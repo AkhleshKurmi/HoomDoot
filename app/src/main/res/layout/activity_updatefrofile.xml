@@ -6,7 +6,7 @@
     android:padding="16dp"
     android:layout_margin="20dp"
     android:background="#FFFFFF"
-    tools:context=".activities.UpdatefrofileActivity">
+    >
 
     <TextView
         android:id="@+id/tvFullNameLabel"

@@ -64,6 +64,7 @@ class CartActivity<Activity> : AppCompatActivity(), PaymentResultWithDataListene
     var state = ""
     var pincode = ""
     var discountPerc = 0
+    var methodOfPayment = ""
     lateinit var cartAdapter : CartAdapter
     private var vendorList = ArrayList<CartItems>()
     lateinit var rvCart: RecyclerView
@@ -472,18 +473,22 @@ class CartActivity<Activity> : AppCompatActivity(), PaymentResultWithDataListene
 //        val payCashAfterService = bottomSheetView.findViewById<RadioButton>(R.id.rbPayCashAfterService)
         var isPaymentSelected = false
         var paymentMethod =false
+
         rgPaymentOption.setOnCheckedChangeListener{group, checkedId ->
             if (checkedId == R.id.rbPayOnline){
                 paymentMethod =  true
                 isPaymentSelected = true
+                methodOfPayment = "pay_online"
             }
             else if (checkedId==R.id.rbPayCashAfterService){
                 isPaymentSelected = true
                 paymentMethod = false
+                methodOfPayment = "pay_after_cash_service"
             }
             else if (checkedId == R.id.rbPayOnlineAfterService){
                 isPaymentSelected=true
                 paymentMethod = false
+                methodOfPayment = "pay_online_after_service"
 
             }else{
                 isPaymentSelected = false
@@ -493,7 +498,7 @@ class CartActivity<Activity> : AppCompatActivity(), PaymentResultWithDataListene
 
                 if (isPaymentSelected) {
                     if (!paymentMethod) {
-                        proceedToCheckout()
+                        proceedToCheckout(methodOfPayment)
                         bottomSheetDialog.dismiss()
                     }else{
                        initPayment()
@@ -504,11 +509,9 @@ class CartActivity<Activity> : AppCompatActivity(), PaymentResultWithDataListene
 
                 }
             }
-
         }
 
-
-    bottomSheetDialog.show()
+      bottomSheetDialog.show()
     }
 
     private fun initPayment() {
@@ -550,10 +553,10 @@ class CartActivity<Activity> : AppCompatActivity(), PaymentResultWithDataListene
 
 
 
-    fun proceedToCheckout(){
+    fun proceedToCheckout(method:String){
        val orderRequest = OrderCheckoutRequest(id.toInt(),email,mobile,address,12,date,time,"Test",11,
            pincode,"gdc","rre","rr","9899815159","rr","tyy","1",
-           5,164,564,cartItemList )
+           5,164,564,cartItemList, method)
         progressDialog.show()
        RetrofitClient.instance.placeOrder(orderRequest).enqueue(object : Callback<OrderCheckoutRes> {
            override fun onResponse(
@@ -581,7 +584,7 @@ class CartActivity<Activity> : AppCompatActivity(), PaymentResultWithDataListene
    }
 
     override fun onPaymentSuccess(p0: String?, p1: PaymentData?) {
-        proceedToCheckout()
+        proceedToCheckout(methodOfPayment)
     }
 
     override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {

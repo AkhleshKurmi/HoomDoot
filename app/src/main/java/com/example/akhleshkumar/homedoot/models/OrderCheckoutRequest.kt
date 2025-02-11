@@ -21,6 +21,7 @@ data class OrderCheckoutRequest(
     val other_state: Int,
     val other_locality: Int,
     val other_postcode: Int,
-    val cart_info: List<CartItems>
+    val cart_info: List<CartItems>,
+    val payment_method : String
 )
 
