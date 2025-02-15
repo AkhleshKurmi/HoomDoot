@@ -60,7 +60,7 @@ data class CustomerReview(
 data class Vendor(
     val id: Int?=0,
     val user_token: String="",
-    val wallet: Int=0,
+    val wallet: Double = 0.00,
     val name: String="",
     val email: String="",
     val email_verification: String="",

@@ -67,6 +67,7 @@ class CartFragment : Fragment() {
     var discountPrice = 0L
     var discountPerc = 0
     var methodOfPayment = ""
+    var paymentStatus = "pending"
     private lateinit var cartAdapter: CartAdapter
     private var vendorList = ArrayList<CartItems>()
     lateinit var timeSlotAdapter : TimeSlotAdapter
@@ -473,7 +474,7 @@ class CartFragment : Fragment() {
     fun proceedToCheckout(paymentMethod:String){
         val orderRequest = OrderCheckoutRequest(id.toInt(),email,mobile,address,12,date,time,"Test",11,
             pincode,"gdc","rre","rr","9899815159","rr","tyy","1",
-            5,164,564,cartItemList, paymentMethod )
+            5,164,564,cartItemList, paymentMethod,paymentStatus )
         RetrofitClient.instance.placeOrder(orderRequest).enqueue(object : Callback<OrderCheckoutRes> {
             override fun onResponse(
                 call: Call<OrderCheckoutRes>,
@@ -535,6 +536,7 @@ class CartFragment : Fragment() {
     }
 
     fun onPaymentSuccess(p0: String?, p1: PaymentData?) {
+         paymentStatus = "success"
          proceedToCheckout(methodOfPayment)
     }
 

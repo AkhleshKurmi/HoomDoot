@@ -65,6 +65,7 @@ class CartActivity<Activity> : AppCompatActivity(), PaymentResultWithDataListene
     var pincode = ""
     var discountPerc = 0
     var methodOfPayment = ""
+    var paymentStatus = "pending"
     lateinit var cartAdapter : CartAdapter
     private var vendorList = ArrayList<CartItems>()
     lateinit var rvCart: RecyclerView
@@ -484,6 +485,7 @@ class CartActivity<Activity> : AppCompatActivity(), PaymentResultWithDataListene
                 isPaymentSelected = true
                 paymentMethod = false
                 methodOfPayment = "pay_after_cash_service"
+                paymentStatus = "success"
             }
             else if (checkedId == R.id.rbPayOnlineAfterService){
                 isPaymentSelected=true
@@ -556,7 +558,7 @@ class CartActivity<Activity> : AppCompatActivity(), PaymentResultWithDataListene
     fun proceedToCheckout(method:String){
        val orderRequest = OrderCheckoutRequest(id.toInt(),email,mobile,address,12,date,time,"Test",11,
            pincode,"gdc","rre","rr","9899815159","rr","tyy","1",
-           5,164,564,cartItemList, method)
+           5,164,564,cartItemList, method,paymentStatus)
         progressDialog.show()
        RetrofitClient.instance.placeOrder(orderRequest).enqueue(object : Callback<OrderCheckoutRes> {
            override fun onResponse(
@@ -584,7 +586,9 @@ class CartActivity<Activity> : AppCompatActivity(), PaymentResultWithDataListene
    }
 
     override fun onPaymentSuccess(p0: String?, p1: PaymentData?) {
+        paymentStatus = "success"
         proceedToCheckout(methodOfPayment)
+
     }
 
     override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
