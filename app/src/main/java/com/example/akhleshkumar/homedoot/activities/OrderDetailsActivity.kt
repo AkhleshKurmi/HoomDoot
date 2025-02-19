@@ -58,6 +58,7 @@ class OrderDetailsActivity : AppCompatActivity() {
     var productPrice = ""
     var orderDetails = ""
    lateinit var updateTimeDate:Button
+   var razorOrderId : String = ""
 
 
     private val listTime : ArrayList<TimeDataModel> =  ArrayList()
@@ -80,6 +81,7 @@ class OrderDetailsActivity : AppCompatActivity() {
                 productName = it.items[0].products.service_name.toString()?:" "
                 productPrice = it.items[0].total_amount.toString()?:" "
                 orderDetails = it.items[0].products.description.toString()?:" "
+                razorOrderId = it.razor_order_id.toString()?:" "
                 orderStatus = it.order_status
                 binding.orderStatusVendor.text = "Status from Vendor: " + it.status_from_vendor?:" "
 
@@ -350,7 +352,7 @@ class OrderDetailsActivity : AppCompatActivity() {
                           if (response.body()!!.success){
                               cancelOrderButton.text = "cancelled"
                               updateTimeDate.visibility = View.INVISIBLE
-
+                              cancelledOrder(razorOrderId)
                               orderStatus = "cancelled"
                               tvOrderStatus.text = "Order status: "+orderStatus
                               Toast.makeText(this@OrderDetailsActivity, response.body()!!.message, Toast.LENGTH_SHORT)
@@ -378,5 +380,31 @@ class OrderDetailsActivity : AppCompatActivity() {
                 Toast.makeText(this, "Order ID is null", Toast.LENGTH_SHORT).show()
             }
         }
+
+    private fun cancelledOrder(razorOrderId: String) {
+        RetrofitClient.instance.cancelOrderDelete(razorOrderId,0.toString()).enqueue(object : Callback<CancelOrderResponse>{
+            override fun onResponse(
+                call: Call<CancelOrderResponse>,
+                response: Response<CancelOrderResponse>
+            ) {
+                if (response.isSuccessful){
+                    if(response.body()?.success!!){
+                        Toast.makeText(this@OrderDetailsActivity, response.body()?.message, Toast.LENGTH_SHORT).show()
+                    } else{
+                        Toast.makeText(this@OrderDetailsActivity, response.body()?.message, Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this@OrderDetailsActivity, "Something went wrong", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<CancelOrderResponse>, t: Throwable) {
+                Toast.makeText(this@OrderDetailsActivity, t.message, Toast.LENGTH_SHORT).show()
+            }
+
+        })
+
+    }
+
     }
 

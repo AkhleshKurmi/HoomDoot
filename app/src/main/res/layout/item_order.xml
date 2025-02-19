@@ -96,5 +96,16 @@
         android:textSize="16sp"
         android:layout_gravity="center_vertical"/>
 
+       <Button
+           android:layout_width="50dp"
+           android:layout_height="40dp"
+           android:text="pay"
+           android:visibility="gone"
+           android:layout_marginTop="8dp"
+           android:textSize="8dp"
+           android:layout_marginLeft="5dp"
+           android:id="@+id/btn_pay"
+           />
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>

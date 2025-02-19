@@ -11,6 +11,7 @@ import com.example.akhleshkumar.homedoot.models.CityResponse
 import com.example.akhleshkumar.homedoot.models.CouponResponse
 import com.example.akhleshkumar.homedoot.models.OrderCheckoutRequest
 import com.example.akhleshkumar.homedoot.models.OrderCheckoutRes
+import com.example.akhleshkumar.homedoot.models.PaymentResponse
 import com.example.akhleshkumar.homedoot.models.ProductDetailsResponse
 import com.example.akhleshkumar.homedoot.models.ProductResponse
 import com.example.akhleshkumar.homedoot.models.RemoveCartItemRes
@@ -167,4 +168,14 @@ interface ApiService {
                   @Query("review") review:String,
                   @Query("rating") rating:Int,
                   @Query("type") type:String):Call<CancelOrderResponse>
+
+    @POST("pay-online-after-service")
+    fun payOnlineAfterService(@Query("order_no") orderNo: String, @Query("amount") amount: Double) : Call<PaymentResponse>
+
+    @POST("paysuccess")
+    fun paySuccess(@Query("r_pay_id") razorPayId:String, @Query("r_order_id") razorPayOrderId:String,) : Call<CancelOrderResponse>
+
+    @POST("cancel-order-delete")
+    fun cancelOrderDelete(@Query("razor_order_id") razorOrderId: String, @Query("table") table: String) : Call<CancelOrderResponse>
+
 }
