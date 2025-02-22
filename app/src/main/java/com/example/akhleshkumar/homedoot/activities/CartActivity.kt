@@ -484,7 +484,7 @@ class CartActivity<Activity> : AppCompatActivity(), PaymentResultWithDataListene
             else if (checkedId==R.id.rbPayCashAfterService){
                 isPaymentSelected = true
                 paymentMethod = false
-                methodOfPayment = "pay_after_cash_service"
+                methodOfPayment = "pay_cash_after_service"
                 paymentStatus = "success"
             }
             else if (checkedId == R.id.rbPayOnlineAfterService){

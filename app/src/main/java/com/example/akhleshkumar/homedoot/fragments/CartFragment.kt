@@ -438,7 +438,7 @@ class CartFragment : Fragment() {
             else if (checkedId==R.id.rbPayCashAfterService){
                 isPaymentSelected = true
                 paymentMethod = false
-                methodOfPayment = "pay_after_cash_service"
+                methodOfPayment = "pay_cash_after_service"
             }
             else if (checkedId == R.id.rbPayOnlineAfterService){
                 isPaymentSelected=true
