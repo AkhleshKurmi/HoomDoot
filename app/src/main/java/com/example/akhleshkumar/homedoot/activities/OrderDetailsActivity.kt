@@ -98,6 +98,7 @@ class OrderDetailsActivity : AppCompatActivity() {
                   binding.cardVenderReview.visibility= View.VISIBLE
                   binding.tvRate.visibility = View.VISIBLE
                   binding.llReviews.visibility = View.VISIBLE
+                  binding.btnUpdateTimeDate.visibility = View.INVISIBLE
 
 
               }else{
@@ -276,7 +277,10 @@ class OrderDetailsActivity : AppCompatActivity() {
                 bottomSheetDialog.show()
             }
 
-
+         if (orderStatus == "cancelled" || orderStatus == "completed"){
+             binding.btnUpdateTimeDate.visibility = View.GONE
+             binding.cancelOrderButtonDetail.visibility = View.GONE
+         }
         }
     fun updateTimeAdapter(date:Date){
         val today = Calendar.getInstance()

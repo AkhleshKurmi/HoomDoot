@@ -53,13 +53,22 @@ class OrderAdapter(val context: Context, private val orders: List<DataX>, val pa
         holder.orderStatusVendor.text = order.status_from_vendor?:" "
         holder.tvServiceDate.text = order.service_date
         holder.tvServiceTime.text = order.service_time
-        if (order.order_status == "cancelled"){
+        if (order.order_status == "cancelled" || order.order_current_status == "cancelled" || order.status_from_vendor =="cancelled"
+            ||order.order_status == "completed" || order.order_current_status == "completed" || order.status_from_vendor =="completed"){
             holder.btnPay.visibility = View.GONE
             holder.tvPMode.visibility = View.GONE
         }
         if (order.payment_method == "pay_online_after_service"){
-            holder.btnPay.visibility = View.VISIBLE
-            holder.tvPMode.visibility = View.GONE
+
+            if (order.order_status == "cancelled" || order.order_current_status == "cancelled" || order.status_from_vendor =="cancelled"
+                ||order.order_status == "completed" || order.order_current_status == "completed" || order.status_from_vendor =="completed"){
+                holder.btnPay.visibility = View.GONE
+                holder.tvPMode.visibility = View.GONE
+            } else
+            {
+                holder.btnPay.visibility = View.VISIBLE
+                holder.tvPMode.visibility = View.GONE
+            }
         }else{
 
             holder.btnPay.visibility = View.GONE
