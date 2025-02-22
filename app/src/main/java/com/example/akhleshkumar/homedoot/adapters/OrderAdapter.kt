@@ -35,6 +35,7 @@ class OrderAdapter(val context: Context, private val orders: List<DataX>, val pa
         val tvServiceTime : TextView = view.findViewById(R.id.serviceTime)
         val tvServiceDate: TextView = view.findViewById(R.id.serviceDate)
         val btnPay: TextView = view.findViewById(R.id.btn_pay)
+        val tvPMode = view.findViewById<TextView>(R.id.tv_oMode)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrderViewHolder {
@@ -52,12 +53,20 @@ class OrderAdapter(val context: Context, private val orders: List<DataX>, val pa
         holder.orderStatusVendor.text = order.status_from_vendor?:" "
         holder.tvServiceDate.text = order.service_date
         holder.tvServiceTime.text = order.service_time
-
+        if (order.order_status == "cancelled"){
+            holder.btnPay.visibility = View.GONE
+            holder.tvPMode.visibility = View.GONE
+        }
         if (order.payment_method == "pay_online_after_service"){
             holder.btnPay.visibility = View.VISIBLE
+            holder.tvPMode.visibility = View.GONE
         }else{
+
             holder.btnPay.visibility = View.GONE
+            holder.tvPMode.visibility = View.VISIBLE
+            holder.tvPMode.text = order.payment_method
         }
+
         holder.btnPay.setOnClickListener {
             paymentInit(order.order_no, order.sub_total.toString())
         }

@@ -26,9 +26,8 @@ import retrofit2.Response
 
 class OrderListActivity : AppCompatActivity(), OnPageClickListner,OnPaymentInit, PaymentResultWithDataListener {
     private lateinit var orderRecyclerView: RecyclerView
-//    private lateinit var orderAdapter: OrderAdapter
-lateinit var progressDialog: ProgressDialog
-lateinit var sharedPreferences: SharedPreferences
+    lateinit var progressDialog: ProgressDialog
+    lateinit var sharedPreferences: SharedPreferences
     lateinit var editorSP : SharedPreferences.Editor
     lateinit var userId:String
     lateinit var rvPage :RecyclerView
@@ -54,8 +53,7 @@ lateinit var sharedPreferences: SharedPreferences
         rvPage = findViewById(R.id.rvPage)
 
         rvPage.layoutManager= LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-
-orders(userId)
+        orders(userId)
 
     }
 fun orders(userId:String){progressDialog.show()
@@ -179,6 +177,7 @@ fun orders(userId:String){progressDialog.show()
             ) {
                 if (response.isSuccessful){
                     if (response.body()?.success!!){
+                        fetchOrder(userId, 0)
                         Toast.makeText(this@OrderListActivity, response.body()?.message, Toast.LENGTH_SHORT).show()
                     }
                 }
