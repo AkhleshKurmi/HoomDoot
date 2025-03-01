@@ -16,7 +16,6 @@ import com.example.akhleshkumar.homedoot.api.RetrofitClient
 import com.example.akhleshkumar.homedoot.interfaces.OnPaymentInit
 import com.example.akhleshkumar.homedoot.models.DataX
 import com.example.akhleshkumar.homedoot.models.PaymentResponse
-import com.example.akhleshkumar.homedoot.models.UserOrderResponse
 import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
@@ -63,19 +62,20 @@ class OrderAdapter(val context: Context, private val orders: List<DataX>, val pa
             if (order.order_status == "cancelled" || order.order_current_status == "cancelled" || order.status_from_vendor =="cancelled"
                 ||order.order_status == "completed" || order.order_current_status == "completed" || order.status_from_vendor =="completed"){
                 holder.btnPay.visibility = View.GONE
-                holder.tvPMode.visibility = View.GONE
+//                holder.tvPMode.visibility = View.GONE
             } else
             {
                 holder.btnPay.visibility = View.VISIBLE
-                holder.tvPMode.visibility = View.GONE
+//                holder.tvPMode.visibility = View.GONE
             }
         }else{
 
             holder.btnPay.visibility = View.GONE
             holder.tvPMode.visibility = View.VISIBLE
-            holder.tvPMode.text = order.payment_method
+
         }
 
+        holder.tvPMode.text = "Payment Mode: "+order.payment_method
         holder.btnPay.setOnClickListener {
             paymentInit(order.order_no, order.sub_total.toString())
         }

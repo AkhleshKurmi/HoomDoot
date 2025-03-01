@@ -129,8 +129,7 @@ class OrderDetailsActivity : AppCompatActivity() {
                         binding.tvVenderNumber.text =
                             "Vendor Mobile: " + product.assigned_order.vendor.mobile
                         binding.tvRating.text = rating.toString()
-                        binding.venderTotalRating.text =
-                            "(" + product.customer_review.size.toString() + " reviews)"
+                        binding.venderTotalRating.text = "(${product.customer_review.size})"
                         intentRating.putExtra("vendorName", product!!.assigned_order.vendor.name)
                         intentRating.putExtra("vendorEmail", product.assigned_order.vendor.email)
                         intentRating.putExtra("vendorNumber", product.assigned_order.vendor.mobile)
@@ -184,6 +183,7 @@ class OrderDetailsActivity : AppCompatActivity() {
             // Handle cancel order button click
             if (orderStatus != "cancelled") {
                 updateTimeDate.visibility = View.VISIBLE
+                cancelOrderButton.visibility = View.VISIBLE
             }else{
                 updateTimeDate.visibility = View.INVISIBLE
 

@@ -6,12 +6,15 @@
     android:elevation="5dp"
     android:layout_margin="3dp"
     android:orientation="horizontal">
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:padding="5dp">
 
     <!-- Service Image -->
     <!-- Replace with actual image -->
@@ -83,7 +86,9 @@
                 android:textColor="@android:color/holo_red_light"
                 android:textSize="14sp" />
         </LinearLayout>
+
     </LinearLayout>
+
 
     <!-- Price TextView -->
     <TextView
@@ -106,11 +111,14 @@
            android:layout_marginLeft="5dp"
            android:id="@+id/btn_pay"
            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="P Mode"
-            android:id="@+id/tv_oMode"/>
-
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_oMode"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="73dp"
+        android:layout_marginBottom="5dp"
+        android:layout_height="wrap_content"
+        android:text="P Mode" />
+</LinearLayout>
 </androidx.cardview.widget.CardView>
