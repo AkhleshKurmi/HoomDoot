@@ -35,6 +35,7 @@ class OrderAdapter(val context: Context, private val orders: List<DataX>, val pa
         val tvServiceDate: TextView = view.findViewById(R.id.serviceDate)
         val btnPay: TextView = view.findViewById(R.id.btn_pay)
         val tvPMode = view.findViewById<TextView>(R.id.tv_oMode)
+        val tvVendorAssigned = view.findViewById<TextView>(R.id.tv_vendorName)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrderViewHolder {
@@ -74,6 +75,8 @@ class OrderAdapter(val context: Context, private val orders: List<DataX>, val pa
             holder.tvPMode.visibility = View.VISIBLE
 
         }
+       holder.tvVendorAssigned.visibility =  if (order.assigned_order!= null) View.VISIBLE else View.GONE
+        holder.tvVendorAssigned.text = if(order.assigned_order!=null) "Vendor:\b "+order.assigned_order.vendor.name.toString()!!?:" " else " "
 
         holder.tvPMode.text = "Payment Mode: "+order.payment_method
         holder.btnPay.setOnClickListener {

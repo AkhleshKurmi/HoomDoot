@@ -91,6 +91,7 @@ class OrderDetailsActivity : AppCompatActivity() {
                     if (product?.assigned_order.vendor.id ?: 0 > 0) {
                         vendorId = product?.assigned_order.vendor.id ?: 0
                         binding.llReviews.visibility = View.VISIBLE
+                        binding.cardVenderReview.visibility= View.VISIBLE
                     }
                 }
             }
@@ -102,7 +103,7 @@ class OrderDetailsActivity : AppCompatActivity() {
 
 
               }else{
-                  binding.cardVenderReview.visibility= View.INVISIBLE
+//                  binding.cardVenderReview.visibility= View.INVISIBLE
                   binding.tvRate.visibility = View.INVISIBLE
                   binding.llReviews.visibility = View.INVISIBLE
 
@@ -119,6 +120,7 @@ class OrderDetailsActivity : AppCompatActivity() {
                         for (rate in product.customer_review) {
                             rating += rate.rating
                         }
+
                         binding.cancelOrderButtonDetail.visibility = View.GONE
                         binding.btnUpdateTimeDate.visibility = View.GONE
                         rating /= product.customer_review.size
