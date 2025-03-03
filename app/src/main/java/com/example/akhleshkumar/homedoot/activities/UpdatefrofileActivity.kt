@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.akhleshkumar.homedoot.adapters.CitySpinnerAdapter
 import com.example.akhleshkumar.homedoot.adapters.StateSpinnerAdapter
 import com.example.akhleshkumar.homedoot.api.RetrofitClient
@@ -34,6 +35,7 @@ class UpdatefrofileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityUpdatefrofileBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
 

@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.akhleshkumar.homedoot.R
 import com.example.akhleshkumar.homedoot.activities.LoginActivity
@@ -38,6 +39,7 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
         sharedPreferences = requireContext().getSharedPreferences("HomeDoot",
             AppCompatActivity.MODE_PRIVATE

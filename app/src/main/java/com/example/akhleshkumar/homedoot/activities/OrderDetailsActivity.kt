@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -68,7 +69,7 @@ class OrderDetailsActivity : AppCompatActivity() {
             super.onCreate(savedInstanceState)
             binding = ActivityOrderDetailsBinding.inflate(layoutInflater)
             setContentView(binding.root)
-
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
             binding.llReviews.visibility = View.INVISIBLE
             binding.btnUpdateTimeDate.visibility = View.INVISIBLE
